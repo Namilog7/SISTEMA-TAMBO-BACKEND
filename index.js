@@ -1,8 +1,7 @@
 require("dotenv").config();
 const server = require("./src/server");
 const { conn } = require("./src/db.js");
-// const insertDataByDefault = require("./src/helpers/dbSetup.js");
-// const loadDemoData = require("./src/helpers/loadDemoData.js");
+const seedData = require("./src/helpers/seedData.js")
 const { PORT } = process.env || 3001;
 
 async function startServer() {
@@ -11,8 +10,7 @@ async function startServer() {
     console.log("Connection has been established successfully.");
     await conn.sync({ force: true });
     console.log("All models were synchronized successfully");
-    // await insertDataByDefault();
-    // await loadDemoData();
+    await seedData();
     console.log("All default data synchronized successfully");
     await server.listen(PORT, () => {
       console.log(`Server is active and listening on port ${PORT}`);
