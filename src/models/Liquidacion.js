@@ -2,22 +2,26 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Sector",
+        "Liquidacion",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            nombre: {
-                type: DataTypes.STRING,
+            cantidad: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            descripcion: {
-                type: DataTypes.STRING,
+            fecha: {
+                type: DataTypes.DATE,
                 allowNull: false
             },
+            importe: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            }
         },
-        { timestamps: false }
+        { timestamps: true }
     );
 };

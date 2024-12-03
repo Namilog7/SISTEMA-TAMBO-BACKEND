@@ -39,12 +39,41 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // Desestructuracion de los modelos
 const {
-
+    Sector,
+    Tambo,
+    RetiroLeche,
+    Liquidacion
 } = sequelize.models;
 
 //RELACIONES
 
+Sector.hasMany(Tambo, { foreignKey: 'id_sector', as: 'Tambos' });
+Tambo.belongsTo(Sector, { foreignKey: 'id_sector', as: 'Sector' });
 
+Tambo.hasMany(RetiroLeche, {
+    foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
+    as: 'RetirosLeche',       // Alias para acceder a los Retiros de Leche desde un Tambo
+    onDelete: 'CASCADE',      // Si un Tambo se elimina, elimina los registros de RetiroLeche
+    onUpdate: 'CASCADE',      // Si cambia el ID del Tambo, actualiza la FK en RetiroLeche
+});
+
+RetiroLeche.belongsTo(Tambo, {
+    foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
+    as: 'Tambo',              // Alias para acceder al Tambo desde un Retiro de Leche
+});
+
+Liquidacion.hasMany(RetiroLeche, {
+    foreignKey: 'id_liquidacion', // Nombre de la clave foránea en RetiroLeche
+    as: 'RetirosLeche',          // Alias para acceder a los Retiros de Leche desde una Liquidación
+    onDelete: 'CASCADE',         // Si se elimina una Liquidación, elimina los Retiros de Leche asociados
+    onUpdate: 'CASCADE',         // Si cambia el ID de la Liquidación, actualiza la FK en RetiroLeche
+});
+
+// RetiroLeche pertenece a una Liquidación
+RetiroLeche.belongsTo(Liquidacion, {
+    foreignKey: 'id_liquidacion', // Nombre de la clave foránea en RetiroLeche
+    as: 'Liquidacion',           // Alias para acceder a la Liquidación desde un Retiro de Leche
+});
 
 module.exports = {
     ...sequelize.models,
