@@ -42,7 +42,10 @@ const {
     Sector,
     Tambo,
     RetiroLeche,
-    Liquidacion
+    Liquidacion,
+    Insumo,
+    Ganado,
+    Caravana
 } = sequelize.models;
 
 //RELACIONES
@@ -74,6 +77,10 @@ RetiroLeche.belongsTo(Liquidacion, {
     foreignKey: 'id_liquidacion', // Nombre de la clave foránea en RetiroLeche
     as: 'Liquidacion',           // Alias para acceder a la Liquidación desde un Retiro de Leche
 });
+
+Sector.hasMany(Insumo, { foreignKey: "id_sector" });
+Insumo.belongsTo(Sector, { foreignKey: "id_sector" });
+
 
 module.exports = {
     ...sequelize.models,
