@@ -23,10 +23,13 @@ module.exports = (sequelize) => {
             },
             detalles: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: true
             },
             tipo: {
                 type: DataTypes.ENUM("Vaca", "Ternero", "Novillo")
+            },
+            recria: {
+                type: DataTypes.BOOLEAN
             }
         },
         { timestamps: false }

@@ -7,8 +7,8 @@ const putTamboHandler = require("../../handlers/tambo/putTamboHandler")
 const tamboRouter = Router();
 
 tamboRouter.get("/", getTamboHandler);
-tamboRouter.post("/", postTamboHandler)
-tamboRouter.delete("/", deleteTamboHandler);
+tamboRouter.post("/", postTamboHandler);
+tamboRouter.delete("/:id", deleteTamboHandler);
 tamboRouter.put("/", putTamboHandler);
 
 

@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-const { Sector, Tambo, RetiroLeche } = require("./../db");  // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");  // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 const { DB_DEPLOY } = process.env
 
@@ -38,6 +38,24 @@ const seedData = async () => {
         });
         await RetiroLeche.bulkCreate(retiroLecheData);
 
+        const ganadoData = [];
+
+        for (let i = 0; i < 80; i++) {
+            const tipo = faker.helpers.randomize(['Vaca', 'Novillo', 'Ternero']);
+
+            ganadoData.push({
+                caravana: faker.random.alphaNumeric(4), // Genera un UUID único para la caravana
+                tipo,
+                produccionDiaria: tipo === 'Vaca' ? faker.datatype.number({ min: 10, max: 30 }) : 0, // Solo "Vaca" produce leche
+                inseminado: tipo == "Vaca" ? faker.datatype.boolean() : false,
+                detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null, // Detalles aleatorios o null
+                recria: tipo !== "Vaca" ? faker.datatype.boolean() : false,
+                id_tambo: 1 // Relación con el tambo ID 1
+            });
+        }
+        await Ganado.bulkCreate(ganadoData);
+        console.log('80 registros de Ganado creados con éxito.');
+
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
         console.error("Error al insertar los datos de semilla:", error);
@@ -46,5 +64,4 @@ const seedData = async () => {
     }
 };
 
-// Ejecutar la función de semilla
 module.exports = seedData

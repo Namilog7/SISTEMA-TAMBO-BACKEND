@@ -45,7 +45,6 @@ const {
     Liquidacion,
     Insumo,
     Ganado,
-    Caravana
 } = sequelize.models;
 
 //RELACIONES
@@ -80,6 +79,9 @@ RetiroLeche.belongsTo(Liquidacion, {
 
 Sector.hasMany(Insumo, { foreignKey: "id_sector" });
 Insumo.belongsTo(Sector, { foreignKey: "id_sector" });
+
+Tambo.hasMany(Ganado, { foreignKey: "id_tambo" });
+Ganado.belongsTo(Tambo, { foreignKey: "id_tambo" })
 
 
 module.exports = {
