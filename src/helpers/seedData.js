@@ -50,6 +50,7 @@ const seedData = async () => {
                 inseminado: tipo == "Vaca" ? faker.datatype.boolean() : false,
                 detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null, // Detalles aleatorios o null
                 recria: tipo !== "Vaca" ? faker.datatype.boolean() : false,
+                fecha_ingreso: "2024-02-14",
                 id_tambo: 1 // Relación con el tambo ID 1
             });
         }

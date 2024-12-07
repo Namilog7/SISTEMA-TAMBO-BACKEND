@@ -13,9 +13,9 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING(5),
                 unique: true,
             },
-            produccionDiaria: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
+            fecha_ingreso: {
+                type: DataTypes.DATE,
+                allowNull: false
             },
             inseminado: {
                 type: DataTypes.BOOLEAN,
