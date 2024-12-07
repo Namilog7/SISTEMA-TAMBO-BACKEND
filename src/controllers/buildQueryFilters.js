@@ -8,20 +8,20 @@ const buildQueryFilters = (Model, query) => {
         if (Object.prototype.hasOwnProperty.call(modelAttributes, key)) {
             let value = query[key];
 
-            // Lógica para campos booleanos
+            // Lógica para atributos ENUM
             const attributeType = modelAttributes[key].type.constructor.key;
-            if (attributeType === "BOOLEAN") {
-                if (value === "true" || value === "1" || value === true) {
-                    filters[key] = true;
-                } else if (value === "false" || value === "0" || value === false) {
-                    filters[key] = false;
+            if (attributeType === "ENUM") {
+                const validValues = modelAttributes[key].type.values;
+                if (validValues.includes(value)) {
+                    filters[key] = value; // Solo se permite si el valor es válido para el enum
                 } else {
-                    throw new Error(`El valor para el campo booleano "${key}" no es válido.`);
+                    throw new Error(`El valor "${value}" no es válido para el campo "${key}". Valores permitidos: ${validValues.join(", ")}`);
                 }
                 continue;
             }
 
-            if (key) {
+            // Resto de la lógica de filtros (booleanos, strings, etc.)
+            if (key === "dueño") {
                 const capitalizedValue = value
                     .toLowerCase()
                     .split(" ")
@@ -34,11 +34,10 @@ const buildQueryFilters = (Model, query) => {
                 continue;
             }
 
-            // Filtros genéricos para otros atributos
             if (Array.isArray(value)) {
-                filters[key] = { [Op.in]: value }; // Si es un array, busca coincidencias múltiples
+                filters[key] = { [Op.in]: value }; // Si es un array
             } else {
-                filters[key] = value; // Comparación exacta para otros tipos
+                filters[key] = value; // Comparación exacta
             }
         }
     }
