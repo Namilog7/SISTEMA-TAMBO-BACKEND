@@ -30,7 +30,11 @@ module.exports = (sequelize) => {
             },
             recria: {
                 type: DataTypes.BOOLEAN
-            }
+            },
+            /*    estado: {
+                   type: DataTypes.STRING,
+                   allowNull: false
+               } */
         },
         { timestamps: false }
     );

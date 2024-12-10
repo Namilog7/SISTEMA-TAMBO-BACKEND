@@ -1,9 +1,5 @@
-const { Sequelize } = require("sequelize");
-const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");  // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");
 const faker = require("faker");
-const { DB_DEPLOY } = process.env
-
-const sequelize = new Sequelize(DB_DEPLOY);
 
 const seedData = async () => {
     try {
@@ -60,9 +56,8 @@ const seedData = async () => {
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
         console.error("Error al insertar los datos de semilla:", error);
-    } finally {
-        sequelize.close();
     }
+
 };
 
 module.exports = seedData
