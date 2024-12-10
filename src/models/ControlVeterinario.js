@@ -1,0 +1,23 @@
+const { DataTypes } = require("sequelize");
+
+module.exports = (sequelize) => {
+    sequelize.define(
+        "ControlVeterinario",
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            veterinario: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            detalle: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+        },
+        { timestamps: true }
+    );
+};

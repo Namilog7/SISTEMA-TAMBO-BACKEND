@@ -1,5 +1,6 @@
-const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");
+const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");  // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
+
 
 const seedData = async () => {
     try {
@@ -38,14 +39,15 @@ const seedData = async () => {
 
         for (let i = 0; i < 80; i++) {
             const tipo = faker.helpers.randomize(['Vaca', 'Novillo', 'Ternero']);
+            const estado = faker.helpers.randomize(["Recria", "Ordeñe", "Engorde"])
 
             ganadoData.push({
                 caravana: faker.random.alphaNumeric(4), // Genera un UUID único para la caravana
                 tipo,
+                estado,
                 produccionDiaria: tipo === 'Vaca' ? faker.datatype.number({ min: 10, max: 30 }) : 0, // Solo "Vaca" produce leche
                 inseminado: tipo == "Vaca" ? faker.datatype.boolean() : false,
                 detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null, // Detalles aleatorios o null
-                recria: tipo !== "Vaca" ? faker.datatype.boolean() : false,
                 fecha_ingreso: "2024-02-14",
                 id_tambo: 1 // Relación con el tambo ID 1
             });
@@ -57,7 +59,6 @@ const seedData = async () => {
     } catch (error) {
         console.error("Error al insertar los datos de semilla:", error);
     }
-
 };
 
 module.exports = seedData

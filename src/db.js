@@ -45,7 +45,9 @@ const {
     Liquidacion,
     Insumo,
     Ganado,
-    ProduccionLeche
+    ProduccionLeche,
+    ControlVeterinario,
+    ControlGanado
 } = sequelize.models;
 
 //RELACIONES
@@ -87,6 +89,8 @@ Ganado.belongsTo(Tambo, { foreignKey: "id_tambo" });
 Ganado.hasMany(ProduccionLeche, { foreignKey: "id_ganado" });
 ProduccionLeche.belongsTo(Ganado, { foreignKey: "id_ganado" });
 
+Ganado.belongsToMany(ControlVeterinario, { through: ControlGanado });
+ControlVeterinario.belongsToMany(Ganado, { through: ControlGanado });
 
 module.exports = {
     ...sequelize.models,

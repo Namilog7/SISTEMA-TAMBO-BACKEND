@@ -1,9 +1,9 @@
 const { Ganado } = require("../../db");
-const crudController = require("../../controllers/crudController");
 const buildQueryFilters = require("../../controllers/buildQueryFilters");
+const getGanado = require("../../controllers/ganado/getGanado")
+
 
 const getGanadoHandler = async (req, res) => {
-    const getGanado = crudController(Ganado)
     const searchQuery = buildQueryFilters(Ganado, req.query)
     try {
         let response
@@ -15,7 +15,7 @@ const getGanadoHandler = async (req, res) => {
             }
             return res.status(200).json(response)
         } else
-            response = await getGanado.readAll()
+            response = await getGanado()
         return res.status(200).json(response)
     } catch (error) {
         console.error("Error en getTamboHandler:", error);
