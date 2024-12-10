@@ -21,7 +21,7 @@ const buildQueryFilters = (Model, query) => {
             }
 
             // Resto de la lógica de filtros (booleanos, strings, etc.)
-            if (key === "dueño") {
+            if (key) {
                 const capitalizedValue = value
                     .toLowerCase()
                     .split(" ")
