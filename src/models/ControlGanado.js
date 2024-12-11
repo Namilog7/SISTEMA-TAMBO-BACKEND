@@ -6,9 +6,8 @@ module.exports = (sequelize) => {
         {
             fecha: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: true,
             }
-        },
-        { timestamps: false }
+        }
     );
 };
