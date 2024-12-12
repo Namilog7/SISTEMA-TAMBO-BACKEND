@@ -17,10 +17,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            inseminado: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false
-            },
             detalles: {
                 type: DataTypes.STRING,
                 allowNull: true

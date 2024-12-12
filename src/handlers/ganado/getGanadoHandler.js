@@ -4,8 +4,8 @@ const getGanado = require("../../controllers/ganado/getGanado")
 
 
 const getGanadoHandler = async (req, res) => {
-    const searchQuery = buildQueryFilters(Ganado, req.query)
     try {
+        const searchQuery = buildQueryFilters(Ganado, req.query)
         let response
         if (Object.keys(req.query).length !== 0) {
             response = await Ganado.findAll({ where: searchQuery })
