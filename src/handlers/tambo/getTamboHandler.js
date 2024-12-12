@@ -3,9 +3,9 @@ const { Tambo } = require("../../db");
 const buildQueryFilters = require("../../controllers/buildQueryFilters");
 
 const getTamboHandler = async (req, res) => {
-    const tamboCrud = crudController(Tambo)
-    const searchQuery = buildQueryFilters(Tambo, req.query)
     try {
+        const tamboCrud = crudController(Tambo)
+        const searchQuery = buildQueryFilters(Tambo, req.query)
         let response
         if (Object.keys(req.query).length !== 0) {
             console.log(Object.keys(req.query))
