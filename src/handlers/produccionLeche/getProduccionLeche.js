@@ -4,8 +4,8 @@ const buildQueryFilters = require("../../controllers/buildQueryFilters");
 
 const getProduccionHandler = async (req, res) => {
     const getProduccionLeche = crudController(ProduccionLeche)
-    const searchQuery = buildQueryFilters(ProduccionLeche, req.query)
     try {
+        const searchQuery = buildQueryFilters(ProduccionLeche, req.query)
         let response
         if (Object.keys(req.query).length !== 0) {
             response = await ProduccionLeche.findAll({ where: searchQuery })

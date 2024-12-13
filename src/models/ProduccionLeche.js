@@ -28,6 +28,10 @@ module.exports = (sequelize) => {
             usuario_carga: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            animales: {
+                type: DataTypes.INTEGER,
+                allowNull: false
             }
         },
         { timestamps: true }
