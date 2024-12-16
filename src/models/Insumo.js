@@ -21,6 +21,18 @@ module.exports = (sequelize) => {
             detalle: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            ultimo_ingreso: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+            precio: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            tipo: {
+                type: DataTypes.ENUM(["Medicamentos", "Alimentos", "Varios"]),
+                allowNull: false
             }
         },
         { timestamps: false }

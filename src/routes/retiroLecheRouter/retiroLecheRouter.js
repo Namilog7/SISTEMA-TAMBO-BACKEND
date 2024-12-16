@@ -6,7 +6,7 @@ const getPartialRetiroLecheHandler = require("../../handlers/retiroLeche/getPart
 
 const retiroLecheRouter = Router();
 retiroLecheRouter.get("/", getRetiroLecheHandler)
-retiroLecheRouter.get("/partial", getPartialRetiroLecheHandler)
+retiroLecheRouter.get("/parcial", getPartialRetiroLecheHandler)
 retiroLecheRouter.post("/", postRetiroLecheMid, retiroLecheHandler);
 
 module.exports = retiroLecheRouter

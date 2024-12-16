@@ -32,6 +32,22 @@ module.exports = (sequelize) => {
             animales: {
                 type: DataTypes.INTEGER,
                 allowNull: false
+            },
+            aclaracion: {
+                type: DataTypes.STRING(),
+                allowNull: true
+            },
+            estado: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false
+            },
+            hora_retiro: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            aclaracion: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
         },
         { timestamps: true }

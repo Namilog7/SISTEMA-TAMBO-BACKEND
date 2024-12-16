@@ -20,6 +20,14 @@ module.exports = (sequelize) => {
             liquidado: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false
+            },
+            estado: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false
+            },
+            hora_carga: {
+                type: DataTypes.INTEGER,
+                allowNull: false
             }
         },
         { timestamps: true }

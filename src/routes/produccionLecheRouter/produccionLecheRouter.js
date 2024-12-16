@@ -7,9 +7,9 @@ const getPartialProduccionLecheHandler = require("../../handlers/produccionLeche
 
 const produccionLecheRouter = Router();
 produccionLecheRouter.get("/", getProduccionHandler)
-produccionLecheRouter.get("/partial", getPartialProduccionLecheHandler)
+produccionLecheRouter.get("/parcial", getPartialProduccionLecheHandler)
 produccionLecheRouter.post("/", postProduccionLecheHandler)
-produccionLecheRouter.delete("/", deleteProduccionHandler)
+produccionLecheRouter.delete("/:id", deleteProduccionHandler) // endpoint que no se va a usar 
 produccionLecheRouter.put("/", putProduccionLecheHandler)
 
 

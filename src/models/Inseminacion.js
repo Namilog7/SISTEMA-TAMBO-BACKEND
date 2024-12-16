@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
+            fecha_inseminacion: {
+                type: DataTypes.DATE,
+                allowNull: false
+            }
         },
         { timestamps: false }
     );
