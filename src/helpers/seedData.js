@@ -30,6 +30,10 @@ const seedData = async () => {
                     cantidad: faker.datatype.number({ min: 700, max: 900 }),  // Cantidad aleatoria de leche
                     fecha: faker.date.past(),  // Fecha aleatoria del retiro
                     liquidado: false,
+                    estado: false,
+                    hora_carga: 14,
+                    usuario_carga: "gonza",
+
                 });
             }
         });
@@ -56,11 +60,15 @@ const seedData = async () => {
 
         const insumos = [];
         for (let i = 0; i < 10; i++) { // Generar 10 insumos por sector
+            let tipo = faker.helpers.randomize(['Medicamento', 'Alimento', 'Vario']);
             insumos.push({
                 nombre: faker.commerce.productName(), // Nombre del insumo
                 stock: faker.datatype.number({ min: 10, max: 100 }), // Stock entre 10 y 100
                 detalle: faker.commerce.productDescription(), // Descripción del insumo
                 id_sector: 1, // ID del sector
+                ultimo_ingreso: "2024-02-12",
+                precio: 12,
+                tipo: tipo
             });
         }
 
