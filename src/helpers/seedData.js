@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado } = require("./../db");  // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Insumo } = require("./../db");  // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 
 
@@ -53,6 +53,20 @@ const seedData = async () => {
         }
         await Ganado.bulkCreate(ganadoData);
         console.log('80 registros de Ganado creados con éxito.');
+
+        const insumos = [];
+        for (let i = 0; i < 10; i++) { // Generar 10 insumos por sector
+            insumos.push({
+                nombre: faker.commerce.productName(), // Nombre del insumo
+                stock: faker.datatype.number({ min: 10, max: 100 }), // Stock entre 10 y 100
+                detalle: faker.commerce.productDescription(), // Descripción del insumo
+                id_sector: 1, // ID del sector
+            });
+        }
+
+        // Crear los insumos en la base de datos
+        await Insumo.bulkCreate(insumos);
+        console.log('Insumos creados exitosamente');
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {

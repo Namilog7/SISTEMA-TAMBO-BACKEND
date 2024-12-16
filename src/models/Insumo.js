@@ -18,9 +18,9 @@ module.exports = (sequelize) => {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },
-            detalles: {
+            detalle: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: true
             }
         },
         { timestamps: false }
