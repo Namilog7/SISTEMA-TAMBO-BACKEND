@@ -49,7 +49,9 @@ const {
     ControlVeterinario,
     ControlGanado,
     Inseminacion,
-    InseminacionGanado
+    InseminacionGanado,
+    ClienteLeche,
+    VentaLeche
 } = sequelize.models;
 
 //RELACIONES
@@ -96,7 +98,16 @@ ControlVeterinario.belongsToMany(Ganado, { through: ControlGanado });
 
 
 Inseminacion.belongsToMany(Ganado, { through: InseminacionGanado });
-Ganado.belongsToMany(Inseminacion, { through: InseminacionGanado })
+Ganado.belongsToMany(Inseminacion, { through: InseminacionGanado });
+
+Tambo.hasMany(ClienteLeche, { foreignKey: "id_tambo" });
+ClienteLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
+
+Tambo.hasMany(VentaLeche, { foreignKey: "id_tambo" });
+VentaLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
+
+ClienteLeche.hasMany(VentaLeche, { foreignKey: "id_cliente" });
+VentaLeche.belongsTo(ClienteLeche, { foreignKey: "id_cliente" });
 
 
 module.exports = {
