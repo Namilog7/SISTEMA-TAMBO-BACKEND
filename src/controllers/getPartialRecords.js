@@ -1,4 +1,4 @@
-const getPartialRecords = async (Model, limit = 6) => {
+const getPartialRecords = async (Model, limit = 14) => {
     try {
         // Consulta para obtener los últimos registros del modelo pasado
         const registros = await Model.findAll({

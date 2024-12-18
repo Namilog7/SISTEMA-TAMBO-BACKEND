@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
             },
             litros: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             fecha: {
@@ -18,11 +18,11 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             hora_recoleccion: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             hora_carga: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             usuario_carga: {
@@ -33,16 +33,8 @@ module.exports = (sequelize) => {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },
-            aclaracion: {
-                type: DataTypes.STRING(),
-                allowNull: true
-            },
             estado: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false
-            },
-            hora_retiro: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
                 allowNull: false
             },
             aclaracion: {

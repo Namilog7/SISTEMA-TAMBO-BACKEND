@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             estado: {
-                type: DataTypes.BOOLEAN,
+                type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
                 allowNull: false
             },
             hora_carga: {

@@ -13,12 +13,20 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            origen: {
+            tipo: {
+                type: DataTypes.ENUM("SEXADO", "CONVENCIONAL"),
+                allowNull: false
+            },
+            fecha: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+            pajuela: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            fecha_inseminacion: {
-                type: DataTypes.DATE,
+            origen_genetica: {
+                type: DataTypes.STRING,
                 allowNull: false
             }
         },

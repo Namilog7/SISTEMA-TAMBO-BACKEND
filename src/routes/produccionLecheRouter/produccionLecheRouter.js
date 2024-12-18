@@ -4,14 +4,15 @@ const getProduccionHandler = require("../../handlers/produccionLeche/getProducci
 const deleteProduccionHandler = require("../../handlers/produccionLeche/deleteProduccionHandler");
 const putProduccionLecheHandler = require("../../handlers/produccionLeche/putProduccionLecheHandler");
 const getPartialProduccionLecheHandler = require("../../handlers/produccionLeche/getPartialProduccionLeche");
-const postProduccionLecheMid = require("../../middlewares/produccionLeche/postProduccionLecheMid")
+const { recoleccionPostModel, recoleccionPutModel } = require("../../middlewares/produccionLeche/postProduccionLecheMid")
+const modelValidateMid = require("../../middlewares/modelValidateMid");
 
 const produccionLecheRouter = Router();
 produccionLecheRouter.get("/", getProduccionHandler)
 produccionLecheRouter.get("/parcial", getPartialProduccionLecheHandler)
-produccionLecheRouter.post("/", postProduccionLecheMid, postProduccionLecheHandler)
+produccionLecheRouter.post("/", modelValidateMid(recoleccionPostModel), postProduccionLecheHandler)
 produccionLecheRouter.delete("/:id", deleteProduccionHandler) // endpoint que no se va a usar 
-produccionLecheRouter.put("/", putProduccionLecheHandler)
+produccionLecheRouter.put("/", modelValidateMid(recoleccionPutModel), putProduccionLecheHandler)
 
 
 module.exports = produccionLecheRouter
