@@ -18,11 +18,11 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             hora_retiro: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             hora_carga: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             encargado_retiro: {

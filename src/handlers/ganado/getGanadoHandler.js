@@ -1,4 +1,4 @@
-const { Ganado, ControlVeterinario, ProduccionLeche, Inseminacion, InseminacionGanado } = require("../../db");
+const { Ganado, ControlVeterinario, Inseminacion, InseminacionGanado } = require("../../db");
 const buildQueryFilters = require("../../controllers/buildQueryFilters");
 const getGanado = require("../../controllers/ganado/getGanado");
 
@@ -17,26 +17,21 @@ const getGanadoHandler = async (req, res) => {
                 limit: parseInt(limit), // Limitar la cantidad de resultados por página
                 offset: parseInt(offset), // Desplazamiento para la paginación
                 include: [
-
                     {
-                        model: ControlVeterinario, // Incluir ControlVeterinario
+                        model: ControlVeterinario,
                         through: {
-                            attributes: ['fecha'], // Atributos de la tabla intermedia
+                            attributes: ['fecha', 'produccion_promedio'], // Atributos de la tabla intermedia
                         },
                     },
                     {
-                        model: ProduccionLeche, // Incluir ProduccionLeche
-                        attributes: ['litros', 'fecha'], // Atributos específicos de ProduccionLeche
-                    },
-                    {
-                        model: Inseminacion, // Incluir Inseminacion
+                        model: Inseminacion,
                         through: {
-                            model: InseminacionGanado, // Especificar la tabla intermedia
+                            model: InseminacionGanado,
                             attributes: ['fecha'], // Atributos de la tabla intermedia
                         },
                         attributes: ['origen'], // Atributos específicos de Inseminacion
                     },
-                ]
+                ],
             });
 
             if (response.rows.length === 0) {

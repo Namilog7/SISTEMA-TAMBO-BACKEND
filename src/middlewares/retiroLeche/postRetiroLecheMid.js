@@ -1,40 +1,30 @@
-const { body, validationResult } = require('express-validator');
-const { Tambo } = require("../../db")
+const postRetiroLecheModel = {
+    id: "int",
+    cantidad: "int",
+    fecha: "date",
+    liquidado: "boolean",
+    id_tambo: "int",
+    hora_carga: "time_hhmm",
+    hora_retiro: "time_hhmm",
+    aclaracion: "string",
+    usuario_carga: "string",
+    estado: "boolean",
+};
 
-const postRetiroLecheMid = [
-    // Validar el campo 'cantidad'
-    body('cantidad')
-        .notEmpty().withMessage('El campo "cantidad" es obligatorio.')
-        .isInt({ min: 1 }).withMessage('El campo "cantidad" debe ser un número entero positivo.'),
+const retiroLecheUpdateModel = {
+    id: { type: "int", required: true }, // Campo obligatorio
+    cantidad: { type: "int", required: false },
+    fecha: { type: "date", required: false },
+    liquidado: { type: "boolean", required: false },
+    id_tambo: { type: "int", required: false },
+    hora_carga: { type: "time_hhmm", required: false }, // Formato HH:mm opcional
+    hora_retiro: { type: "time_hhmm", required: false }, // Formato HH:mm opcional
+    aclaracion: { type: "string", required: false },
+    usuario_carga: { type: "string", required: false },
+    estado: { type: "boolean", required: false },
+};
 
-    // Validar el campo 'fecha'
-    body('fecha')
-        .notEmpty().withMessage('El campo "fecha" es obligatorio.')
-        .isISO8601().withMessage('El campo "fecha" debe ser una fecha válida en formato ISO 8601.'),
-
-    // Validar el campo 'liquidado'
-    body('liquidado')
-        .notEmpty().withMessage('El campo "liquidado" es obligatorio.')
-        .isBoolean().withMessage('El campo "liquidado" debe ser un valor booleano.'),
-
-    // Validar el campo 'id_tambo'
-    body('id_tambo')
-        .notEmpty().withMessage('El campo "id_tambo" es obligatorio.')
-        .isInt({ min: 1 }).withMessage('El campo "id_tambo" debe ser un número entero positivo.')
-        .custom(async (value) => {
-            const tambo = await Tambo.findByPk(value);
-            if (!tambo) {
-                throw new Error('El "id_tambo" proporcionado no corresponde a un tambo existente.');
-            }
-        }),
-    // Middleware para manejar los errores de validación
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    }
-];
-
-module.exports = postRetiroLecheMid
+module.exports = {
+    postRetiroLecheModel,
+    retiroLecheUpdateModel
+}

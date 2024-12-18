@@ -7,6 +7,10 @@ module.exports = (sequelize) => {
             fecha: {
                 type: DataTypes.DATE,
                 allowNull: true,
+            },
+            produccion_promedio: {
+                type: DataTypes.INTEGER,
+                allowNull: true
             }
         }
     );
