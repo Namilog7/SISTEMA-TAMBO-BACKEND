@@ -15,9 +15,9 @@ const clienteLecheRouter = require("../../routes/clienteLecheRouter/clienteLeche
 const tamboRouter = Router();
 
 tamboRouter.get("/", getTamboHandler);
-tamboRouter.post("/", postTamboMid, postTamboHandler);
+/* tamboRouter.post("/", postTamboMid, postTamboHandler);
 tamboRouter.delete("/:id", deleteTamboHandler);
-tamboRouter.put("/", putTamboHandler);
+tamboRouter.put("/", putTamboHandler); */
 tamboRouter.use("/ganado", ganadoRouter);
 tamboRouter.use("/retiroleche", retiroLecheRouter);
 tamboRouter.use("/produccionleche", produccionLecheRouter);

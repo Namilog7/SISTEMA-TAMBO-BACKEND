@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
             },
             litros: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             fecha: {

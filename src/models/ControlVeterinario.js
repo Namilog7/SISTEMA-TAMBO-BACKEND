@@ -13,10 +13,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            fecha: {
-                type: DataTypes.DATE,
-                allowNull: false
-            },
             detalle: {
                 type: DataTypes.STRING,
                 allowNull: false

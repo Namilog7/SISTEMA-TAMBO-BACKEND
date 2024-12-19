@@ -1,8 +1,6 @@
-const crudController = require("../../controllers/crudController");
 const { ControlVeterinario, Ganado } = require("../../db");
 
 const postControlVeterinario = async (req, res) => {
-    const postControl = crudController(ControlVeterinario);
     const { veterinario, detalle, arrayId } = req.body;
 
     try {
@@ -12,7 +10,7 @@ const postControlVeterinario = async (req, res) => {
         }
 
         // Crear el registro de ControlVeterinario
-        const control = await postControl.create({
+        const control = await ControlVeterinario.create({
             veterinario,
             detalle,
         });
@@ -32,7 +30,7 @@ const postControlVeterinario = async (req, res) => {
         const fechaActual = new Date();
 
         const ganadosIds = ganados.map((ganado) => ganado.id);
-
+        console.log(control instanceof ControlVeterinario)
         await control.addGanado(ganadosIds, { through: { fecha: fechaActual } });
 
         return res.status(201).json({ message: "Control creado exitosamente.", control });

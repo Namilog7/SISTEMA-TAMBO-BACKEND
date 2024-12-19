@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            animales: {
+            cantidad_animales: {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },

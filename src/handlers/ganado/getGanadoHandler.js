@@ -3,19 +3,10 @@ const buildQueryFilters = require("../../controllers/buildQueryFilters");
 
 const getGanadoHandler = async (req, res) => {
     try {
-        const { page = 1, limit = 10, id_tambo } = req.query; // Parámetros de paginación y filtro por id_tambo
+        const { page = 1, limit = 10 } = req.query; // Parámetros de paginación y filtro por id_tambo
         const offset = (page - 1) * limit; // Calcular el desplazamiento
-
-        // Validar que se pase el id_tambo
-        if (!id_tambo) {
-            return res.status(400).json({ error: "El parámetro 'id_tambo' es obligatorio." });
-        }
-
         // Construir los filtros de búsqueda
         const searchQuery = buildQueryFilters(Ganado, req.query);
-
-        // Asegurarse de que el filtro incluya id_tambo
-        searchQuery.id_tambo = id_tambo;
         console.log(searchQuery)
         let response;
         response = await Ganado.findAndCountAll({
@@ -26,7 +17,7 @@ const getGanadoHandler = async (req, res) => {
                 {
                     model: ControlVeterinario,
                     through: {
-                        attributes: ['fecha', 'produccion_promedio'], // Atributos de la tabla intermedia
+                        attributes: ["fecha"], // Atributos de la tabla intermedia
                     },
                 },
                 {

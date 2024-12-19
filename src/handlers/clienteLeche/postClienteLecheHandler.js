@@ -8,6 +8,7 @@ const postClienteLecheHandler = async (req, res) => {
         return res.json(response)
     } catch (error) {
         console.log(error)
+        return res.status(500).json({ error: "Ocurrió un error en el servidor" });
     }
 }
 

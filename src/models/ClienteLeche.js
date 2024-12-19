@@ -22,11 +22,11 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             contacto_1: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             contacto_2: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false
             }
         },

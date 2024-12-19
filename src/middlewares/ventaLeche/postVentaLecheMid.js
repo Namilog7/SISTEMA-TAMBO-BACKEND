@@ -1,38 +1,13 @@
-const { Tambo, ClienteLeche } = require('../../db'); // Importar modelos
-const { body, validationResult } = require('express-validator');
+const ventaLecheValidationModel = {
+    fecha: { type: "date", required: true }, // Campo obligatorio, formato YYYY-MM-DD
+    hora_retiro: { type: "time", required: true }, // Campo obligatorio, formato HH:mm:ss
+    hora_carga: { type: "time", required: true }, // Campo obligatorio, formato HH:mm:ss
+    litros: { type: "float", required: true }, // Campo obligatorio, debe ser un número flotante
+    aclaracion: { type: "string", required: false }, // Campo opcional
+    encargado_retiro: { type: "string", required: true }, // Campo obligatorio
+    patente_camion: { type: "string", required: true }, // Campo obligatorio
+    usuario_carga: { type: "string", required: true }, // Campo obligatorio
+    id_cliente: { type: "int", required: true }, // Campo obligatorio, debe ser un entero
+};
 
-const postVentaLecheMid = [
-    // Validar que id_tambo exista en la tabla Tambo
-    body('id_tambo')
-        .exists().withMessage('El campo "id_tambo" es obligatorio.')
-        .isNumeric().withMessage('El campo "id_tambo" debe ser un número.')
-        .custom(async (id_tambo) => {
-            const tambo = await Tambo.findByPk(id_tambo);
-            if (!tambo) {
-                throw new Error(`El id_tambo "${id_tambo}" no existe.`);
-            }
-        }),
-
-    // Validar que id_cliente exista en la tabla Cliente
-    body('id_cliente')
-        .exists().withMessage('El campo "id_cliente" es obligatorio.')
-        .isNumeric().withMessage('El campo "id_cliente" debe ser un número.')
-        .custom(async (id_cliente) => {
-            console.log(id_cliente)
-            const cliente = await ClienteLeche.findByPk(id_cliente);
-            if (!cliente) {
-                throw new Error(`El id_cliente "${id_cliente}" no existe.`);
-            }
-        }),
-
-    // Middleware para manejar errores de validación
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    }
-];
-
-module.exports = postVentaLecheMid;
+module.exports = ventaLecheValidationModel

@@ -10,16 +10,14 @@ const seedData = async () => {
         });
 
         // Crear 6 tambos para el sector creado
-        const tambos = [];
-        for (let i = 0; i < 6; i++) {
-            tambos.push({
-                id_sector: sector.id, // FK a Sector
-                dueño: faker.name.findName(),  // Generar un nombre aleatorio para el dueño
-                localidad: faker.address.city(),  // Generar una ciudad aleatoria
-                contacto: faker.phone.phoneNumber(),  // Generar un número de teléfono aleatorio
-            });
-        }
-        await Tambo.bulkCreate(tambos);
+        const tambo = {
+            id_sector: sector.id, // FK a Sector
+            dueño: faker.name.findName(),  // Generar un nombre aleatorio para el dueño
+            localidad: faker.address.city(),  // Generar una ciudad aleatoria
+            contacto: faker.phone.phoneNumber(),  // Generar un número de teléfono aleatorio
+        };
+
+        await Tambo.create(tambo);
 
         const retiroLecheData = [];
         const tambosAll = await Tambo.findAll();
@@ -42,14 +40,14 @@ const seedData = async () => {
         const ganadoData = [];
 
         for (let i = 0; i < 80; i++) {
-            const tipo = faker.helpers.randomize(['Vaca', 'Novillo', 'Ternero']);
-            const estado = faker.helpers.randomize(["Recria", "Ordeñe", "Engorde"])
+            const tipo = faker.helpers.randomize(['VACA', 'NOVILLO', 'TERNERO']);
+            const estado = faker.helpers.randomize(["RECRIA", "ORDEÑE", "ENGORDE"])
 
             ganadoData.push({
                 caravana: faker.random.alphaNumeric(4), // Genera un UUID único para la caravana
                 tipo,
                 estado,
-                produccionDiaria: tipo === 'Vaca' ? faker.datatype.number({ min: 10, max: 30 }) : 0, // Solo "Vaca" produce leche
+                produccionDiaria: tipo === 'VACA' ? faker.datatype.number({ min: 10, max: 30 }) : 0, // Solo "Vaca" produce leche
                 detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null, // Detalles aleatorios o null
                 fecha_ingreso: "2024-02-14",
                 id_tambo: 1 // Relación con el tambo ID 1

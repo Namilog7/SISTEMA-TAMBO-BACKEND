@@ -10,8 +10,12 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
             },
             caravana: {
-                type: DataTypes.STRING(4),
+                type: DataTypes.STRING(6),
                 unique: true,
+                allowNull: false,
+                validate: {
+                    len: [1, 6]
+                }
             },
             fecha_ingreso: {
                 type: DataTypes.DATE,
@@ -22,10 +26,10 @@ module.exports = (sequelize) => {
                 allowNull: true
             },
             tipo: {
-                type: DataTypes.ENUM("Vaca", "Ternero", "Novillo")
+                type: DataTypes.ENUM("VACA", "TERNERO", "NOVILLO")
             },
             estado: {
-                type: DataTypes.ENUM("Recria", "Ordeñe", "Engorde"),
+                type: DataTypes.ENUM("RECRIA", "ORDEÑE", "ENGORDE"),
                 allowNull: true
             }
         },

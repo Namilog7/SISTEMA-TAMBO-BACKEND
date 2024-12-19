@@ -1,10 +1,11 @@
 const { Router } = require("express");
-const clienteLecheMid = require("../../middlewares/clienteLeche/clienteLecheMid");
+const modelValidateMid = require("../../middlewares/modelValidateMid")
 const postClienteLecheHandler = require("../../handlers/clienteLeche/postClienteLecheHandler");
+const empresaValidationModel = require("../../middlewares/clienteLeche/clienteLecheMid");
 
 
 const clienteLecheRouter = Router()
-clienteLecheRouter.post("/", clienteLecheMid, postClienteLecheHandler)
+clienteLecheRouter.post("/", modelValidateMid(empresaValidationModel), postClienteLecheHandler)
 
 
 module.exports = clienteLecheRouter

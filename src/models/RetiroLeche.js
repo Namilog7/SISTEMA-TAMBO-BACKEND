@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
                 autoIncrement: true,
             },
             cantidad: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             fecha: {
@@ -27,6 +27,10 @@ module.exports = (sequelize) => {
             },
             hora_carga: {
                 type: DataTypes.STRING,
+                allowNull: false
+            },
+            usuario_carga: {
+                type: DataTypes.STRING(),
                 allowNull: false
             }
         },
