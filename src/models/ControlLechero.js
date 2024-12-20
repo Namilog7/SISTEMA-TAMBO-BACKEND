@@ -24,9 +24,11 @@ module.exports = (sequelize) => {
             observacion: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            lote: {
+                type: DataTypes.ENUM("UNO", "DOS"),
+                allowNull: false
             }
-
-
         }
     );
 };

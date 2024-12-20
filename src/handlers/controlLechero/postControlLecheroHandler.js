@@ -2,7 +2,7 @@
 const { ControlLechero, InformeLechero, conn } = require("../../db"); // Para manejar transacciones con Sequelize
 
 const postControlLecheroHandler = async (req, res) => {
-    const { controlLecheroArray, hora_inicio, hora_fin, litros_tanque } = req.body;
+    const { controlLecheroArray, litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2 } = req.body;
 
     // Validar que el array de controles sea válido
     if (!controlLecheroArray || !Array.isArray(controlLecheroArray) || controlLecheroArray.length === 0) {
@@ -17,7 +17,7 @@ const postControlLecheroHandler = async (req, res) => {
             litros_ordeñe2 === undefined ||
             total === undefined ||
             !id_ganado ||
-            (lote !== 1 && lote !== 2)
+            (lote !== "UNO" && lote !== "DOS")
         ) {
             return res.status(400).json({
                 message: "Cada objeto en 'controlLecheroArray' debe incluir litros_ordeñe1, litros_ordeñe2, total, id_ganado y lote (1 o 2).",
@@ -30,7 +30,7 @@ const postControlLecheroHandler = async (req, res) => {
     try {
         // Crear el InformeLechero
         const informe = await InformeLechero.create(
-            { hora_inicio, hora_fin, litros_tanque },
+            { litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2 },
             { transaction }
         );
 
@@ -53,11 +53,11 @@ const postControlLecheroHandler = async (req, res) => {
         const promedio_tambo = litros_medidos / total_vacas_ordeñe;
 
         const litros_lote1 = controlLecheroArray
-            .filter((control) => control.lote === 1)
+            .filter((control) => control.lote === "UNO")
             .reduce((sum, control) => sum + control.total, 0);
 
         const litros_lote2 = controlLecheroArray
-            .filter((control) => control.lote === 2)
+            .filter((control) => control.lote === "DOS")
             .reduce((sum, control) => sum + control.total, 0);
 
         // Actualizar el InformeLechero con las métricas calculadas
