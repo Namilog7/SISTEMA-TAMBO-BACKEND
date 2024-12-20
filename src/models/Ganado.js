@@ -33,6 +33,20 @@ module.exports = (sequelize) => {
                 allowNull: true
             }
         },
-        { timestamps: false }
+        {
+            timestamps: false,
+            hooks: {
+                beforeCreate: (ganado, options) => {
+                    if (ganado.estado === "ORDEÑE" && !["VACA", "VAQUILLONA"].includes(ganado.tipo)) {
+                        throw new Error("Solo las vacas y vaquillonas pueden estar en estado ORDEÑE");
+                    }
+                },
+                beforeUpdate: (ganado, options) => {
+                    if (ganado.estado === "ORDEÑE" && !["VACA", "VAQUILLONA"].includes(ganado.tipo)) {
+                        throw new Error("Solo las vacas y vaquillonas pueden estar en estado ORDEÑE");
+                    }
+                }
+            }
+        }
     );
 };

@@ -8,7 +8,7 @@ const server = express();
 server.use(morgan("dev"));
 server.use(express.json());
 server.use(cors({
-    origin: process.env.NEXT_PUBLIC_CORS_ORIGIN,
+    origin: "*",
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'auth'],
     credentials: true,
