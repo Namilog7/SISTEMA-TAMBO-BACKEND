@@ -2,7 +2,7 @@
 const { ControlLechero, InformeLechero, conn } = require("../../db"); // Para manejar transacciones con Sequelize
 
 const postControlLecheroHandler = async (req, res) => {
-    const { controlLecheroArray, litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2 } = req.body;
+    const { controlLecheroArray, litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2, hora_carga } = req.body;
 
     // Validar que el array de controles sea válido
     if (!controlLecheroArray || !Array.isArray(controlLecheroArray) || controlLecheroArray.length === 0) {

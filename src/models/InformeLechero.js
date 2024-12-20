@@ -64,6 +64,10 @@ module.exports = (sequelize) => {
             hora_fin_ordeñe2_lote2: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            hora_carga: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
         }
     );
