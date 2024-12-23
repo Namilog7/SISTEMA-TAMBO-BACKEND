@@ -1,11 +1,39 @@
-const { Insumo } = require("../../db");
+const { Insumo, Proovedor, ProovedorInsumo } = require("../../db");
 
-const postInsumo = async (obj) => {
-    const newInsumo = await Insumo.create(obj)
-    return {
-        message: "Se creo el insumo",
-        newInsumo
+const postInsumo = async ({ precio, nombre, stock, detalle, id_sector, ultimo_ingreso, tipo, id_proovedor }) => {
+    // Verificar si el proveedor existe
+    const proveedor = await Proovedor.findByPk(id_proovedor);
+    if (!proveedor) {
+        throw new Error(`El proveedor con ID ${id_proovedor} no existe.`);
     }
-}
 
-module.exports = postInsumo
+    // Crear el insumo
+    const nuevoInsumo = await Insumo.create({
+        nombre,
+        stock,
+        detalle,
+        id_sector,
+        ultimo_ingreso,
+        tipo,
+    });
+
+    // Crear la relación en la tabla intermedia ProovedorInsumo con el precio
+    await ProovedorInsumo.create({
+        id_insumo: nuevoInsumo.id,
+        id_proovedor,
+        precio,
+    });
+
+    // Retornar el insumo creado junto con su relación en la tabla intermedia
+    return {
+        mensaje: "Insumo creado exitosamente",
+        insumo: nuevoInsumo,
+        relacion: {
+            id_proovedor,
+            id_insumo: nuevoInsumo.id,
+            precio,
+        },
+    };
+};
+
+module.exports = postInsumo;

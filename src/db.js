@@ -53,7 +53,9 @@ const {
     ClienteLeche,
     VentaLeche,
     ControlLechero,
-    InformeLechero
+    InformeLechero,
+    Proovedor,
+    ProovedorInsumo
 } = sequelize.models;
 
 //RELACIONES
@@ -116,6 +118,10 @@ ControlLechero.belongsTo(Ganado, { foreignKey: "id_ganado" });
 
 InformeLechero.hasMany(ControlLechero, { foreignKey: "id_informe" });
 ControlLechero.belongsTo(InformeLechero, { foreignKey: "id_informe" });
+
+Insumo.belongsToMany(Proovedor, { through: ProovedorInsumo });
+Proovedor.belongsToMany(Insumo, { through: ProovedorInsumo });
+
 
 
 module.exports = {

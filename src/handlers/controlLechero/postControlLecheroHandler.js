@@ -30,7 +30,7 @@ const postControlLecheroHandler = async (req, res) => {
     try {
         // Crear el InformeLechero
         const informe = await InformeLechero.create(
-            { litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2 },
+            { litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2, hora_carga },
             { transaction }
         );
 

@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Insumo",
+        "Proovedor",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -12,22 +12,17 @@ module.exports = (sequelize) => {
             nombre: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: true
             },
-            stock: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            detalle: {
+            contacto_1: {
                 type: DataTypes.STRING,
-                allowNull: true
-            },
-            ultimo_ingreso: {
-                type: DataTypes.DATE,
                 allowNull: false
             },
-            tipo: {
-                type: DataTypes.ENUM(["MEDICAMENTO", "ALIMENTO", "VARIO"]),
+            contacto_2: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            localidad: {
+                type: DataTypes.STRING,
                 allowNull: false
             }
         },

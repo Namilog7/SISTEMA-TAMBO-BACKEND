@@ -8,10 +8,10 @@ const ganadoRouter = require("../../routes/ganadoRouter/ganadoRouter");
 const retiroLecheRouter = require("../../routes/retiroLecheRouter/retiroLecheRouter");
 const produccionLecheRouter = require("../../routes/produccionLecheRouter/produccionLecheRouter");
 const controlVeterinarioRouter = require("../../routes/controlVeterinarioRouter/controlVeterinarioRouter");
-const insumoRouter = require("../../routes/insumoRouter/insumoRouter");
 const ventaLecheRouter = require("../../routes/ventaLecheRouter/ventaLecheRouter");
 const clienteLecheRouter = require("../../routes/clienteLecheRouter/clienteLecheRouter");
 const controlLecheroRouter = require("../controlLecheroRouter/controlLecheroRouter");
+const informeRouter = require("../informeRouter/informeRouter");
 
 const tamboRouter = Router();
 
@@ -23,10 +23,11 @@ tamboRouter.use("/ganado", ganadoRouter);
 tamboRouter.use("/retiroleche", retiroLecheRouter);
 tamboRouter.use("/produccionleche", produccionLecheRouter);
 tamboRouter.use("/controlveterinario", controlVeterinarioRouter);
-tamboRouter.use("/insumo", insumoRouter);
 tamboRouter.use("/ventaleche", ventaLecheRouter);
 tamboRouter.use("/clienteleche", clienteLecheRouter);
-tamboRouter.use("/control", controlLecheroRouter)
+tamboRouter.use("/control", controlLecheroRouter);
+tamboRouter.use("/informe", informeRouter)
+
 
 
 
