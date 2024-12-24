@@ -33,7 +33,8 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING(10)
             },
             usuario_carga: {
-                type: DataTypes.STRING()
+                type: DataTypes.STRING(),
+                allowNull: false
             },
             aclaracion: {
                 type: DataTypes.STRING()

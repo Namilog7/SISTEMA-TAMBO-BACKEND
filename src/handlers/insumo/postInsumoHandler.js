@@ -2,9 +2,9 @@ const postInsumo = require("../../controllers/insumo/postInsumo")
 
 
 const postInsumoHandler = async (req, res) => {
-    const { nombre, stock, detalle, id_sector, ultimo_ingreso, tipo } = req.body
+    const { nombre, stock, id_sector, ultimo_ingreso, tipo, id_proovedor, precio } = req.body
     try {
-        const response = await postInsumo({ nombre, stock, detalle, id_sector, ultimo_ingreso, tipo })
+        const response = await postInsumo({ nombre, stock, id_sector, ultimo_ingreso, tipo, id_proovedor, precio })
         res.json(response)
     } catch (error) {
         console.log(error)

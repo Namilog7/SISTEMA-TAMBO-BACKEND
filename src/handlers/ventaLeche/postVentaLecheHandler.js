@@ -2,9 +2,9 @@ const postVentaLeche = require("../../controllers/ventaLeche/postVentaLeche")
 
 
 const postVentaLecheHandler = async (req, res) => {
-    const { fecha, hora_retiro, hora_carga, litros, aclaracion, encargado_retiro, patente_camion, usuario_carga, id_cliente } = req.body
+    const { precio_litro, fecha, hora_retiro, hora_carga, litros, aclaracion, encargado_retiro, patente_camion, usuario_carga, id_cliente } = req.body
     try {
-        const response = await postVentaLeche({ fecha, hora_retiro, hora_carga, litros, aclaracion, encargado_retiro, patente_camion, usuario_carga, id_cliente })
+        const response = await postVentaLeche({ precio_litro, fecha, hora_retiro, hora_carga, litros, aclaracion, encargado_retiro, patente_camion, usuario_carga, id_cliente })
         res.json(response)
     } catch (error) {
         console.log(error)

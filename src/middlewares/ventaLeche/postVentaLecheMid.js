@@ -7,6 +7,7 @@ const ventaLecheValidationModel = {
     encargado_retiro: { type: "string", required: true }, // Campo obligatorio
     patente_camion: { type: "string", required: true }, // Campo obligatorio
     usuario_carga: { type: "string", required: true }, // Campo obligatorio
+    precio_litro: { type: "float", required: true },
     id_cliente: { type: "int", required: true }, // Campo obligatorio, debe ser un entero
 };
 

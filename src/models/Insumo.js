@@ -14,18 +14,6 @@ module.exports = (sequelize) => {
                 allowNull: false,
                 unique: true
             },
-            stock: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            detalle: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            ultimo_ingreso: {
-                type: DataTypes.DATE,
-                allowNull: false
-            },
             tipo: {
                 type: DataTypes.ENUM(["MEDICAMENTO", "ALIMENTO", "VARIO"]),
                 allowNull: false

@@ -11,7 +11,16 @@ module.exports = (sequelize) => {
             },
             precio: {
                 type: DataTypes.FLOAT,
-            }
+                allowNull: false,
+            },
+            stock: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            ultimo_ingreso: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
         },
         { timestamps: false }
     );

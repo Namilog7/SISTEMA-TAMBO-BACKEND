@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
             importe: {
                 type: DataTypes.INTEGER,
                 allowNull: false
+            },
+            precio_litro: {
+                type: DataTypes.FLOAT,
+                allowNull: false
             }
         },
         { timestamps: true }
