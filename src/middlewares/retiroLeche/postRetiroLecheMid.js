@@ -1,17 +1,20 @@
 const postRetiroLecheModel = {
-    cantidad: "float",
-    fecha: "date",
-    liquidado: "boolean",
-    hora_carga: "time_hhmm",
-    hora_retiro: "time_hhmm",
-    aclaracion: "string",
-    usuario_carga: "string",
+    cantidad: { type: "float", required: true }, // Cantidad numérica con decimales, campo obligatorio
+    fecha: { type: "date", required: true }, // Fecha en formato YYYY-MM-DD, campo obligatorio
+    liquidado: { type: "boolean", required: true }, // Booleano que indica si está liquidado, campo obligatorio
+    hora_carga: { type: "time", required: false }, // Hora en formato HH:mm:ss, campo opcional
+    hora_retiro: { type: "time", required: false }, // Hora en formato HH:mm:ss, campo opcional
+    aclaracion: { type: "string", required: false }, // Texto opcional para observaciones
+    usuario_carga: { type: "string", required: true }, // Nombre o identificador del usuario que cargó, obligatorio
     estado: {
         type: "enum",
-        values: ["ACTIVO", "CANCELADO"],
+        values: ["ACTIVO", "CANCELADO"], // Estado con valores restringidos
         required: true // Campo obligatorio
     },
+    id_cliente: { type: "int", required: true }, // Identificador numérico del cliente, campo obligatorio
+    id_liquidacion: { type: "int", required: false } // Identificador numérico de la liquidación, campo opcional
 };
+
 
 const retiroLecheUpdateModel = {
     id: { type: "int", required: true }, // Campo obligatorio

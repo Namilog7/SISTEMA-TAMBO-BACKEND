@@ -51,7 +51,6 @@ const {
     Inseminacion,
     InseminacionGanado,
     ClienteLeche,
-    VentaLeche,
     ControlLechero,
     InformeLechero,
     Proovedor,
@@ -100,18 +99,14 @@ ProduccionLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
 Ganado.belongsToMany(ControlVeterinario, { through: ControlGanado });
 ControlVeterinario.belongsToMany(Ganado, { through: ControlGanado });
 
-
 Inseminacion.belongsToMany(Ganado, { through: InseminacionGanado });
 Ganado.belongsToMany(Inseminacion, { through: InseminacionGanado });
 
 Tambo.hasMany(ClienteLeche, { foreignKey: "id_tambo" });
 ClienteLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
 
-Tambo.hasMany(VentaLeche, { foreignKey: "id_tambo" });
-VentaLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
-
-ClienteLeche.hasMany(VentaLeche, { foreignKey: "id_cliente" });
-VentaLeche.belongsTo(ClienteLeche, { foreignKey: "id_cliente" });
+ClienteLeche.hasMany(RetiroLeche, { foreignKey: "id_cliente" });
+RetiroLeche.belongsTo(ClienteLeche, { foreignKey: "id_cliente" });
 
 Ganado.hasMany(ControlLechero, { foreignKey: "id_ganado" });
 ControlLechero.belongsTo(Ganado, { foreignKey: "id_ganado" });

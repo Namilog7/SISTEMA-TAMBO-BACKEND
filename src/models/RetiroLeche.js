@@ -19,11 +19,13 @@ module.exports = (sequelize) => {
             },
             liquidado: {
                 type: DataTypes.BOOLEAN,
-                allowNull: false
+                allowNull: false,
+                defaultValue: false
             },
             estado: {
                 type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
-                allowNull: false
+                allowNull: false,
+                defaultValue: "ACTIVO"
             },
             hora_carga: {
                 type: DataTypes.STRING,

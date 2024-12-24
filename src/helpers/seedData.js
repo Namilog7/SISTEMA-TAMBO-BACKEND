@@ -9,7 +9,6 @@ const seedData = async () => {
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
         });
 
-        // Crear 6 tambos para el sector creado
         const tambo = {
             id_sector: sector.id, // FK a Sector
             dueño: faker.name.findName(),  // Generar un nombre aleatorio para el dueño
