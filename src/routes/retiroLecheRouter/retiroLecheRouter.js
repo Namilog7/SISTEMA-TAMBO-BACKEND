@@ -12,6 +12,6 @@ retiroLecheRouter.get("/", getRetiroLecheHandler);
 retiroLecheRouter.get("/parcial", getPartialRetiroLecheHandler)
 retiroLecheRouter.post("/", modelValidateMid(postRetiroLecheModel), retiroLecheHandler);
 retiroLecheRouter.put("/", modelValidateMid(retiroLecheUpdateModel), putRetiroLecheHandler);
-retiroLecheRouter.use("liquidacion", liquidacionRouter)
+retiroLecheRouter.use("/liquidacion", liquidacionRouter)
 
 module.exports = retiroLecheRouter
