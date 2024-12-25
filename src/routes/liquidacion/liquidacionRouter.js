@@ -1,10 +1,12 @@
 const { Router } = require("express");
 const liquidacionHandler = require("../../handlers/liquidacion/liquidacionHandler");
 const getLiquidacionHandler = require("../../handlers/liquidacion/getLiquidacionHandler");
+const modelValidateMid = require("../../middlewares/modelValidateMid");
+const liquidacionValidateMid = require("../../middlewares/liquidacion/liquidacionValidateMid")
 
 const liquidacionRouter = Router()
 liquidacionRouter.get("/", getLiquidacionHandler)
-liquidacionRouter.post("/", liquidacionHandler)
+liquidacionRouter.post("/", modelValidateMid(liquidacionValidateMid), liquidacionHandler)
 
 
 

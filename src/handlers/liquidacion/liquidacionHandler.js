@@ -2,9 +2,9 @@ const postLiquidacion = require("../../controllers/liquidacion/postLiquidacion")
 
 
 const liquidacionHandler = async (req, res) => {
-    const { arrayIdRetiros, cantidad, precio_litro, importe } = req.body
+    const { arrayIdRetiros, precio_litro, fecha } = req.body
     try {
-        const liquidacion = await postLiquidacion({ arrayIdRetiros, cantidad, precio_litro, importe });
+        const liquidacion = await postLiquidacion({ arrayIdRetiros, precio_litro, fecha });
         return res.json({
             message: `Se creo la liquidacion`,
             liquidacion

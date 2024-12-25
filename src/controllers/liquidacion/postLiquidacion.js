@@ -1,6 +1,6 @@
 const { Liquidacion, RetiroLeche } = require("../../db");
 
-const postLiquidacion = async ({ arrayIdRetiros, cantidad, precio_litro, importe }) => {
+const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha }) => {
     if (!arrayIdRetiros || arrayIdRetiros.length === 0) {
         throw new Error("El array de retiros no puede estar vacío.");
     }
@@ -14,18 +14,38 @@ const postLiquidacion = async ({ arrayIdRetiros, cantidad, precio_litro, importe
         throw new Error("Uno o más IDs de RetiroLeche no existen.");
     }
 
-    // Crear la liquidación
+    // Validar que ningún retiro ya esté liquidado
+    const retirosYaLiquidados = retiros.filter(retiro => retiro.liquidado);
+    if (retirosYaLiquidados.length > 0) {
+        throw new Error(
+            `Los siguientes retiros ya fueron liquidados: ${retirosYaLiquidados
+                .map(retiro => retiro.id)
+                .join(", ")}.`
+        );
+    }
+
+    // Calcular la cantidad total como la suma de los campos `cantidad` de los retiros
+    const cantidadTotal = retiros.reduce((total, retiro) => total + retiro.cantidad, 0);
+
+    // Calcular el importe como cantidad total * precio_litro
+    const importe = cantidadTotal * precio_litro;
+
+    // Crear la liquidación con los valores calculados
     const nuevaLiquidacion = await Liquidacion.create({
-        cantidad,
+        cantidad: cantidadTotal,
         precio_litro,
         importe,
+        fecha,
     });
 
-    // Adjuntar el ID de la liquidación creada a los retiros
+    // Adjuntar el ID de la liquidación creada y actualizar `liquidado` a `true`
     const idLiquidacion = nuevaLiquidacion.id;
 
     await RetiroLeche.update(
-        { id_liquidacion: idLiquidacion }, // Asegúrate de que este campo exista en el modelo `RetiroLeche`
+        {
+            id_liquidacion: idLiquidacion,
+            liquidado: true, // Cambiar el estado a `true`
+        },
         {
             where: { id: arrayIdRetiros },
         }
