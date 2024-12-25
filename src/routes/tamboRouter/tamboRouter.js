@@ -4,14 +4,14 @@ const getTamboHandler = require("../../handlers/tambo/getTamboHandler");
 const deleteTamboHandler = require("../../handlers/tambo/deleteTamboHandler");
 const putTamboHandler = require("../../handlers/tambo/putTamboHandler");
 const postTamboMid = require("../../middlewares/tambo/postTamboMid"); */
-const ganadoRouter = require("../../routes/ganadoRouter/ganadoRouter");
-const retiroLecheRouter = require("../../routes/retiroLecheRouter/retiroLecheRouter");
-const produccionLecheRouter = require("../../routes/produccionLecheRouter/produccionLecheRouter");
-const controlVeterinarioRouter = require("../../routes/controlVeterinarioRouter/controlVeterinarioRouter");
-const ventaLecheRouter = require("../../routes/ventaLecheRouter/ventaLecheRouter");
-const clienteLecheRouter = require("../../routes/clienteLecheRouter/clienteLecheRouter");
-const controlLecheroRouter = require("../controlLecheroRouter/controlLecheroRouter");
-const informeRouter = require("../informeRouter/informeRouter");
+const ganadoRouter = require("../../routes/tamboRouter/ganadoRouter/ganadoRouter");
+const retiroLecheRouter = require("../tamboRouter/ventaLecheRouter/ventaLecheRouter");
+const produccionLecheRouter = require("../../routes/tamboRouter/produccionLecheRouter/produccionLecheRouter");
+const controlVeterinarioRouter = require("../../routes/tamboRouter/controlVeterinarioRouter/controlVeterinarioRouter");
+const ventaLecheRouter = require("../../routes/tamboRouter/ventaLecheRouter/ventaLecheRouter");
+const clienteLecheRouter = require("../../routes/tamboRouter/clienteLecheRouter/clienteLecheRouter");
+const controlLecheroRouter = require("../tamboRouter/controlLecheroRouter/controlLecheroRouter");
+const informeRouter = require("../tamboRouter/informeRouter/informeRouter");
 
 const tamboRouter = Router();
 
