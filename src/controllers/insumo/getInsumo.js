@@ -1,16 +1,24 @@
-const { Insumo } = require("../../db");
+const { Insumo, Proovedor } = require("../../db");
 
 const getInsumo = async (id_sector) => {
-    let response;
-    const insumo = await Insumo.findAll({
-        where: { id_sector: id_sector }
-    })
-    if (!insumo.length) {
-        response = { message: "No hay registros" }
-    } else {
-        response = insumo
-    }
-    return response
-}
+    const insumos = await Insumo.findAll({
+        where: { id_sector },
+        include: [
+            {
+                model: Proovedor,
+                attributes: ["nombre", "contacto", "localidad"],
+                through: {
+                    attributes: ["precio"]
+                },
+            },
+        ],
+    });
 
-module.exports = getInsumo
+    if (!insumos.length) {
+        return { message: "No hay registros" };
+    }
+
+    return insumos;
+};
+
+module.exports = getInsumo;

@@ -8,6 +8,7 @@ const seedData = async () => {
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
         });
+        if (sector.length > 0) return
 
         const tambo = {
             id_sector: sector.id, // FK a Sector
@@ -39,7 +40,7 @@ const seedData = async () => {
         const ganadoData = [];
 
         for (let i = 0; i < 80; i++) {
-            const tipo = faker.helpers.randomize(['VACA', 'NOVILLO', 'TERNERO']);
+            const tipo = faker.helpers.randomize(['VACA', 'VAQUILLONA', 'TERNERO']);
             const estado = faker.helpers.randomize(["RECRIA", "ORDEÑE", "ENGORDE"])
 
             ganadoData.push({
@@ -55,23 +56,8 @@ const seedData = async () => {
         await Ganado.bulkCreate(ganadoData);
         console.log('80 registros de Ganado creados con éxito.');
 
-        const insumos = [];
-        for (let i = 0; i < 10; i++) { // Generar 10 insumos por sector
-            let tipo = faker.helpers.randomize(['MEDICAMENTO', 'ALIMENTO', 'VARIO']);
-            insumos.push({
-                nombre: faker.commerce.productName(), // Nombre del insumo
-                stock: faker.datatype.number({ min: 10, max: 100 }), // Stock entre 10 y 100
-                detalle: faker.commerce.productDescription(), // Descripción del insumo
-                id_sector: 1, // ID del sector
-                ultimo_ingreso: "2024-02-12",
-                precio: 12,
-                tipo: tipo
-            });
-        }
 
         // Crear los insumos en la base de datos
-        await Insumo.bulkCreate(insumos);
-        console.log('Insumos creados exitosamente');
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
