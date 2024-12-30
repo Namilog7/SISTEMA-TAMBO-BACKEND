@@ -1,73 +1,111 @@
-
-const { ControlLechero, InformeLechero, conn } = require("../../db"); // Para manejar transacciones con Sequelize
+const { InformeLechero, Lote, ControlLechero, conn } = require("../../db");
 
 const postControlLecheroHandler = async (req, res) => {
-    const { controlLecheroArray, litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2, hora_carga } = req.body;
+    const { litros_tanque, hora_carga, fecha, lotesArray } = req.body;
 
-    // Validar que el array de controles sea válido
-    if (!controlLecheroArray || !Array.isArray(controlLecheroArray) || controlLecheroArray.length === 0) {
-        return res.status(400).json({ message: "El array 'controlLecheroArray' es obligatorio y no puede estar vacío." });
+    // Validar datos básicos
+    if (!lotesArray || !Array.isArray(lotesArray) || lotesArray.length === 0) {
+        return res.status(400).json({ message: "El array 'lotesArray' es obligatorio y no puede estar vacío." });
     }
 
-    // Validar que cada objeto en el array tenga las propiedades necesarias
-    for (const control of controlLecheroArray) {
-        const { litros_ordeñe1, litros_ordeñe2, total, id_ganado, lote } = control;
+    for (const lote of lotesArray) {
+        const { nombre_lote, hora_inicio_ordeñe1, hora_fin_ordeñe1, hora_inicio_ordeñe2, hora_fin_ordeñe2, controlesArray } =
+            lote;
+
+        // Validar datos del lote
         if (
-            litros_ordeñe1 === undefined ||
-            litros_ordeñe2 === undefined ||
-            total === undefined ||
-            !id_ganado ||
-            (lote !== "UNO" && lote !== "DOS")
+            !nombre_lote ||
+            !hora_inicio_ordeñe1 ||
+            !hora_fin_ordeñe1 ||
+            !hora_inicio_ordeñe2 ||
+            !hora_fin_ordeñe2 ||
+            !controlesArray ||
+            !Array.isArray(controlesArray) ||
+            controlesArray.length === 0
         ) {
             return res.status(400).json({
-                message: "Cada objeto en 'controlLecheroArray' debe incluir litros_ordeñe1, litros_ordeñe2, total, id_ganado y lote (1 o 2).",
+                message: `Cada lote debe incluir nombre_lote, horas de ordeñe y al menos un control.`,
             });
+        }
+
+        // Validar datos de controles
+        for (const control of controlesArray) {
+            const { litros_ordeñe1, litros_ordeñe2, total, observacion, caravana } = control;
+            if (
+                litros_ordeñe1 === undefined ||
+                litros_ordeñe2 === undefined ||
+                total === undefined ||
+                !caravana
+            ) {
+                return res.status(400).json({
+                    message: `Cada control debe incluir litros_ordeñe1, litros_ordeñe2, total, observacion y caravana.`,
+                });
+            }
         }
     }
 
-    const transaction = await conn.transaction(); // Iniciar transacción
+    // Iniciar transacción
+    const transaction = await conn.transaction();
 
     try {
         // Crear el InformeLechero
         const informe = await InformeLechero.create(
-            { litros_tanque, hora_inicio_ordeñe1_lote1, hora_fin_ordeñe1_lote1, hora_inicio_ordeñe1_lote2, hora_fin_ordeñe1_lote2, hora_inicio_ordeñe2_lote1, hora_fin_ordeñe2_lote1, hora_inicio_ordeñe2_lote2, hora_fin_ordeñe2_lote2, hora_carga },
+            { litros_tanque, hora_carga, fecha },
             { transaction }
         );
 
-        // Agregar el id_informe a cada objeto en el array
-        const controlLecheroData = controlLecheroArray.map((control) => ({
-            ...control,
-            id_informe: informe.id, // Asociar el informe
-        }));
+        // Procesar cada lote y sus controles
+        for (const lote of lotesArray) {
+            const { nombre_lote, hora_inicio_ordeñe1, hora_fin_ordeñe1, hora_inicio_ordeñe2, hora_fin_ordeñe2, controlesArray } =
+                lote;
 
-        // Crear múltiples registros de ControlLechero
-        const response = await ControlLechero.bulkCreate(controlLecheroData, { transaction });
+            // Crear el Lote asociado al InformeLechero
+            const nuevoLote = await Lote.create(
+                {
+                    nombre_lote,
+                    hora_inicio_ordeñe1,
+                    hora_fin_ordeñe1,
+                    hora_inicio_ordeñe2,
+                    hora_fin_ordeñe2,
+                    id_informe: informe.id, // Relación con InformeLechero
+                },
+                { transaction }
+            );
+
+            // Crear controles asociados al Lote y al InformeLechero
+            const controlesData = controlesArray.map((control) => ({
+                ...control,
+                id_lote: nuevoLote.id,
+                id_informe: informe.id,
+            }));
+
+            await ControlLechero.bulkCreate(controlesData, { transaction });
+        }
 
         // Calcular métricas para actualizar el InformeLechero
-        const litros_medidos = controlLecheroArray.reduce(
-            (sum, control) => sum + control.litros_ordeñe1 + control.litros_ordeñe2,
+        const litros_medidos = lotesArray.reduce(
+            (sumLote, lote) =>
+                sumLote +
+                lote.controlesArray.reduce(
+                    (sumControl, control) => sumControl + control.litros_ordeñe1 + control.litros_ordeñe2,
+                    0
+                ),
             0
         );
 
-        const total_vacas_ordeñe = controlLecheroArray.length; // Total de animales ordeñados
+        const total_vacas_ordeñe = lotesArray.reduce(
+            (sumLote, lote) => sumLote + lote.controlesArray.length,
+            0
+        );
+
         const promedio_tambo = litros_medidos / total_vacas_ordeñe;
 
-        const litros_lote1 = controlLecheroArray
-            .filter((control) => control.lote === "UNO")
-            .reduce((sum, control) => sum + control.total, 0);
-
-        const litros_lote2 = controlLecheroArray
-            .filter((control) => control.lote === "DOS")
-            .reduce((sum, control) => sum + control.total, 0);
-
-        // Actualizar el InformeLechero con las métricas calculadas
+        // Actualizar el InformeLechero con métricas calculadas
         await informe.update(
             {
                 litros_medidos,
                 total_vacas_ordeñe,
                 promedio_tambo,
-                litros_lote1,
-                litros_lote2,
             },
             { transaction }
         );
@@ -76,15 +114,14 @@ const postControlLecheroHandler = async (req, res) => {
         await transaction.commit();
 
         return res.status(201).json({
-            message: "Se creó el informe y los controles lecheros asociados.",
+            message: "Informe, lotes y controles creados exitosamente.",
             informe,
-            response,
         });
     } catch (error) {
         // Revertir transacción en caso de error
         await transaction.rollback();
-        console.error("Error al crear el control lechero:", error);
-        res.status(500).json({ error: `Algo falló: ${error.message}` });
+        console.error("Error al crear el informe lechero:", error);
+        return res.status(500).json({ message: `Algo falló: ${error.message}` });
     }
 };
 

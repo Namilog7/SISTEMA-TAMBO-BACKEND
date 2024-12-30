@@ -1,14 +1,25 @@
-const crudController = require("../../controllers/crudController");
-const { ControlLechero } = require("../../db");
+const { InformeLechero, Lote, ControlLechero } = require('../../db');
 
-const getControlLecheroHandler = async (req, res) => {
-    const getControlLechero = crudController(ControlLechero)
+const getInformeLecheroHandler = async (req, res) => {
     try {
-        const response = await getControlLechero.readAll()
-        return res.json(response)
-    } catch (error) {
-        res.status(500).json({ error: `Hubo un error en el servidor: ${error.message}` })
-    }
-}
+        const informes = await InformeLechero.findAll({
+            include: [
+                {
+                    model: Lote,
+                    include: [
+                        {
+                            model: ControlLechero,
+                        }
+                    ]
+                }
+            ]
+        });
 
-module.exports = getControlLecheroHandler
+        return res.status(200).json(informes);
+    } catch (error) {
+        console.error('Error al obtener los informes lecheros:', error);
+        return res.status(500).json({ message: 'Error al obtener los informes lecheros', error });
+    }
+};
+
+module.exports = getInformeLecheroHandler;

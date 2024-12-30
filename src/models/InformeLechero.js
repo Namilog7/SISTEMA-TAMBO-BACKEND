@@ -25,46 +25,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.FLOAT,
                 allowNull: true
             },
-            litros_lote1: {
-                type: DataTypes.FLOAT,
-                allowNull: true
-            },
-            litros_lote2: {
-                type: DataTypes.FLOAT,
-                allowNull: true
-            },
-            hora_inicio_ordeñe1_lote1: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_fin_ordeñe1_lote1: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_inicio_ordeñe1_lote2: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_fin_ordeñe1_lote2: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_inicio_ordeñe2_lote1: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_fin_ordeñe2_lote1: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_inicio_ordeñe2_lote2: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_fin_ordeñe2_lote2: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
             hora_carga: {
                 type: DataTypes.STRING,
                 allowNull: false

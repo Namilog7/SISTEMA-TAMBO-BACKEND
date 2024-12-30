@@ -2,30 +2,30 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "ControlLechero",
+        "Lote",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            litros_ordeñe1: {
-                type: DataTypes.FLOAT,
+            hora_inicio_ordeñe1: {
+                type: DataTypes.STRING,
                 allowNull: false,
             },
-            litros_ordeñe2: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
-            total: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
-            observacion: {
+            hora_fin_ordeñe1: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: false
             },
-            caravana: {
+            hora_inicio_ordeñe2: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            hora_fin_ordeñe2: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            nombre_lote: {
                 type: DataTypes.STRING,
                 allowNull: false
             }
