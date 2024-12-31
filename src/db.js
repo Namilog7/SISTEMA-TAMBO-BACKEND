@@ -118,8 +118,8 @@ ControlLechero.belongsTo(InformeLechero, { foreignKey: "id_informe" });
 InformeLechero.hasMany(Lote, { foreignKey: "id_informe" });
 Lote.belongsTo(InformeLechero, { foreignKey: "id_informe" });
 
-Lote.hasMany(ControlLechero, { foreignKey: "id_control" });
-ControlLechero.belongsTo(Lote, { foreignKey: "id_control" });
+Lote.hasMany(ControlLechero, { foreignKey: "id_lote" });
+ControlLechero.belongsTo(Lote, { foreignKey: "id_lote" });
 
 Insumo.belongsToMany(Proovedor, { through: ProovedorInsumo });
 Proovedor.belongsToMany(Insumo, { through: ProovedorInsumo });
