@@ -10,10 +10,7 @@ const postInsumo = async ({ precio, nombre, stock, detalle, id_sector, ultimo_in
     // Crear el insumo
     const nuevoInsumo = await Insumo.create({
         nombre,
-        stock,
-        detalle,
         id_sector,
-        ultimo_ingreso,
         tipo,
     });
 
@@ -21,7 +18,9 @@ const postInsumo = async ({ precio, nombre, stock, detalle, id_sector, ultimo_in
     await ProovedorInsumo.create({
         id_insumo: nuevoInsumo.id,
         id_proovedor,
+        stock,
         precio,
+        ultimo_ingreso,
     });
 
     // Retornar el insumo creado junto con su relación en la tabla intermedia

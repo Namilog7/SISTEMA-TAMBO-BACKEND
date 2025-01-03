@@ -17,10 +17,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.ENUM("SEXADO", "CONVENCIONAL"),
                 allowNull: false
             },
-            fecha: {
-                type: DataTypes.DATE,
-                allowNull: false
-            },
             pajuela: {
                 type: DataTypes.STRING,
                 allowNull: false
