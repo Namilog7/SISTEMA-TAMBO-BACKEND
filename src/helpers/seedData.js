@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Insumo } = require("./../db");  // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja } = require("./../db");  // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 
 
@@ -57,7 +57,16 @@ const seedData = async () => {
         console.log('80 registros de Ganado creados con éxito.');
 
 
-        // Crear los insumos en la base de datos
+        // Crear una caja para Tambo
+        const cajaTambo = {
+            nombre_caja: "Caja Tambo",
+            saldo: 0.00,
+            descripcion: "Caja dedicada al sector Tambo",
+            id_sector: 1
+        };
+        await Caja.create(cajaTambo)
+        console.log(`Se creo la caja para el Tambo $`)
+
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {

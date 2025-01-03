@@ -6,7 +6,7 @@ const getInsumo = async (id_sector) => {
         include: [
             {
                 model: Proovedor,
-                attributes: ["nombre", "contacto", "localidad"],
+                attributes: ["nombre", "contacto_1", "contacto_2", "localidad"],
                 through: {
                     attributes: ["precio"]
                 },
