@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja } = require("./../db");  // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proovedor } = require("./../db");  // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 
 
@@ -56,6 +56,12 @@ const seedData = async () => {
         await Ganado.bulkCreate(ganadoData);
         console.log('80 registros de Ganado creados con éxito.');
 
+        const proovedor = {
+            nombre: "-",
+            localidad: "Cordoba",
+            contacto_1: "1547868220"
+        }
+        await Proovedor.create(proovedor)
 
         // Crear una caja para Tambo
         const cajaTambo = {

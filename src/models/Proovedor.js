@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             },
             contacto_2: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: true
             },
             localidad: {
                 type: DataTypes.STRING,
