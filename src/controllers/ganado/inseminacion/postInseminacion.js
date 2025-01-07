@@ -11,7 +11,7 @@ const { Inseminacion, InseminacionGanado } = require('../../../db');
  * @param {number[]} inseminacionData.arrayGanados - IDs de los ganados a asociar.
  * @returns {Promise<Object>} Objeto con la inseminación creada y un mensaje de éxito.
  */
-const postInseminacion = async ({ inseminador, pajuela, origen_genetica, tipo, arrayGanados }) => {
+const postInseminacion = async ({ inseminador, pajuela, origen_genetica, tipo, arrayGanados, fecha }) => {
     try {
         // Crear la inseminación
         const nuevaInseminacion = await Inseminacion.create({
@@ -28,6 +28,7 @@ const postInseminacion = async ({ inseminador, pajuela, origen_genetica, tipo, a
         const ganadosInseminacion = arrayGanados.map(GanadoId => ({
             InseminacionId,
             GanadoId,
+            fecha
         }));
 
         // Bulk insert para la tabla intermedia

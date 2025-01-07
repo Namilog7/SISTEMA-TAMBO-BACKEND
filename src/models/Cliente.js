@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "ClienteLeche",
+        "Cliente",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -28,6 +28,14 @@ module.exports = (sequelize) => {
             contacto_2: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            numero_cuenta: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            saldo: {
+                type: DataTypes.FLOAT,
+                allowNull: true
             }
         },
         { timestamps: false }

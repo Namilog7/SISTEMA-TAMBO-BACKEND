@@ -31,6 +31,9 @@ const seedData = async () => {
                     estado: "ACTIVO",
                     hora_carga: 14,
                     usuario_carga: "gonza",
+                    hora_retiro: "10:00",
+                    hora_carga: "10:00",
+                    patente_camion: "ASDFW",
 
                 });
             }

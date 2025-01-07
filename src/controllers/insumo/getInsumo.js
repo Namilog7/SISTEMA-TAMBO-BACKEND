@@ -10,7 +10,7 @@ const getInsumo = async (id_sector) => {
                     attributes: { exclude: [] }, // Incluye todos los atributos de Proovedor
                     through: {
                         model: ProovedorInsumo, // Referencia explícita a la tabla intermedia
-                        attributes: ["precio"], // Incluye el campo `precio` de la tabla intermedia
+                        attributes: ["precio", "stock", "ultimo_ingreso"], // Incluye el campo `precio` de la tabla intermedia
                     },
                 },
             ],

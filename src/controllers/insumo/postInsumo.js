@@ -1,6 +1,6 @@
 const { Insumo, Proovedor, ProovedorInsumo } = require("../../db");
 
-const postInsumo = async ({ precio, nombre, stock, detalle, id_sector, ultimo_ingreso, tipo, id_proovedor }) => {
+const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, tipo, id_proovedor }) => {
     // Verificar si el proveedor existe
     const proveedor = await Proovedor.findByPk(id_proovedor);
     if (!proveedor) {

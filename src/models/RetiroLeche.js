@@ -31,8 +31,20 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            usuario_carga: {
-                type: DataTypes.STRING(),
+            encargado_retiro: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            hora_retiro: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            aclaracion: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            patente_camion: {
+                type: DataTypes.STRING,
                 allowNull: false
             }
         },
