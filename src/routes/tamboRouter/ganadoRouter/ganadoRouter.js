@@ -1,11 +1,11 @@
 const { Router } = require("express");
-const getGanadoHandler = require("../../../handlers/ganado/getGanadoHandler");
-const postGanadoHandler = require("../../../handlers/ganado/postGanadoHandler");
-const deleteGanadoHandler = require("../../../handlers/ganado/deleteGanadoHandler");
-const putGanadoHandler = require("../../../handlers/ganado/putGanadoHandler");
+const getGanadoHandler = require("../../../handlers/tambo/ganado/getGanadoHandler");
+const postGanadoHandler = require("../../../handlers/tambo/ganado/postGanadoHandler");
+const deleteGanadoHandler = require("../../../handlers/tambo/ganado/deleteGanadoHandler");
+const putGanadoHandler = require("../../../handlers/tambo/ganado/putGanadoHandler");
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
 const { ganadoValidationModel, ganadoValidationModelPut } = require("../../../middlewares/ganado/postGanadoMid");
-const inseminacionRouter = require("./inseminacionRouter/inseminacionRouter");
+const inseminacionRouter = require("../ganadoRouter/inseminacionRouter/inseminacionRouter");
 
 const ganadoRouter = Router()
 ganadoRouter.get("/", getGanadoHandler);

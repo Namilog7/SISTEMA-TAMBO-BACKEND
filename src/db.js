@@ -57,7 +57,8 @@ const {
     ProovedorInsumo,
     Lote,
     Caja,
-    Transaccion
+    Transaccion,
+    Nota
 } = sequelize.models;
 
 //RELACIONES
@@ -126,7 +127,12 @@ Proovedor.belongsToMany(Insumo, { through: ProovedorInsumo, foreignKey: 'id_proo
 Sector.hasOne(Caja, { foreignKey: "id_sector" });
 Caja.hasOne(Sector, { foreignKey: "id_sector" });
 Caja.hasMany(Transaccion, { foreignKey: "id_caja" });
-Transaccion.belongsTo(Caja, { foreignKey: "id_caja" })
+Transaccion.belongsTo(Caja, { foreignKey: "id_caja" });
+
+Proovedor.hasMany(Nota, { foreignKey: "id_proovedor" });
+Nota.belongsTo(Proovedor, { foreignKey: "id_proovedor" });
+Cliente.hasMany(Nota, { foreignKey: "id_cliente" });
+Nota.belongsTo(Cliente, { foreignKey: "id_cliente" });
 
 
 module.exports = {

@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const modelValidateMid = require("../../middlewares/modelValidateMid")
-const postClienteHandler = require("../../handlers/clienteLeche/postClienteHandler");
-const empresaValidationModel = require("../../middlewares/clienteLeche/clienteLecheMid");
-const putClienteHandler = require("../../handlers/clienteLeche/putClienteHandler");
-const getClienteHandler = require("../../handlers/clienteLeche/getClienteHandler");
+const postClienteHandler = require("../../handlers/cliente/postClienteHandler");
+const empresaValidationModel = require("../../middlewares/cliente/clienteMid");
+const putClienteHandler = require("../../handlers/cliente/putClienteHandler");
+const getClienteHandler = require("../../handlers/cliente/getClienteHandler");
 
 
 const clienteRouter = Router()

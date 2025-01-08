@@ -62,7 +62,8 @@ const seedData = async () => {
         const proovedor = {
             nombre: "-",
             localidad: "Cordoba",
-            contacto_1: "1547868220"
+            contacto_1: "1547868220",
+            saldo: 0.0
         }
         await Proovedor.create(proovedor)
 

@@ -24,6 +24,10 @@ module.exports = (sequelize) => {
             localidad: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            saldo: {
+                type: DataTypes.FLOAT,
+                allowNull: false
             }
         },
         { timestamps: false }
