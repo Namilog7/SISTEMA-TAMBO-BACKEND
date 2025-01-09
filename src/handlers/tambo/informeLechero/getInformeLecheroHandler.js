@@ -1,4 +1,4 @@
-const getInformeLechero = require("../../../controllers/informeLechero/getInformeLechero")
+const getInformeLechero = require("../../../controllers/tambo/informeLechero/getInformeLechero")
 
 const getInformeLecheroHandler = async (req, res) => {
     try {

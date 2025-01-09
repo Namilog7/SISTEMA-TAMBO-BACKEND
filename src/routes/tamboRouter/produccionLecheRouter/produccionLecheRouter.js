@@ -4,7 +4,7 @@ const getProduccionHandler = require("../../../handlers/tambo/produccionLeche/ge
 const deleteProduccionHandler = require("../../../handlers/tambo/produccionLeche/deleteProduccionHandler");
 const putProduccionLecheHandler = require("../../../handlers/tambo/produccionLeche/putProduccionLecheHandler");
 const getPartialProduccionLecheHandler = require("../../../handlers/tambo/produccionLeche/getPartialProduccionLeche");
-const { recoleccionPostModel, recoleccionPutModel } = require("../../../middlewares/produccionLeche/postProduccionLecheMid")
+const { recoleccionPostModel, recoleccionPutModel } = require("../../../middlewares/tambo/produccionLeche/postProduccionLecheMid")
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
 
 const produccionLecheRouter = Router();

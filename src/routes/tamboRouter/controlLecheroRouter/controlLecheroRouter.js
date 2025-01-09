@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
-const tanqueValidationModel = require("../../../middlewares/controlLechero/controlLecheroMid");
+const tanqueValidationModel = require("../../../middlewares/tambo/controlLechero/controlLecheroMid");
 const postControlLecheroHandler = require("../../../handlers/tambo/controlLechero/postControlLecheroHandler");
 const getInformeLecheroHandler = require("../../../handlers/tambo/controlLechero/getControlLecheroHandler");
 

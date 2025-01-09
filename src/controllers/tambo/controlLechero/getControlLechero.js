@@ -1,4 +1,4 @@
-const { InformeLechero, Lote, ControlLechero } = require('../../db');
+const { InformeLechero, Lote, ControlLechero } = require('../../../db');
 
 const getControlLechero = async () => {
     const informes = await InformeLechero.findAll({

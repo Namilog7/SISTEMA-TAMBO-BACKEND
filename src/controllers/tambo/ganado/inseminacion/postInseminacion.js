@@ -1,4 +1,4 @@
-const { Inseminacion, InseminacionGanado } = require('../../../db');
+const { Inseminacion, InseminacionGanado } = require('../../../../db');
 
 /**
  * Crea una nueva inseminación y asocia los ganados especificados en la tabla intermedia.

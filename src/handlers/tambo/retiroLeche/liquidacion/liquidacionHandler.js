@@ -1,4 +1,4 @@
-const postLiquidacion = require("../../../../controllers/liquidacion/postLiquidacion");
+const postLiquidacion = require("../../../../controllers/tambo/retiroleche/liquidacion/postLiquidacion");
 
 
 const liquidacionHandler = async (req, res) => {

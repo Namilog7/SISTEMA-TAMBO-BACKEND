@@ -1,4 +1,4 @@
-const { InformeLechero, ControlLechero } = require('../../db');
+const { InformeLechero, ControlLechero } = require('../../../db');
 
 const getInformeLechero = async () => {
     try {

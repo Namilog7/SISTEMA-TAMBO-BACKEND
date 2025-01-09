@@ -4,7 +4,7 @@ const postGanadoHandler = require("../../../handlers/tambo/ganado/postGanadoHand
 const deleteGanadoHandler = require("../../../handlers/tambo/ganado/deleteGanadoHandler");
 const putGanadoHandler = require("../../../handlers/tambo/ganado/putGanadoHandler");
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
-const { ganadoValidationModel, ganadoValidationModelPut } = require("../../../middlewares/ganado/postGanadoMid");
+const { ganadoValidationModel, ganadoValidationModelPut } = require("../../../middlewares/tambo/ganado/postGanadoMid");
 const inseminacionRouter = require("../ganadoRouter/inseminacionRouter/inseminacionRouter");
 
 const ganadoRouter = Router()

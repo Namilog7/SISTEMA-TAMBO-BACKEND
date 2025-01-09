@@ -1,4 +1,4 @@
-const postInseminacion = require("../../../../controllers/ganado/inseminacion/postInseminacion")
+const postInseminacion = require("../../../../controllers/tambo/ganado/inseminacion/postInseminacion")
 
 const postInseminacionHandler = async (req, res) => {
     const { inseminador, pajuela, origen_genetica, tipo, arrayGanados } = req.body

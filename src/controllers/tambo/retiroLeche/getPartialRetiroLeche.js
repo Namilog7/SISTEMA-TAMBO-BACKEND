@@ -1,4 +1,4 @@
-const { RetiroLeche } = require("../../db");
+const { RetiroLeche } = require("../../../db");
 
 const getPartialRetiroLeche = async () => {
     try {

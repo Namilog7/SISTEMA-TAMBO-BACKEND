@@ -1,4 +1,4 @@
-const getControlLechero = require("../../../controllers/controlLechero/getControlLechero");
+const getControlLechero = require("../../../controllers/tambo/controlLechero/getControlLechero");
 
 
 const getInformeLecheroHandler = async (req, res) => {

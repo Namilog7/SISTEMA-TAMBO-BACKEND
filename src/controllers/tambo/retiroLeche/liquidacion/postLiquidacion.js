@@ -1,4 +1,4 @@
-const { Liquidacion, RetiroLeche } = require("../../db");
+const { Liquidacion, RetiroLeche } = require("../../../../db");
 
 const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha }) => {
     if (!arrayIdRetiros || arrayIdRetiros.length === 0) {

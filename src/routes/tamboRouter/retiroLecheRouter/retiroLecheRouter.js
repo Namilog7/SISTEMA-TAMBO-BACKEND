@@ -4,7 +4,7 @@ const getRetiroLecheHandler = require("../../../handlers/tambo/retiroLeche/getRe
 const getPartialRetiroLecheHandler = require("../../../handlers/tambo/retiroLeche/getPartialRetiroLecheHandler");
 const putRetiroLecheHandler = require("../../../handlers/tambo/retiroLeche/putRetiroLecheHandler");
 const modelValidateMid = require("../../../middlewares/modelValidateMid")
-const { postRetiroLecheModel, retiroLecheUpdateModel } = require("../../../middlewares/retiroLeche/postRetiroLecheMid");
+const { postRetiroLecheModel, retiroLecheUpdateModel } = require("../../../middlewares/tambo/retiroLeche/postRetiroLecheMid");
 const liquidacionRouter = require("../../liquidacion/liquidacionRouter");
 
 const retiroLecheRouter = Router();
