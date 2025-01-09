@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "Inseminacion",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             inseminador: {
                 type: DataTypes.STRING,

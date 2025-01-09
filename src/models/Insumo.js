@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "Insumo",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             nombre: {
                 type: DataTypes.STRING,

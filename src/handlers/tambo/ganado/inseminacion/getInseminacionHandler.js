@@ -1,10 +1,15 @@
-const crudController = require("../../../../controllers/crudController");
-const { Inseminacion } = require("../../../../db");
+const getGanado = require("../../../../controllers/tambo/ganado/getGanado");
+
 
 const getInseminacionHandler = async (req, res) => {
     try {
-        const getInseminacion = crudController(Inseminacion)
-        const inseminacion = await getInseminacion.readAll()
+        const { page = 1, limit = 10 } = req.query
+        const inseminacion = await getGanado()
+        // Aplicar paginado
+        const paginatedResult = paginate(inseminacion, page, limit);
+
+        // Enviar la respuesta
+        res.json(paginatedResult);
         if (inseminacion.length == 0) return { message: "No hay registros" };
         res.json(inseminacion)
     } catch (error) {

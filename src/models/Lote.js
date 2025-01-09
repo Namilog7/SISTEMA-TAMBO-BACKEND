@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "Lote",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             hora_inicio_ordeñe1: {
                 type: DataTypes.STRING,

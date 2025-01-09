@@ -63,8 +63,8 @@ const {
 
 //RELACIONES
 
-Sector.hasMany(Tambo, { foreignKey: 'id_sector', as: 'Tambos' });
-Tambo.belongsTo(Sector, { foreignKey: 'id_sector', as: 'Sector' });
+Sector.hasMany(Tambo, { foreignKey: 'id_sector' });
+Tambo.belongsTo(Sector, { foreignKey: 'id_sector' });
 
 Tambo.hasMany(RetiroLeche, {
     foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche

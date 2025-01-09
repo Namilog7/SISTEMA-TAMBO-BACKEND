@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "ControlLechero",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             litros_ordeñe1: {
                 type: DataTypes.FLOAT,

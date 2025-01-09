@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "ControlVeterinario",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             veterinario: {
                 type: DataTypes.STRING,

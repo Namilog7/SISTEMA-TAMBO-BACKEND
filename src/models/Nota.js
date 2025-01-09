@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "Nota",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             tipo: {
                 type: DataTypes.ENUM("CREDITO", "DEBITO"),

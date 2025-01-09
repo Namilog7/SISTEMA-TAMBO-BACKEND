@@ -1,33 +1,25 @@
 const { RetiroLeche } = require("../../../db");
 const buildQueryFilters = require("../../../controllers/buildQueryFilters");
+const paginate = require("../../../helpers/paginate"); // Importa la función de paginación
 
 const getRetiroLecheHandler = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query; // Parámetros de paginación y filtro por id_tambo
-        const offset = (page - 1) * limit; // Calcular el desplazamiento
-        const searchQuery = buildQueryFilters(RetiroLeche, req.query)
-        let response
-        response = await RetiroLeche.findAndCountAll({
-            where: searchQuery,
-            limit: parseInt(limit), // Limitar la cantidad de resultados por página
-            offset: parseInt(offset), // Desplazamiento para la paginación
-        });
+        const { page = 1, limit = 10 } = req.query; // Parámetros de paginación
+        const searchQuery = buildQueryFilters(RetiroLeche, req.query); // Construir filtros de búsqueda
 
-        if (response.rows.length === 0) {
+        // Utilizar la función paginate
+        const response = await paginate(RetiroLeche, { where: searchQuery }, page, limit);
+
+        if (response.data.length === 0) {
             return res.status(404).json({ message: "No existen registros." });
         }
 
-        // Responder con la data paginada
-        return res.status(200).json({
-            totalRecords: response.count, // Total de registros encontrados
-            totalPages: Math.ceil(response.count / limit), // Total de páginas
-            currentPage: parseInt(page), // Página actual
-            data: response.rows, // Datos de la página actual
-        });
+        // Responder con los datos paginados
+        return res.status(200).json(response);
     } catch (error) {
-        console.log(error)
+        console.error("Error en getRetiroLecheHandler:", error);
         return res.status(500).json({ error: "Ocurrió un error en el servidor" });
     }
-}
+};
 
-module.exports = getRetiroLecheHandler
+module.exports = getRetiroLecheHandler;

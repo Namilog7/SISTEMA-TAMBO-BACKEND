@@ -1,4 +1,4 @@
-const { Ganado, ControlVeterinario } = require("../../../db");
+const { Ganado, ControlVeterinario, Inseminacion, InseminacionGanado } = require("../../../db");
 
 const getGanado = async () => {
     try {
@@ -7,8 +7,16 @@ const getGanado = async () => {
                 {
                     model: ControlVeterinario,
                     through: {
-                        attributes: ['fecha'],
+                        attributes: ['fecha'], // Atributos de la tabla intermedia
                     },
+                },
+                {
+                    model: Inseminacion,
+                    through: {
+                        model: InseminacionGanado, // Tabla intermedia
+                        attributes: ['fecha'], // Atributos de la tabla intermedia
+                    },
+                    attributes: ['origen_genetica', 'pajuela', 'fecha', 'tipo'], // Atributos específicos de Inseminacion
                 },
             ],
         });
@@ -19,4 +27,5 @@ const getGanado = async () => {
     }
 };
 
-module.exports = getGanado
+module.exports = getGanado;
+

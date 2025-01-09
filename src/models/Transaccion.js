@@ -5,9 +5,8 @@ module.exports = (sequelize) => {
         "Transaccion",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
             },
             monto: {
                 type: DataTypes.FLOAT,
