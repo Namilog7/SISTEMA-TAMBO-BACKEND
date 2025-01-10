@@ -53,8 +53,8 @@ const {
     Cliente,
     ControlLechero,
     InformeLechero,
-    Proovedor,
-    ProovedorInsumo,
+    Proveedor,
+    ProveedorInsumo,
     Lote,
     Caja,
     Transaccion,
@@ -121,18 +121,18 @@ Lote.belongsTo(InformeLechero, { foreignKey: "id_informe" });
 Lote.hasMany(ControlLechero, { foreignKey: "id_lote" });
 ControlLechero.belongsTo(Lote, { foreignKey: "id_lote" });
 
-Insumo.belongsToMany(Proovedor, { through: ProovedorInsumo, foreignKey: 'id_insumo' });
-Proovedor.belongsToMany(Insumo, { through: ProovedorInsumo, foreignKey: 'id_proovedor' });
+Insumo.belongsToMany(Proveedor, { through: ProveedorInsumo, foreignKey: 'id_insumo' });
+Proveedor.belongsToMany(Insumo, { through: ProveedorInsumo, foreignKey: 'id_proovedor' });
 
 Sector.hasOne(Caja, { foreignKey: "id_sector" });
 Caja.hasOne(Sector, { foreignKey: "id_sector" });
 Caja.hasMany(Transaccion, { foreignKey: "id_caja" });
 Transaccion.belongsTo(Caja, { foreignKey: "id_caja" });
 
-Proovedor.hasMany(Nota, { foreignKey: "id_proovedor" });
-Nota.belongsTo(Proovedor, { foreignKey: "id_proovedor" });
-Cliente.hasMany(Nota, { foreignKey: "id_cliente" });
-Nota.belongsTo(Cliente, { foreignKey: "id_cliente" });
+Proveedor.hasMany(Nota, { foreignKey: "id_afectado" });
+Nota.belongsTo(Proveedor, { foreignKey: "id_afectado" });
+Cliente.hasMany(Nota, { foreignKey: "id_afectado" });
+Nota.belongsTo(Cliente, { foreignKey: "id_afectado" });
 
 
 module.exports = {

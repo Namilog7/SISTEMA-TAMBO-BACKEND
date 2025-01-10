@@ -1,6 +1,6 @@
 const crudController = require("../../../../controllers/crudController");
 const { Liquidacion } = require("../../../../db");
-const paginate = require("../../../../utils/paginate"); // Función paginadora reutilizable
+const paginate = require("../../../../helpers/paginate"); // Función paginadora reutilizable
 
 const getLiquidacionHandler = async (req, res) => {
     const getLiquidacion = crudController(Liquidacion);

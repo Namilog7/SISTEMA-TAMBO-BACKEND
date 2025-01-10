@@ -6,6 +6,7 @@ module.exports = (sequelize) => {
         {
             id: {
                 type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
             tipo: {
@@ -21,7 +22,7 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             tipo_destinatario: {
-                type: DataTypes.ENUM("CLIENTE", "PROOVEDOR"),
+                type: DataTypes.ENUM("CLIENTE", "PROVEEDOR"),
                 allowNull: false
             }
         }

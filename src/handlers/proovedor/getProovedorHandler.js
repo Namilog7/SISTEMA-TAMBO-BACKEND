@@ -1,10 +1,10 @@
 const crudController = require("../../controllers/crudController");
-const { Proovedor } = require("../../db");
+const { Proveedor } = require("../../db");
 
-const getProovedorHandler = async (req, res) => {
-    const getProovedor = crudController(Proovedor);
+const getProveedorHandler = async (req, res) => {
+    const getProveedor = crudController(Proveedor);
     try {
-        const response = await getProovedor.readAll()
+        const response = await getProveedor.readAll()
         return res.json(response)
     } catch (error) {
         console.log(error);
@@ -12,4 +12,4 @@ const getProovedorHandler = async (req, res) => {
     }
 }
 
-module.exports = getProovedorHandler
+module.exports = getProveedorHandler

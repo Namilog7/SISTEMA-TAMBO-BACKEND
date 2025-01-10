@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proovedor, conn } = require("./../db"); // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, conn } = require("./../db"); // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 
@@ -17,8 +17,8 @@ const seedData = async () => {
         await conn.query('TRUNCATE "Liquidacions" CASCADE');
         await conn.query('TRUNCATE "RetiroLeches" CASCADE');
         await conn.query('TRUNCATE "Clientes" CASCADE');
-        await conn.query('TRUNCATE "ProovedorInsumos" CASCADE');
-        await conn.query('TRUNCATE "Proovedors" CASCADE');
+        await conn.query('TRUNCATE "ProveedorInsumos" CASCADE');
+        await conn.query('TRUNCATE "Proveedors" CASCADE');
         await conn.query('TRUNCATE "Insumos" CASCADE');
         await conn.query('TRUNCATE "Tambos" CASCADE');
         await conn.query('TRUNCATE "Sectors" CASCADE');
@@ -33,7 +33,7 @@ const seedData = async () => {
         });
 
         // Insertar Tambo
-        console.log(sector.id)
+
         const tambo = {
             id: uuidv4(),
             id_sector: sector.id, // FK a Sector
@@ -85,14 +85,15 @@ const seedData = async () => {
         await Ganado.bulkCreate(ganadoData);
 
         // Insertar Proveedor
-        const proovedor = {
+        const proveedor = {
             nombre: "-",
             localidad: "Cordoba",
             contacto_1: "1547868220",
             saldo: 0.0,
             id: uuidv4()
         };
-        await Proovedor.create(proovedor);
+        console.log(proveedor.id)
+        await Proveedor.create(proveedor);
 
         // Insertar Caja
         const cajaTambo = {
