@@ -1,10 +1,10 @@
-const { Insumo, Proovedor, ProovedorInsumo } = require("../../db");
+const { Insumo, Proveedor, ProveedorInsumo } = require("../../db");
 
-const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, tipo, id_proovedor }) => {
+const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, tipo, id_proveedor }) => {
     // Verificar si el proveedor existe
-    const proveedor = await Proovedor.findByPk(id_proovedor);
+    const proveedor = await Proveedor.findByPk(id_proveedor);
     if (!proveedor) {
-        throw new Error(`El proveedor con ID ${id_proovedor} no existe.`);
+        throw new Error(`El proveedor con ID ${id_proveedor} no existe.`);
     }
 
     // Crear el insumo
@@ -15,9 +15,9 @@ const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, ti
     });
 
     // Crear la relación en la tabla intermedia ProovedorInsumo con el precio
-    await ProovedorInsumo.create({
+    await ProveedorInsumo.create({
         id_insumo: nuevoInsumo.id,
-        id_proovedor,
+        id_proveedor,
         stock,
         precio,
         ultimo_ingreso,
@@ -28,7 +28,7 @@ const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, ti
         mensaje: "Insumo creado exitosamente",
         insumo: nuevoInsumo,
         relacion: {
-            id_proovedor,
+            id_proveedor,
             id_insumo: nuevoInsumo.id,
             precio,
         },

@@ -122,7 +122,7 @@ Lote.hasMany(ControlLechero, { foreignKey: "id_lote" });
 ControlLechero.belongsTo(Lote, { foreignKey: "id_lote" });
 
 Insumo.belongsToMany(Proveedor, { through: ProveedorInsumo, foreignKey: 'id_insumo' });
-Proveedor.belongsToMany(Insumo, { through: ProveedorInsumo, foreignKey: 'id_proovedor' });
+Proveedor.belongsToMany(Insumo, { through: ProveedorInsumo, foreignKey: 'id_proveedor' });
 
 Sector.hasOne(Caja, { foreignKey: "id_sector" });
 Caja.hasOne(Sector, { foreignKey: "id_sector" });

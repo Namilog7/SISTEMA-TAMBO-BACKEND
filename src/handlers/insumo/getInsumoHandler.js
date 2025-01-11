@@ -1,16 +1,17 @@
 const getInsumo = require("../../controllers/insumo/getInsumo");
-const paginate = require("../../helpers/paginate"); // Importa tu función paginate
+const paginate = require("../../helpers/paginate");
 
 const getInsumoHandler = async (req, res) => {
-    const { id } = req.params;
-    const id_sector = parseInt(id);
+    const { id_sector } = req.query;
+    console.log(id_sector)
 
     // Extraer parámetros de paginación de la query
     const { page = 1, limit = 10 } = req.query;
 
     try {
         // Obtener los datos paginados
-        const response = await paginate(getInsumo, page, limit, id_sector);
+        const data = await getInsumo(id_sector)
+        const response = await paginate(data, page, limit);
 
         // Responder con los datos paginados
         res.status(200).json(response);

@@ -1,15 +1,15 @@
-const { Insumo, Proovedor, ProovedorInsumo } = require("../../db");
+const { Insumo, Proveedor, ProveedorInsumo } = require("../../db");
 
 const getInsumo = async (id_sector) => {
     try {
         const insumos = await Insumo.findAll({
-            where: { id_sector },
+            where: { id_sector: id_sector },
             include: [
                 {
-                    model: Proovedor,
+                    model: Proveedor,
                     attributes: { exclude: [] }, // Incluye todos los atributos de Proovedor
                     through: {
-                        model: ProovedorInsumo, // Referencia explícita a la tabla intermedia
+                        model: ProveedorInsumo, // Referencia explícita a la tabla intermedia
                         attributes: ["precio", "stock", "ultimo_ingreso"], // Incluye el campo `precio` de la tabla intermedia
                     },
                 },

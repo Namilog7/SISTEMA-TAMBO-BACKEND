@@ -25,11 +25,13 @@ const seedData = async () => {
 
         console.log("Datos existentes eliminados.");
 
+        const sectorId = uuidv4()
+        console.log({ sectorId: sectorId })
         // Insertar Sector
         const sector = await Sector.create({
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
-            id: uuidv4()
+            id: sectorId
         });
 
         // Insertar Tambo
