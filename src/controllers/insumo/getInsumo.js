@@ -17,7 +17,7 @@ const getInsumo = async (id_sector) => {
         });
 
         if (!insumos.length) {
-            return { message: "No hay registros" };
+            return [{ message: "No hay registros" }];
         }
 
         return insumos;

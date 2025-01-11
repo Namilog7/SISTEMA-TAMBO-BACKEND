@@ -2,7 +2,7 @@ const getInsumo = require("../../controllers/insumo/getInsumo");
 const paginate = require("../../helpers/paginate");
 
 const getInsumoHandler = async (req, res) => {
-    const { id_sector } = req.query;
+    const { id_sector } = req.params;
     console.log(id_sector)
 
     // Extraer parámetros de paginación de la query
