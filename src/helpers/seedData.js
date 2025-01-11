@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, conn } = require("./../db"); // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn } = require("./../db"); // Asegúrate de importar los modelos correctamente
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 
@@ -25,8 +25,8 @@ const seedData = async () => {
 
         console.log("Datos existentes eliminados.");
 
-        const sectorId = uuidv4()
-        console.log({ sectorId: sectorId })
+        const sectorId = uuidv4();
+        console.log({ sectorId: sectorId });
         // Insertar Sector
         const sector = await Sector.create({
             nombre: "Tambos",
@@ -35,7 +35,6 @@ const seedData = async () => {
         });
 
         // Insertar Tambo
-
         const tambo = {
             id: uuidv4(),
             id_sector: sector.id, // FK a Sector
@@ -94,7 +93,7 @@ const seedData = async () => {
             saldo: 0.0,
             id: uuidv4()
         };
-        console.log(proveedor.id)
+        console.log(proveedor.id);
         await Proveedor.create(proveedor);
 
         // Insertar Caja
@@ -106,6 +105,25 @@ const seedData = async () => {
             id: uuidv4()
         };
         await Caja.create(cajaTambo);
+
+        // Insertar ProduccionLeche
+        const produccionLecheData = [];
+        let currentDate = new Date("2024-10-01");
+        for (let i = 0; i < 90; i++) {
+            produccionLecheData.push({
+                id: uuidv4(),
+                litros: faker.datatype.number({ min: 500, max: 1000 }),
+                fecha: currentDate.toISOString().split("T")[0], // Formato YYYY-MM-DD
+                hora_recoleccion: "08:00",
+                hora_carga: "09:30",
+                usuario_carga: "usuario_demo",
+                cantidad_animales: faker.datatype.number({ min: 20, max: 50 }),
+                aclaracion: faker.datatype.boolean() ? faker.lorem.sentence() : null,
+                estado: faker.helpers.randomize(["ACTIVO", "CANCELADO"]),
+            });
+            currentDate.setDate(currentDate.getDate() + 1); // Incrementar un día
+        }
+        await ProduccionLeche.bulkCreate(produccionLecheData);
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {

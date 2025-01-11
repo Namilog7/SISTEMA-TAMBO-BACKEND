@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
             },
             aclaracion: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: true
             }
         },
         { timestamps: true }
