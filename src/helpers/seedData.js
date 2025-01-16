@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn } = require("./../db"); // Asegúrate de importar los modelos correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero } = require("./../db"); // Asegúrate de importar ControlLechero correctamente
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 
@@ -124,6 +124,23 @@ const seedData = async () => {
             currentDate.setDate(currentDate.getDate() + 1); // Incrementar un día
         }
         await ProduccionLeche.bulkCreate(produccionLecheData);
+
+        // Insertar Controles
+        const controlesData = [];
+        for (let i = 0; i < 30; i++) {
+            const litrosOrdeñe1 = faker.datatype.number({ min: 10, max: 30 });
+            const litrosOrdeñe2 = faker.datatype.number({ min: 10, max: 30 });
+            controlesData.push({
+                id: uuidv4(),
+                litros_ordeñe1: litrosOrdeñe1,
+                litros_ordeñe2: litrosOrdeñe2,
+                total: litrosOrdeñe1 + litrosOrdeñe2,
+                observacion: faker.lorem.sentence(),
+                caravana: faker.random.alphaNumeric(4),
+                fecha_control: faker.date.past(),
+            });
+        }
+        await ControlLechero.bulkCreate(controlesData);
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {

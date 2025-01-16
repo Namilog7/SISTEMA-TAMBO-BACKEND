@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
+            acta_url: {
+                type: DataTypes.STRING,
+                allowNull: true
+            }
         },
         { timestamps: true }
     );
