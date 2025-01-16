@@ -63,8 +63,8 @@ const {
 
 //RELACIONES
 
-Sector.hasMany(Tambo, { foreignKey: 'id_sector' });
-Tambo.belongsTo(Sector, { foreignKey: 'id_sector' });
+Sector.hasOne(Tambo, { foreignKey: 'id_sector' });
+Tambo.hasOne(Sector, { foreignKey: 'id_sector' });
 
 Tambo.hasMany(RetiroLeche, {
     foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
@@ -97,8 +97,6 @@ Insumo.belongsTo(Sector, { foreignKey: "id_sector" });
 Tambo.hasMany(Ganado, { foreignKey: "id_tambo" });
 Ganado.belongsTo(Tambo, { foreignKey: "id_tambo" });
 
-Tambo.hasMany(ProduccionLeche, { foreignKey: "id_tambo" });
-ProduccionLeche.belongsTo(Tambo, { foreignKey: "id_tambo" });
 
 Ganado.belongsToMany(ControlVeterinario, { through: ControlGanado });
 ControlVeterinario.belongsToMany(Ganado, { through: ControlGanado });
