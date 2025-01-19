@@ -125,23 +125,6 @@ const seedData = async () => {
         }
         await ProduccionLeche.bulkCreate(produccionLecheData);
 
-        // Insertar Controles
-        const controlesData = [];
-        for (let i = 0; i < 30; i++) {
-            const litrosOrdeñe1 = faker.datatype.number({ min: 10, max: 30 });
-            const litrosOrdeñe2 = faker.datatype.number({ min: 10, max: 30 });
-            controlesData.push({
-                id: uuidv4(),
-                litros_ordeñe1: litrosOrdeñe1,
-                litros_ordeñe2: litrosOrdeñe2,
-                total: litrosOrdeñe1 + litrosOrdeñe2,
-                observacion: faker.lorem.sentence(),
-                caravana: faker.random.alphaNumeric(4),
-                fecha_control: faker.date.past(),
-            });
-        }
-        await ControlLechero.bulkCreate(controlesData);
-
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
         console.error("Error al insertar los datos de semilla:", error);

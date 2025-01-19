@@ -58,7 +58,9 @@ const {
     Lote,
     Caja,
     Transaccion,
-    Nota
+    Nota,
+    Empleado,
+    PagoSueldo
 } = sequelize.models;
 
 //RELACIONES
@@ -131,6 +133,12 @@ Proveedor.hasMany(Nota, { foreignKey: "id_afectado" });
 Nota.belongsTo(Proveedor, { foreignKey: "id_afectado" });
 Cliente.hasMany(Nota, { foreignKey: "id_afectado" });
 Nota.belongsTo(Cliente, { foreignKey: "id_afectado" });
+
+Empleado.hasOne(Sector, { foreignKey: "id_sector" });
+Sector.hasOne(Empleado, { foreignKey: "id_sector" });
+Empleado.hasMany(PagoSueldo, { foreignKey: "id_empleado" });
+PagoSueldo.belongsTo(Empleado, { foreignKey: "id_empleado" });
+
 
 
 module.exports = {
