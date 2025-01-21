@@ -60,7 +60,8 @@ const {
     Transaccion,
     Nota,
     Empleado,
-    PagoSueldo
+    PagoSueldo,
+    User
 } = sequelize.models;
 
 //RELACIONES
@@ -139,6 +140,9 @@ Sector.hasOne(Empleado, { foreignKey: "id_sector" });
 Empleado.hasMany(PagoSueldo, { foreignKey: "id_empleado" });
 PagoSueldo.belongsTo(Empleado, { foreignKey: "id_empleado" });
 
+
+User.hasOne(Empleado, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+Empleado.belongsTo(User, { foreignKey: 'user_id' });
 
 
 module.exports = {

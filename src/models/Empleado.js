@@ -4,10 +4,13 @@ module.exports = (sequelize) => {
     sequelize.define(
         "Empleado",
         {
-            id: {
-                type: DataTypes.UUID,
+            user_id: {
+                type: DataTypes.INTEGER,
                 primaryKey: true,
-                defaultValue: DataTypes.UUIDV4,
+                references: {
+                    model: "Users",
+                    key: 'id',
+                },
             },
             nombre_completo: {
                 type: DataTypes.STRING,
