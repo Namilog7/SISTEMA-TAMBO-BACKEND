@@ -1,10 +1,12 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero } = require("./../db"); // Asegúrate de importar ControlLechero correctamente
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require("bcryptjs");
 
 const seedData = async () => {
     try {
         // Eliminar datos existentes
+        await conn.query('TRUNCATE "Users" CASCADE'); // Asegúrate de truncar la tabla de usuarios si es necesario
         await conn.query('TRUNCATE "Ganados" CASCADE');
         await conn.query('TRUNCATE "ControlLecheros" CASCADE');
         await conn.query('TRUNCATE "InformeLecheros" CASCADE');
@@ -27,6 +29,7 @@ const seedData = async () => {
 
         const sectorId = uuidv4();
         console.log({ sectorId: sectorId });
+
         // Insertar Sector
         const sector = await Sector.create({
             nombre: "Tambos",
@@ -124,6 +127,17 @@ const seedData = async () => {
             currentDate.setDate(currentDate.getDate() + 1); // Incrementar un día
         }
         await ProduccionLeche.bulkCreate(produccionLecheData);
+
+        // Insertar Usuario Admin
+        const hashedPassword = await bcrypt.hash("admin123", 10); // Encripta la contraseña
+        const adminUser = {
+            id: uuidv4(),
+            nombre: "Admin",
+            email: "admin@example.com",
+            password: hashedPassword,
+            role: "Admin", // Asigna el rol de administrador
+        };
+        await User.create(adminUser);
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
