@@ -3,9 +3,9 @@ const { Proveedor } = require("../../db");
 
 const postProveedorHandler = async (req, res) => {
     const postProveedor = crudController(Proveedor);
-    const { nombre, contacto_1, contacto_2, localidad } = req.body
+    const { nombre, contacto_1, contacto_2, localidad, saldo } = req.body
     try {
-        const response = await postProveedor.create({ nombre, contacto_1, contacto_2, localidad })
+        const response = await postProveedor.create({ nombre, contacto_1, contacto_2, localidad, saldo })
         return res.json({
             message: "Se creo el proovedor",
             response

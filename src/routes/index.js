@@ -5,9 +5,11 @@ const proveedorRouter = require("./proveedorRouter/proveedorRouter");
 const clienteRouter = require("./clienteRouter/clienteRouter");
 const cajaRouter = require("./cajaRouter/cajaRouter");
 const notaRouter = require("../routes/notaRouter/notaRouter")
+const sectorRouter = require("../routes/sectorRouter/sectorRouter")
 
 const router = Router();
 
+router.use("/sector", sectorRouter)
 router.use("/tambo", tamboRouter);
 router.use("/insumo", insumoRouter);
 router.use("/proveedor", proveedorRouter);

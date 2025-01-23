@@ -66,8 +66,8 @@ const {
 
 //RELACIONES
 
-Sector.hasOne(Tambo, { foreignKey: 'id_sector' });
-Tambo.hasOne(Sector, { foreignKey: 'id_sector' });
+Sector.hasOne(Tambo);
+Tambo.hasOne(Sector);
 
 Tambo.hasMany(RetiroLeche, {
     foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
