@@ -5,7 +5,8 @@ const proveedorRouter = require("./proveedorRouter/proveedorRouter");
 const clienteRouter = require("./clienteRouter/clienteRouter");
 const cajaRouter = require("./cajaRouter/cajaRouter");
 const notaRouter = require("../routes/notaRouter/notaRouter")
-const sectorRouter = require("../routes/sectorRouter/sectorRouter")
+const sectorRouter = require("../routes/sectorRouter/sectorRouter");
+const recriaRouter = require("./recriaRouter/recriaRouter");
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/proveedor", proveedorRouter);
 router.use("/cliente", clienteRouter);
 router.use("/caja", cajaRouter)
 router.use("/nota", notaRouter)
+router.use("/recria", recriaRouter)
 
 
 module.exports = router
