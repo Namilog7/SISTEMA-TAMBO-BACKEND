@@ -1,10 +1,9 @@
 const bcrypt = require("bcrypt"); // Para hashear la contraseña
-const { Empleado } = require("../db"); // Importa tu modelo de Empleado
+const { Empleado } = require("../db");
 const { v4: uuidv4 } = require("uuid");
 
 const postEmpleadoHandler = async (req, res) => {
     try {
-        // Verificar que el usuario actual es un administrador
         const { esAdmin } = req.user; // Supone que tienes middleware para autenticar y pasar info del usuario
         if (!esAdmin) {
             return res.status(403).json({ message: "No tienes permisos para realizar esta acción." });

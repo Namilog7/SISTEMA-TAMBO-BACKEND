@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { User } = require("../db");
 
-const loginHandler = async (req, res) => {
+const authenticateUser = async (req, res) => {
     const { email, contraseña } = req.body;
 
     try {
@@ -23,7 +23,7 @@ const loginHandler = async (req, res) => {
         const token = jwt.sign(
             {
                 id: user.id,
-                esAdmin: user.rol === "ADMIN", // Suponiendo que tienes un campo `rol` en la tabla User
+                esAdmin: user.rol === "ADMIN",
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }
@@ -36,4 +36,4 @@ const loginHandler = async (req, res) => {
     }
 };
 
-module.exports = loginHandler;
+module.exports = authenticateUser;

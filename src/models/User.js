@@ -7,6 +7,10 @@ module.exports = (sequelize) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -17,7 +21,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         role: {
-            type: DataTypes.ENUM('Empleado', 'Admin'),
+            type: DataTypes.ENUM('EMPLEADO', 'ADMIN'),
             allowNull: false,
         },
         activo: {
