@@ -1,9 +1,10 @@
 const express = require("express");
-const authenticateUser = require("../../middlewares/user/authenticateUser");
 const postEmpleadoHandler = require("../../handlers/user/admin/postEmpleadoHandler");
-const router = express.Router();
+const verifyToken = require("../../middlewares/user/verifyToken");
+const loginUser = require("../../middlewares/user/authenticateUser");
+const userRouter = express.Router();
 
-router.post("/login", authenticateUser)
-router.post("/crear-empleado", postEmpleadoHandler)
+userRouter.post("/login", loginUser)
+userRouter.post("/crear-empleado", verifyToken("ADMIN"), postEmpleadoHandler)
 
 module.exports = router;
