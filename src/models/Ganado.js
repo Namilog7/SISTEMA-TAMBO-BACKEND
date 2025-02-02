@@ -26,7 +26,8 @@ module.exports = (sequelize) => {
                 allowNull: true
             },
             tipo: {
-                type: DataTypes.ENUM("VACA", "TERNERO", "VAQUILLONA")
+                type: DataTypes.ENUM("VACA", "TERNERO", "VAQUILLONA"),
+                allowNull: true
             },
             estado: {
                 type: DataTypes.ENUM("RECRIA", "ORDEÑE", "ENGORDE"),
