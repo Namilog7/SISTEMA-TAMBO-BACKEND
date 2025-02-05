@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User } = require("./../db"); // Asegúrate de importar el modelo User
+const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User, Macho } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcryptjs");
@@ -72,7 +72,7 @@ const seedData = async () => {
         // Insertar Ganado
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
-            const tipo = faker.helpers.randomize(["VACA", "VAQUILLONA", "TERNERO"]);
+            const tipo = faker.helpers.randomize(["VACA", "VAQUILLONA", "TERNERA"]);
             const estado = faker.helpers.randomize(["RECRIA", "ORDEÑE", "ENGORDE"]);
 
             ganadoData.push({
@@ -138,6 +138,8 @@ const seedData = async () => {
             role: "ADMIN", // Asigna el rol de administrador
         };
         await User.create(adminUser);
+
+        await Macho.create({ terneroContador: 0 })
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {

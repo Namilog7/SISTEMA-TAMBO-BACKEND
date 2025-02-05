@@ -9,6 +9,9 @@ module.exports = (sequelize) => {
                 defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
+            origen: {
+                type: DataTypes.STRING,
+            },
             caravana: {
                 type: DataTypes.STRING(),
                 allowNull: false

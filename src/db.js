@@ -62,7 +62,8 @@ const {
     Empleado,
     PagoSueldo,
     User,
-    TransaccionGanado
+    TransaccionGanado,
+    Macho
 } = sequelize.models;
 
 //RELACIONES
