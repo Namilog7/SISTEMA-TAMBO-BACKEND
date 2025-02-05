@@ -1,38 +1,38 @@
 const bcrypt = require("bcrypt"); // Para hashear la contraseña
-const { Empleado } = require("../db");
-const { v4: uuidv4 } = require("uuid");
+const { User } = require("../../../db");
 
 const postEmpleadoHandler = async (req, res) => {
     try {
-        const { esAdmin } = req.user; // Supone que tienes middleware para autenticar y pasar info del usuario
-        if (!esAdmin) {
+        const user = req.user;
+        if (user.role !== "ADMIN") {
             return res.status(403).json({ message: "No tienes permisos para realizar esta acción." });
         }
 
-        // Obtener datos del cuerpo de la solicitud
-        const { nombre, apellido, email, rol, contraseña } = req.body;
+        const { email, role, password, nombre, apellido, localidad, contacto, dni, cuit_cuil } = req.body;
 
         // Validar campos obligatorios
-        if (!nombre || !apellido || !email || !rol || !contraseña) {
-            return res.status(400).json({ message: "Todos los campos son obligatorios." });
+        if (!email || !role || !password) {
+            return res.status(400).json({ message: "Faltan datos" });
         }
 
         // Verificar que la contraseña cumple con los requisitos mínimos
-        if (contraseña.length < 8) {
-            return res.status(400).json({ message: "La contraseña debe tener al menos 8 caracteres." });
+        if (password.length < 5) {
+            return res.status(400).json({ message: "La contraseña debe tener al menos 5 caracteres." });
         }
 
-        // Hashear la contraseña proporcionada
-        const contraseñaHasheada = await bcrypt.hash(contraseña, 10);
+        const passwordHasheada = await bcrypt.hash(password, 10);
 
-        // Crear un nuevo empleado
-        const empleado = await Empleado.create({
-            id: uuidv4(),
+        // Crear un nuevo usuario 
+        const empleado = await User.create({
+            email,
+            role,
+            password: passwordHasheada,
             nombre,
             apellido,
-            email,
-            rol,
-            contraseña: contraseñaHasheada,
+            localidad,
+            contacto,
+            dni,
+            cuit_cuil
         });
 
         // Responder con los detalles del empleado (sin contraseña)
@@ -43,7 +43,7 @@ const postEmpleadoHandler = async (req, res) => {
                 nombre: empleado.nombre,
                 apellido: empleado.apellido,
                 email: empleado.email,
-                rol: empleado.rol,
+                role: empleado.role,
             },
         });
     } catch (error) {

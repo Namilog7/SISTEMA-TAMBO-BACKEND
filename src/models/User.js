@@ -7,9 +7,13 @@ module.exports = (sequelize) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
-        username: {
+        nombre: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        apellido: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         email: {
             type: DataTypes.STRING,
@@ -28,5 +32,21 @@ module.exports = (sequelize) => {
             type: DataTypes.BOOLEAN,
             defaultValue: true,
         },
+        localidad: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        contacto: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        dni: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        cuit_cuil: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     })
 };

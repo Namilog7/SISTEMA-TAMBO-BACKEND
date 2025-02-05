@@ -7,4 +7,4 @@ const userRouter = express.Router();
 userRouter.post("/login", loginUser)
 userRouter.post("/crear-empleado", verifyToken("ADMIN"), postEmpleadoHandler)
 
-module.exports = router;
+module.exports = userRouter;

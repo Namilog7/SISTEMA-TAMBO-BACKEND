@@ -1,7 +1,7 @@
 const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User, Macho } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const seedData = async () => {
     try {
@@ -132,10 +132,15 @@ const seedData = async () => {
         const hashedPassword = await bcrypt.hash("admin123", 10); // Encripta la contraseña
         const adminUser = {
             id: uuidv4(),
-            username: "Admin",
+            nombre: "Admin",
+            apellido: "Tambo",
             email: "admin@example.com",
             password: hashedPassword,
             role: "ADMIN", // Asigna el rol de administrador
+            localidad: "Calchin",
+            dni: "4051086506",
+            contacto: "154222529",
+            cuil_cuit: "146014653165"
         };
         await User.create(adminUser);
 

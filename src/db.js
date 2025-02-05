@@ -59,7 +59,6 @@ const {
     Caja,
     Transaccion,
     Nota,
-    Empleado,
     PagoSueldo,
     User,
     TransaccionGanado,
@@ -137,14 +136,6 @@ Nota.belongsTo(Proveedor, { foreignKey: "id_afectado" });
 Cliente.hasMany(Nota, { foreignKey: "id_afectado" });
 Nota.belongsTo(Cliente, { foreignKey: "id_afectado" });
 
-Empleado.hasOne(Sector, { foreignKey: "id_sector" });
-Sector.hasOne(Empleado, { foreignKey: "id_sector" });
-Empleado.hasMany(PagoSueldo, { foreignKey: "id_empleado" });
-PagoSueldo.belongsTo(Empleado, { foreignKey: "id_empleado" });
-
-
-User.hasOne(Empleado, { foreignKey: 'user_id', onDelete: 'CASCADE' });
-Empleado.belongsTo(User, { foreignKey: 'user_id' });
 
 Ganado.hasOne(TransaccionGanado);
 TransaccionGanado.hasOne(Ganado);

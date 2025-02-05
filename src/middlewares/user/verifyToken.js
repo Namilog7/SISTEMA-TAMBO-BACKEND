@@ -25,9 +25,9 @@ const verifyToken = (requiredRole) => {
 
             // Adjuntar la información del usuario al objeto req
             req.user = decoded;
-
+            console.log(decoded)
             // Verificar el rol, si se especifica
-            if (requiredRole && decoded.esAdmin !== (requiredRole === "ADMIN")) {
+            if (decoded.role !== requiredRole) {
                 return res.status(403).json({ message: "Acceso denegado. Rol no autorizado." });
             }
 

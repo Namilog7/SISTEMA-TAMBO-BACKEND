@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { User } = require("../db");
+const { User } = require("../../db");
 
 const loginUser = async (req, res) => {
-    const { email, contraseña } = req.body;
+    const { email, password } = req.body;
 
     try {
         // Buscar al usuario por email
@@ -14,7 +14,7 @@ const loginUser = async (req, res) => {
         }
 
         // Verificar la contraseña
-        const contraseñaValida = await bcrypt.compare(contraseña, user.contraseña);
+        const contraseñaValida = await bcrypt.compare(password, user.password);
         if (!contraseñaValida) {
             return res.status(401).json({ message: "Contraseña incorrecta." });
         }
@@ -23,7 +23,7 @@ const loginUser = async (req, res) => {
         const token = jwt.sign(
             {
                 id: user.id,
-                esAdmin: user.rol === "ADMIN",
+                role: user.role,
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }
