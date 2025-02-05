@@ -4,11 +4,7 @@ const getControlVeterinario = require("../../../handlers/tambo/controlVeterinari
 
 const controlVeterinarioRouter = Router()
 controlVeterinarioRouter.get("/", getControlVeterinario)
-controlVeterinarioRouter.post(
-    "/control-veterinario",
-    upload.single("file"), // 'file' es el nombre del campo en multipart/form-data
-    postControlVeterinario
-);
+controlVeterinarioRouter.post("/upload", postControlVeterinario);
 
 
 module.exports = controlVeterinarioRouter

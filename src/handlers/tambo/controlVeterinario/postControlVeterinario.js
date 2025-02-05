@@ -1,44 +1,38 @@
 const { ControlVeterinario, Ganado } = require("../../../db");
 const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
 
-// Configura tus credenciales de Cloudinary
+// Configura Cloudinary con variables de entorno
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Configuración de Multer para manejar archivos
-const upload = multer({ dest: "uploads/" }); // Archivo temporal
-
 const postControlVeterinario = async (req, res) => {
-    const { veterinario, detalle, arrayCaravanas } = req.body;
-    const acta = req.file; // Archivo subido
+    const { veterinario, detalle, arrayCaravanas, actaBase64 } = req.body;
 
     try {
-        // Validar que los datos necesarios están presentes
-        if (!veterinario || !detalle || !arrayCaravanas || !acta) {
-            return res.status(400).json({ message: "Faltan datos necesarios o archivo acta no es válido." });
+        // Validar datos requeridos
+        if (!veterinario || !detalle || !arrayCaravanas || !actaBase64) {
+            return res.status(400).json({ message: "Faltan datos necesarios o la imagen acta no es válida." });
         }
 
-        // Parsear arrayCaravanas (viene como string JSON en multipart/form-data)
         const caravanas = JSON.parse(arrayCaravanas);
 
         if (!Array.isArray(caravanas) || caravanas.length === 0) {
             return res.status(400).json({ message: "El campo arrayCaravanas debe ser un array válido." });
         }
 
-        // Subir el acta a Cloudinary
-        const uploadResult = await cloudinary.uploader.upload(acta.path, {
+        // Subir la imagen a Cloudinary desde Base64
+        const uploadResult = await cloudinary.uploader.upload(`data:image/png;base64,${actaBase64}`, {
             folder: "control_veterinario",
         });
 
-        // Crear el registro de ControlVeterinario
+        // Crear el registro en la base de datos
         const control = await ControlVeterinario.create({
             veterinario,
             detalle,
-            acta_url: uploadResult.secure_url, // Guardar la URL del acta
+            acta_url: uploadResult.secure_url, // Guardar la URL del acta subida a Cloudinary
         });
 
         // Validar que las caravanas de Ganado existan
@@ -52,9 +46,8 @@ const postControlVeterinario = async (req, res) => {
             return res.status(400).json({ message: "Algunas caravanas de ganado no existen." });
         }
 
-        // Asociar los ganados al control creado, incluyendo la fecha actual
+        // Asociar los ganados al control veterinario
         const fechaActual = new Date();
-
         const ganadosIds = ganados.map((ganado) => ganado.id);
         await control.addGanado(ganadosIds, { through: { fecha: fechaActual } });
 
@@ -70,7 +63,5 @@ const postControlVeterinario = async (req, res) => {
 };
 
 module.exports = {
-    upload,
     postControlVeterinario,
 };
-

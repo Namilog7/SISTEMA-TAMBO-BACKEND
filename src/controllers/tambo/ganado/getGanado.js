@@ -14,9 +14,8 @@ const getGanado = async () => {
                     model: Inseminacion,
                     through: {
                         model: InseminacionGanado, // Tabla intermedia
-                        attributes: ['fecha'], // Atributos de la tabla intermedia
+                        attributes: ['pajuela', "pajuela", "caravana"], // Atributos de la tabla intermedia
                     },
-                    attributes: ['origen_genetica', 'pajuela', 'fecha', 'tipo'], // Atributos específicos de Inseminacion
                 },
             ],
         });
