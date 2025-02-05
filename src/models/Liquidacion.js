@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            cantidad: {
+            litros: {
                 type: DataTypes.FLOAT,
                 allowNull: false,
             },
@@ -17,13 +17,21 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            importe: {
+            importe_total: {
                 type: DataTypes.FLOAT,
                 allowNull: false
             },
             precio_litro: {
                 type: DataTypes.FLOAT,
                 allowNull: false
+            },
+            importe_blanco: {
+                type: DataTypes.FLOAT,
+                allowNull: true
+            },
+            importe_negro: {
+                type: DataTypes.FLOAT,
+                allowNull: true
             }
         },
         { timestamps: true }

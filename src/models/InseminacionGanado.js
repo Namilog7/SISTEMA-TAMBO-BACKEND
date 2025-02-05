@@ -4,9 +4,17 @@ module.exports = (sequelize) => {
     sequelize.define(
         "InseminacionGanado",
         {
-            fecha: {
-                type: DataTypes.DATE,
-                allowNull: true,
+            sexado: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            pajuela: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            caravana: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
         }
     );

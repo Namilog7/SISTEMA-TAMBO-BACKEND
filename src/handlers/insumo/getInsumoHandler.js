@@ -19,7 +19,7 @@ const getInsumoHandler = async (req, res) => {
         }
 
         // Obtener los datos filtrados
-        const data = await getInsumo(filters);
+        const data = await getInsumo(id_sector);
 
         // Paginar los datos obtenidos
         const response = await paginate(data, page, limit);
