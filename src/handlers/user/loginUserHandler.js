@@ -1,13 +1,13 @@
 const loginUser = require("../../controllers/user/loginUser")
 
 const loginUserHandler = async (req, res) => {
-    const { user, password } = req.body
+    const { email, password } = req.body
     try {
-        const userExist = await loginUser(user, password)
-        const { username } = userExist
+        const userExist = await loginUser(email, password)
+        const { nombre } = userExist
         res.json({
             message: "Usuario Creado",
-            username
+            nombre
         })
     } catch (error) {
         res.status(500).json({ error: error.message })

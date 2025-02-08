@@ -13,13 +13,13 @@ const postControlVeterinario = async (req, res) => {
 
     try {
         // Validar datos requeridos
-        if (!veterinario || !detalle || !arrayCaravanas || !actaBase64) {
+        if (!veterinario || !arrayCaravanas || !actaBase64) {
             return res.status(400).json({ message: "Faltan datos necesarios o la imagen acta no es válida." });
         }
 
-        const caravanas = JSON.parse(arrayCaravanas);
+        /* const caravanas = JSON.parse(arrayCaravanas); */
 
-        if (!Array.isArray(caravanas) || caravanas.length === 0) {
+        if (!Array.isArray(arrayCaravanas) || arrayCaravanas.length === 0) {
             return res.status(400).json({ message: "El campo arrayCaravanas debe ser un array válido." });
         }
 
@@ -38,11 +38,11 @@ const postControlVeterinario = async (req, res) => {
         // Validar que las caravanas de Ganado existan
         const ganados = await Ganado.findAll({
             where: {
-                caravana: caravanas,
+                caravana: arrayCaravanas,
             },
         });
 
-        if (ganados.length !== caravanas.length) {
+        if (ganados.length !== arrayCaravanas.length) {
             return res.status(400).json({ message: "Algunas caravanas de ganado no existen." });
         }
 

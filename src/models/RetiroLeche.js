@@ -43,9 +43,8 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: true
             },
-            patente_camion: {
-                type: DataTypes.STRING,
-                allowNull: false
+            usuario_carga: {
+                type: DataTypes.STRING
             }
         },
         { timestamps: true }

@@ -21,6 +21,21 @@ module.exports = (sequelize) => {
             },
             hora_carga: {
                 type: DataTypes.STRING
+            },
+            aclaracion: {
+                type: DataTypes.STRING
+            },
+            sexado: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            pajuela: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            caravana: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
         },
         { timestamps: false }

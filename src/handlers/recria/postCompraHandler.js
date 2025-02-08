@@ -20,6 +20,7 @@ const postCompraHandler = async (req, res) => {
             aclaraciones: aclaracion,
             usuario_carga,
             importe,
+            tipo_ingreso
         });
 
         // Crear registros en Recria y asociarlos con el Ingreso_recria

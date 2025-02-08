@@ -2,8 +2,13 @@ const express = require("express");
 const router = require("./routes/index");
 const morgan = require("morgan");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const server = express();
+
+
+server.use(express.json({ limit: "10mb" }));
+server.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 server.use(morgan("dev"));
 server.use(express.json());

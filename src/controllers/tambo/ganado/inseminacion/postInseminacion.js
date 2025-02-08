@@ -1,4 +1,4 @@
-const { Inseminacion, InseminacionGanado } = require('../../../../db');
+const { Inseminacion } = require('../../../../db');
 
 /**
  * Crea una nueva inseminación y asocia los ganados especificados en la tabla intermedia.
@@ -13,32 +13,21 @@ const { Inseminacion, InseminacionGanado } = require('../../../../db');
  */
 const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga }) => {
     try {
-        // Crear la inseminación
-        const nuevaInseminacion = await Inseminacion.create({
-            inseminador,
-            fecha,
-            fecha_carga,
-            hora_carga,
-        });
-
-        // Obtener el ID de la inseminación creada
-        const InseminacionId = nuevaInseminacion.id;
-
-        // Crear las entradas en la tabla intermedia para cada id de ganado
-        const ganadosInseminacion = arrayGanados.map(GanadoId => ({
-            InseminacionId,
-            GanadoId,
-            caravana,
-            pajuela,
-            sexado
-        }));
-
-        // Bulk insert para la tabla intermedia
-        await InseminacionGanado.bulkCreate(ganadosInseminacion);
+        let bulkInseminacion = arrayGanados.map((ganado) => {
+            return {
+                inseminador,
+                fecha,
+                fecha_carga,
+                hora_carga,
+                caravana: ganado.caravana,
+                pajuela: ganado.pajuela,
+                sexado: ganado.sexado
+            }
+        })
+        await Inseminacion.bulkCreate(bulkInseminacion);
 
         return {
-            message: 'Inseminación creada con éxito',
-            inseminacion: nuevaInseminacion,
+            message: 'Inseminación creada con éxito'
         };
     } catch (error) {
         console.error('Error al crear la inseminación:', error.message);

@@ -1,4 +1,4 @@
-const { RetiroLeche, Empleado } = require("../../../db");
+const { RetiroLeche, User } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 
 const postRetiroLecheHandler = async (req, res) => {
@@ -19,14 +19,14 @@ const postRetiroLecheHandler = async (req, res) => {
     const postRetiroLeche = crudController(RetiroLeche);
 
     try {
-        // Buscar el empleado por el ID proporcionado en usuario_carga
-        const empleado = await Empleado.findByPk(id_empleado);
+        const userId = id_empleado.replace(/"/g, "");
+        const empleado = await User.findByPk(userId);
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
 
         // Construir el nombre completo del empleado
-        const usuario_carga = empleado.nombre_completo;
+        const usuario_carga = empleado.nombre;
 
         // Crear el registro en RetiroLeche con el nombre completo del empleado
         const response = await postRetiroLeche.create({
@@ -35,14 +35,13 @@ const postRetiroLecheHandler = async (req, res) => {
             liquidado,
             hora_carga,
             hora_retiro,
+            usuario_carga,
             encargado_retiro,
             aclaracion,
-            usuario_carga,
             estado,
             id_cliente,
             id_liquidacion,
         });
-
         res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear el retiro de leche:", error);

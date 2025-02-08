@@ -1,16 +1,16 @@
-const { ProovedorInsumo, Insumo } = require("../../db");
+const { ProveedorInsumo, Insumo } = require("../../db");
 
 const putInsumo = async (obj) => {
-    const { id, id_proovedor, precio, stock, ultimo_ingreso, tipo } = obj;
+    const { id, id_proveedor, precio, stock, ultimo_ingreso, tipo } = obj;
 
 
     // Actualizar los campos en la tabla intermedia
-    const [rowsUpdatedIntermedia] = await ProovedorInsumo.update(
+    const [rowsUpdatedIntermedia] = await ProveedorInsumo.update(
         { precio, stock, ultimo_ingreso },
         {
             where: {
                 id_insumo: id,
-                id_proovedor: id_proovedor,
+                id_proveedor: id_proveedor,
             },
         }
     );
@@ -37,7 +37,7 @@ const putInsumo = async (obj) => {
         message: "Se actualizaron los datos en la tabla ProovedorInsumo y, si se proporcionó, el tipo del insumo.",
         updatedFields: {
             id_insumo: id,
-            id_proovedor,
+            id_proveedor,
             precio,
             stock,
             ultimo_ingreso,

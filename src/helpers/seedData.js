@@ -28,7 +28,7 @@ const seedData = async () => {
         console.log("Datos existentes eliminados.");
 
         const sectorId = uuidv4();
-        console.log({ sectorId: sectorId });
+        console.log({ sectorIdTambo: sectorId });
 
         // Insertar Sector
         const sector = await Sector.create({
@@ -36,6 +36,18 @@ const seedData = async () => {
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
             id: sectorId
         });
+
+        const fabricaId = uuidv4()
+        const fabrica = await Sector.create({
+            nombre: "FabricaQueso",
+            descripcion: "Dedicado a la fabricacion de quesos",
+        })
+        await Caja.create({
+            nombre_caja: "Fabrica_Queso",
+            saldo: 0.0,
+            descripcion: "Caja de Fabrica de Quesos",
+            id_sector: fabrica.id
+        })
 
         // Insertar Tambo
         const tambo = {
@@ -47,27 +59,6 @@ const seedData = async () => {
         };
         await Tambo.create(tambo);
 
-        // Insertar RetiroLeche
-        const retiroLecheData = [];
-        const tambosAll = await Tambo.findAll();
-        tambosAll.forEach((tambo) => {
-            for (let i = 0; i < 10; i++) {
-                retiroLecheData.push({
-                    id_tambo: tambo.id, // FK a Tambo
-                    cantidad: faker.datatype.number({ min: 700, max: 900 }),
-                    fecha: faker.date.past(),
-                    liquidado: false,
-                    estado: "ACTIVO",
-                    hora_carga: "14:00",
-                    usuario_carga: "gonza",
-                    hora_retiro: "10:00",
-                    hora_carga: "10:00",
-                    patente_camion: "ASDFW",
-                    id: uuidv4()
-                });
-            }
-        });
-        await RetiroLeche.bulkCreate(retiroLecheData);
 
         // Insertar Ganado
         const ganadoData = [];

@@ -29,7 +29,10 @@ const loginUser = async (req, res) => {
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );
 
-        res.status(200).json({ token });
+        res.status(200).json({
+            token,
+            userId: user.id
+        });
     } catch (error) {
         console.error("Error al iniciar sesión:", error.message);
         res.status(500).json({ message: "Error interno del servidor." });

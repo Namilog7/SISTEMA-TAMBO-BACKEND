@@ -5,7 +5,6 @@ const postRetiroLecheModel = {
     hora_carga: { type: "time", required: false }, // Hora en formato HH:mm:ss, campo opcional
     hora_retiro: { type: "time", required: false }, // Hora en formato HH:mm:ss, campo opcional
     aclaracion: { type: "string", required: false }, // Texto opcional para observaciones
-    usuario_carga: { type: "string", required: true }, // Nombre o identificador del usuario que cargó, obligatorio
     estado: {
         type: "enum",
         values: ["ACTIVO", "CANCELADO"], // Estado con valores restringidos
