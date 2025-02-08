@@ -3,11 +3,19 @@ const fs = require("fs");
 const path = require("path");
 const { DB_DEPLOY } = process.env;
 const pg = require('pg');
+const { ssl } = require("pg/lib/defaults");
 
 const sequelize = new Sequelize(DB_DEPLOY, {
     logging: false,
     native: false,
-    dialectModule: pg
+    dialectModule: pg,
+    dialect: "postgres",
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
 });
 
 // Obtención del nombre del archivo actual
