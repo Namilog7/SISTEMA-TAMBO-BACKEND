@@ -2,7 +2,7 @@ const { Router } = require("express");
 const liquidacionHandler = require("../../handlers/tambo/retiroLeche/liquidacion/liquidacionHandler");
 const getLiquidacionHandler = require("../../handlers/tambo/retiroLeche/liquidacion/getLiquidacionHandler");
 const modelValidateMid = require("../../middlewares/modelValidateMid");
-const liquidacionValidateMid = require("../../middlewares/tambo/retiroleche/liquidacion/liquidacionValidateMid")
+const liquidacionValidateMid = require("../../middlewares/tambo/retiroLeche/liquidacion/liquidacionValidateMid")
 
 const liquidacionRouter = Router()
 liquidacionRouter.get("/", getLiquidacionHandler)
