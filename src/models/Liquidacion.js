@@ -5,21 +5,33 @@ module.exports = (sequelize) => {
         "Liquidacion",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
+                defaultValue: DataTypes.UUIDV4,
             },
-            cantidad: {
-                type: DataTypes.INTEGER,
+            litros: {
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             fecha: {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            importe: {
-                type: DataTypes.INTEGER,
+            importe_total: {
+                type: DataTypes.FLOAT,
                 allowNull: false
+            },
+            precio_litro: {
+                type: DataTypes.FLOAT,
+                allowNull: false
+            },
+            importe_blanco: {
+                type: DataTypes.FLOAT,
+                allowNull: true
+            },
+            importe_negro: {
+                type: DataTypes.FLOAT,
+                allowNull: true
             }
         },
         { timestamps: true }

@@ -5,9 +5,9 @@ module.exports = (sequelize) => {
         "Sector",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
+                defaultValue: DataTypes.UUIDV4,
             },
             nombre: {
                 type: DataTypes.STRING,

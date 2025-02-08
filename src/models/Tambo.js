@@ -5,9 +5,9 @@ module.exports = (sequelize) => {
         "Tambo",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
+                defaultValue: DataTypes.UUIDV4,
             },
             dueño: {
                 type: DataTypes.STRING,
@@ -19,8 +19,17 @@ module.exports = (sequelize) => {
             },
             contacto: {
                 type: DataTypes.STRING,
-                allowNull: false
-            }
+                allowNull: false,
+                unique: true
+            },
+            id_sector: {
+                type: DataTypes.UUID,
+                allowNull: false,
+                references: {
+                    model: 'Sectors',
+                    key: 'id',
+                },
+            },
         },
         { timestamps: false }
     );

@@ -2,7 +2,7 @@ require("dotenv").config();
 const server = require("./src/server");
 const { conn } = require("./src/db.js");
 const seedData = require("./src/helpers/seedData.js")
-const { PORT } = process.env || 3001;
+const PORT = 3001;
 
 async function startServer() {
   try {

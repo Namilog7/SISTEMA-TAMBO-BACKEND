@@ -5,12 +5,12 @@ module.exports = (sequelize) => {
         "RetiroLeche",
         {
             id: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 primaryKey: true,
-                autoIncrement: true,
+                defaultValue: DataTypes.UUIDV4,
             },
             cantidad: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.FLOAT,
                 allowNull: false,
             },
             fecha: {
@@ -19,9 +19,34 @@ module.exports = (sequelize) => {
             },
             liquidado: {
                 type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+            },
+            estado: {
+                type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
+                allowNull: false,
+                defaultValue: "ACTIVO"
+            },
+            hora_carga: {
+                type: DataTypes.STRING,
                 allowNull: false
+            },
+            encargado_retiro: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            hora_retiro: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            aclaracion: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            usuario_carga: {
+                type: DataTypes.STRING
             }
         },
-        { timestamps: false }
+        { timestamps: true }
     );
 };
