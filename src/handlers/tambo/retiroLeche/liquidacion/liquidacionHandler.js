@@ -14,5 +14,4 @@ const liquidacionHandler = async (req, res) => {
         res.status(500).json({ error: `Hubo un problema en el servidor: ${error.message}` })
     }
 }
-
 module.exports = liquidacionHandler
