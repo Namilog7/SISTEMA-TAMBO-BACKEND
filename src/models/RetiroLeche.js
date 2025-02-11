@@ -43,7 +43,7 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: true
             },
-            usuario_carga: {
+            id_empleado: {
                 type: DataTypes.STRING
             }
         },
