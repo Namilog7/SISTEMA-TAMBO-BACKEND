@@ -1,4 +1,4 @@
-const { ProduccionLeche, Empleado } = require("../../../db");
+const { ProduccionLeche, User } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 
 const postProduccionLecheHandler = async (req, res) => {
@@ -8,7 +8,7 @@ const postProduccionLecheHandler = async (req, res) => {
     try {
         // Verificar que el empleado exista
         const userId = id_empleado.replace(/"/g, "");
-        const empleado = await Empleado.findByPk(userId);
+        const empleado = await User.findByPk(userId);
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
