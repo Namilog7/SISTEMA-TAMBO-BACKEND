@@ -13,19 +13,16 @@ const postProduccionLecheHandler = async (req, res) => {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
 
-        // Construir el nombre completo
-        const usuario_carga = empleado.nombre_completo;
-
         // Crear el registro en ProduccionLeche
         const response = await postProduccionLeche.create({
             litros,
             fecha,
             hora_recoleccion,
             hora_carga,
-            usuario_carga,
             cantidad_animales,
             aclaracion,
             estado,
+            id_empleado: userId
         });
 
         res.status(201).json(response);
