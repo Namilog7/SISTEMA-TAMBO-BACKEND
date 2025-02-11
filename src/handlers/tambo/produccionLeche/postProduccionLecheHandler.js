@@ -7,7 +7,8 @@ const postProduccionLecheHandler = async (req, res) => {
 
     try {
         // Verificar que el empleado exista
-        const empleado = await Empleado.findByPk(id_empleado);
+        const userId = id_empleado.replace(/"/g, "");
+        const empleado = await Empleado.findByPk(userId);
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
