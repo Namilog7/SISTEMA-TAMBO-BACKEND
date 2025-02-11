@@ -3,7 +3,6 @@ const recoleccionPostModel = {
     fecha: { type: "date", required: true },
     hora_recoleccion: { type: "time_hhmm", required: true },
     hora_carga: { type: "time_hhmm", required: true },
-    usuario_carga: { type: "string", required: true },
     cantidad_animales: { type: "int", required: true },
     aclaracion: { type: "string", required: false },
     estado: {
@@ -19,7 +18,6 @@ const recoleccionPutModel = {
     fecha: { type: "date", required: false },
     hora_recoleccion: { type: "time_hhmm", required: false },
     hora_carga: { type: "time_hhmm", required: false },
-    usuario_carga: { type: "string", required: false },
     cantidad_animales: { type: "int", required: false },
     aclaracion: { type: "string", required: false },
     estado: {
