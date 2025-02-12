@@ -1,6 +1,6 @@
 const { Liquidacion, RetiroLeche } = require("../../../../db");
 
-const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha }) => {
+const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro }) => {
     if (!arrayIdRetiros || arrayIdRetiros.length === 0) {
         throw new Error("El array de retiros no puede estar vacío.");
     }
@@ -27,15 +27,15 @@ const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha }) => {
     // Calcular la cantidad total como la suma de los campos `cantidad` de los retiros
     const cantidadTotal = retiros.reduce((total, retiro) => total + retiro.cantidad, 0);
 
-    // Calcular el importe como cantidad total * precio_litro
-    const importe = cantidadTotal * precio_litro;
-
     // Crear la liquidación con los valores calculados
     const nuevaLiquidacion = await Liquidacion.create({
         cantidad: cantidadTotal,
         precio_litro,
-        importe,
         fecha,
+        litros,
+        importe_total,
+        importe_blanco,
+        importe_negro
     });
 
     // Adjuntar el ID de la liquidación creada y actualizar `liquidado` a `true`
