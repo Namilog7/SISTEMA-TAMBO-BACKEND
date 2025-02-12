@@ -59,7 +59,7 @@ const seedData = async () => {
                 };
                 await Tambo.create(tambo);
         q
-        
+        */
                 // Insertar Ganado
                 const ganadoData = [];
                 for (let i = 0; i < 20; i++) {
@@ -78,7 +78,7 @@ const seedData = async () => {
                     });
                 }
                 await Ganado.bulkCreate(ganadoData);
-        
+        /*
                 // Insertar Proveedor
                 const proveedor = {
                     nombre: "-",
