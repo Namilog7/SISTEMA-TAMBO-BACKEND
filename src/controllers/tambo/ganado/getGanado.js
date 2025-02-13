@@ -1,30 +1,14 @@
-const { Ganado, ControlVeterinario, Inseminacion, InseminacionGanado } = require("../../../db");
+const { Inseminacion } = require("../../../db");
 
-const getGanado = async () => {
+const getInseminacion = async () => {
     try {
-        const response = await Ganado.findAll({
-            include: [
-                {
-                    model: ControlVeterinario,
-                    through: {
-                        attributes: ['fecha'], // Atributos de la tabla intermedia
-                    },
-                },
-                {
-                    model: Inseminacion,
-                    through: {
-                        model: InseminacionGanado, // Tabla intermedia
-                        attributes: ['pajuela', "pajuela", "caravana"], // Atributos de la tabla intermedia
-                    },
-                },
-            ],
-        });
+        const response = await Inseminacion.findAll()
         return response;
     } catch (error) {
-        console.error("Error fetching Ganado:", error);
+        console.error("Error al obtener inseminaciones:", error);
         throw error;
     }
 };
 
-module.exports = getGanado;
+module.exports = getInseminacion;
 
