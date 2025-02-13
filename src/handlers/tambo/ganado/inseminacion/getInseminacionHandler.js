@@ -1,5 +1,5 @@
 const getInseminacion = require("../../../../controllers/tambo/ganado/getGanado");
-
+const paginate = require("../../../../helpers/paginate")
 
 const getInseminacionHandler = async (req, res) => {
     try {

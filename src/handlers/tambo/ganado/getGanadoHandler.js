@@ -5,9 +5,11 @@ const paginate = require("../../../helpers/paginate"); // Importar la función d
 const getGanadoHandler = async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query; // Parámetros de paginación
+        const searchQuery = buildQueryFilters(Ganado, req.query); // Construir los filtros de búsqueda
 
         // Obtener todos los registros que coincidan con los filtros
         const response = await Ganado.findAll({
+            where: searchQuery,
         });
 
         // Verificar si se encontraron registros
