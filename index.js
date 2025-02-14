@@ -8,7 +8,7 @@ async function startServer() {
   try {
     await conn.authenticate();
     console.log("Connection has been established successfully.");
-    await conn.sync({ force: false, alter: true });
+    await conn.sync({ force: false });
     console.log("All models were synchronized successfully");
     await seedData();
     console.log("All default data synchronized successfully");
