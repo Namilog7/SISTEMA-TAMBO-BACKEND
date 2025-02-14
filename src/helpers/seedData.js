@@ -61,6 +61,7 @@ const seedData = async () => {
         q
         */
         // Insertar Ganado
+
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
             const tipo = faker.helpers.randomize(["VACA", "VAQUILLONA", "TERNERA"]);
@@ -73,7 +74,6 @@ const seedData = async () => {
                 produccionDiaria: tipo === "VACA" ? faker.datatype.number({ min: 10, max: 30 }) : 0,
                 detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null,
                 fecha_ingreso: "2024-02-14",
-                id_tambo: tambo.id, // Relación con el tambo ID 1
                 id: uuidv4()
             });
         }
