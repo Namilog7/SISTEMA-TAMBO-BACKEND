@@ -3,7 +3,7 @@ const { Inseminacion } = require("../../../../db");
 const getPartialInseminacion = async (req, res) => {
     try {
         const response = await Inseminacion.findAll({
-            order: [["createdAt", "DESC"]],  // Ordenar por la columna `createdAt` en orden descendente
+            order: [["fecha_carga", "DESC"]],  // Ordenar por la columna `createdAt` en orden descendente
             limit: 15                         // Limitar a los últimos 15 registros
         });
         res.status(200).json(response);       // Devolver la respuesta al cliente
