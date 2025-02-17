@@ -36,6 +36,9 @@ module.exports = (sequelize) => {
             caravana: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            aclaracion: {
+                type: DataTypes.STRING
             }
         },
         { timestamps: false }
