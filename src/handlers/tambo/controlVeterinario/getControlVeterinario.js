@@ -6,7 +6,7 @@ const getControlVeterinarioConGanados = async (req, res) => {
         const controlVeterinario = await ControlVeterinario.findAll({
             include: {
                 model: ControlGanado,
-                through: { attributes: [] }, // Para no incluir los atributos de la tabla intermedia
+                through: { attributes: ["caravana"] }, // Para no incluir los atributos de la tabla intermedia
             },
         });
 
