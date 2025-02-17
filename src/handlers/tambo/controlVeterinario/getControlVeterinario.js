@@ -7,7 +7,7 @@ const getControlVeterinario = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: "Algo salio mal en el servidor" })
+        res.status(500).json({ error: "Algo salio mal en la base de datos" })
     }
 }
 
