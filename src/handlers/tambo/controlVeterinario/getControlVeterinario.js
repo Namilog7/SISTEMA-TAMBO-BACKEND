@@ -25,7 +25,7 @@ const getControlVeterinario = async (req, res) => {
         });
 
         // Devolvemos los datos modificados
-        return res.json(result);
+        return res.json(response);
 
     } catch (error) {
         console.log(error);
