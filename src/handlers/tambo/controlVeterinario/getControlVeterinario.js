@@ -1,4 +1,4 @@
-const { ControlVeterinario } = require("../../../db");
+const { ControlVeterinario, Ganado } = require("../../../db");
 
 const getControlVeterinarioConGanados = async (req, res) => {
     try {
