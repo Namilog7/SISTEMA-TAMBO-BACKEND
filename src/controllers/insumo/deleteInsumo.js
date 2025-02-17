@@ -1,9 +1,7 @@
 const { Insumo } = require("../../db");
 
 const deleteInsumo = async ({ id_sector, id }) => {
-    if (!id || !id_sector) {
-        throw new Error("Se requieren los campos 'id_sector' e 'id' para realizar el borrado.");
-    }
+
 
     const insumo = await Insumo.findOne({
         where: {
