@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
         "ControlGanado",
         {
             ganadoId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 references: {
                     model: "Ganados", // Nombre de la tabla Ganado
                     key: "id", // Clave primaria de Ganado
@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
                 allowNull: false,
             },
             controlVeterinarioId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 references: {
                     model: "ControlVeterinarios", // Nombre de la tabla ControlVeterinario
                     key: "id", // Clave primaria de ControlVeterinario
