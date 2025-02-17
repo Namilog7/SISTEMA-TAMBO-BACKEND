@@ -1,11 +1,11 @@
-const { ControlVeterinario, ControlGanado } = require("../../../db");
+const { ControlVeterinario } = require("../../../db");
 
 const getControlVeterinarioConGanados = async (req, res) => {
     try {
         // Buscar control veterinario con los ganados asociados
         const controlVeterinario = await ControlVeterinario.findAll({
             include: {
-                model: ControlGanado,
+                model: Ganado,
                 through: { attributes: ["caravana"] }, // Para no incluir los atributos de la tabla intermedia
             },
         });
