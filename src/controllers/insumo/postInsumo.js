@@ -2,7 +2,8 @@ const { Insumo, Proveedor, ProveedorInsumo } = require("../../db");
 
 const postInsumo = async ({ precio, nombre, stock, id_sector, ultimo_ingreso, tipo, id_proveedor }) => {
     // Verificar si el proveedor existe
-    const proveedor = await Proveedor.findByPk(id_proveedor);
+    const sector_id = id_sector.replace(/"/g, "");
+    const proveedor = await Proveedor.findByPk(sector_id);
     if (!proveedor) {
         throw new Error(`El proveedor con ID ${id_proveedor} no existe.`);
     }
