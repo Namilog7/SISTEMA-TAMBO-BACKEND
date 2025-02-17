@@ -4,7 +4,7 @@ const postCompraHandler = async (req, res) => {
     try {
         const { tipo, importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
 
-        if (!tipo || !importe || !arrayIngresos || arrayIngresos.length === 0 || !usuario_carga || !fecha_carga || !hora_carga) {
+        if (!tipo || !arrayIngresos || arrayIngresos.length === 0 || !usuario_carga || !fecha_carga || !hora_carga) {
             return res.status(400).json({ message: "Todos los campos son obligatorios y debe haber al menos un ingreso." });
         }
 
