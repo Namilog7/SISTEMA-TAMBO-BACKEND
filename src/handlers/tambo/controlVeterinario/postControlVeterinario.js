@@ -1,4 +1,4 @@
-const { ControlVeterinario, Ganado } = require("../../../db");
+const { ControlVeterinario, Ganado, ControlGanado } = require("../../../db");
 const cloudinary = require("cloudinary").v2;
 
 // Configura Cloudinary con variables de entorno
@@ -46,10 +46,20 @@ const postControlVeterinario = async (req, res) => {
             return res.status(400).json({ message: "Algunas caravanas de ganado no existen." });
         }
 
-        // Asociar los ganados al control veterinario
+        // Asociar los ganados al control veterinario y crear los registros en ControlGanado
         const fechaActual = new Date();
         const ganadosIds = ganados.map((ganado) => ganado.id);
-        await control.addGanado(ganadosIds, { through: { fecha: fechaActual } });
+
+        // Aquí se añaden los ganados a través de la relación muchos a muchos y se crea la entrada en la tabla intermedia
+        await Promise.all(
+            ganadosIds.map(async (ganadoId) => {
+                await ControlGanado.create({
+                    ganadoId, // FK de Ganado
+                    controlVeterinarioId: control.id, // FK de ControlVeterinario
+                    fecha: fechaActual, // Fecha del control
+                });
+            })
+        );
 
         return res.status(201).json({
             message: "Control creado exitosamente.",
