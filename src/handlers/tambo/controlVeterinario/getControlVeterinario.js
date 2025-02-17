@@ -25,7 +25,7 @@ const getControlVeterinario = async (req, res) => {
         });
 
         // Devolvemos los datos modificados
-        return res.json(response);
+        return res.json(result);
 
     } catch (error) {
         console.log(error);
@@ -34,4 +34,3 @@ const getControlVeterinario = async (req, res) => {
 }
 
 module.exports = getControlVeterinario;
-
