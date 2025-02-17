@@ -8,8 +8,7 @@ const getControlVeterinario = async (req, res) => {
                 model: ControlGanado,
                 attributes: ['caravana'], // Solo seleccionamos la columna 'caravana' de ControlGanado
             },
-        });
-
+        })
         // Creamos el array de controles veterinarios con las caravanas incluidas
         const result = response.map(control => {
             // Extraemos las caravanas
@@ -25,7 +24,7 @@ const getControlVeterinario = async (req, res) => {
         });
 
         // Devolvemos los datos modificados
-        return res.json(result);
+        return res.json(response);
 
     } catch (error) {
         console.log(error);
