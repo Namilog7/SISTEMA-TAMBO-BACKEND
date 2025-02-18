@@ -2,19 +2,18 @@ const { Ingreso_recria, Recria, Ganado, Macho } = require("../../db");
 
 const postCompraHandler = async (req, res) => {
     try {
-        const { tipo, importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
+        const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
 
-        if (!tipo || !arrayIngresos || arrayIngresos.length === 0 || !usuario_carga || !fecha_carga || !hora_carga) {
+        if (!tipo_ingreso || !arrayIngresos || arrayIngresos.length === 0 || !usuario_carga || !fecha_carga || !hora_carga) {
             return res.status(400).json({ message: "Todos los campos son obligatorios y debe haber al menos un ingreso." });
         }
 
-        if (!["COMPRA", "ENTREGA", "PARTO"].includes(tipo)) {
+        if (!["COMPRA", "ENTREGA", "PARTO"].includes(tipo_ingreso)) {
             return res.status(400).json({ message: "El tipo de operación debe ser COMPRA, ENTREGA o PARTO." });
         }
 
         // Crear el registro en Ingreso_recria
         const ingreso = await Ingreso_recria.create({
-            tipo_ingreso: tipo,
             fecha_carga,
             hora_carga,
             aclaraciones: aclaracion,
@@ -30,6 +29,7 @@ const postCompraHandler = async (req, res) => {
             genero: ingreso.genero,
             peso: ingreso.peso || null,
             fecha_ingreso: ingreso.fecha_ingreso || null,
+            caravana_madre: ingreso.caravana_madre || null,
             ingresoRecriaId: ingreso.id, // Relacionar con el ingreso
         }));
 
@@ -43,7 +43,7 @@ const postCompraHandler = async (req, res) => {
                 fecha_ingreso: ingreso.fecha_ingreso || null,
                 inseminado: false,
                 detalles: null,
-                tipo: null,
+                tipo: "TERNERA",
                 estado: "RECRIA",
             }));
 
@@ -55,13 +55,11 @@ const postCompraHandler = async (req, res) => {
         const cantidadMachos = arrayIngresos.filter((ingreso) => ingreso.genero === "MACHO").length;
 
         if (cantidadMachos > 0) {
-            const machoRegistro = await Macho.findOne();
-
-            if (machoRegistro) {
-                await machoRegistro.update({ terneroContador: machoRegistro.terneroContador + cantidadMachos });
-            } else {
-                await Macho.create({ terneroContador: cantidadMachos });
-            }
+            const machoRegistro = await Macho.create({
+                ultimo_ingreso: new Date(),
+                ternero_contador: cantidadMachos,
+                movimientos_anotaciones: aclaracion
+            });
         }
 
         res.status(201).json({

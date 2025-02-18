@@ -1,11 +1,16 @@
-const { Ganado } = require("../../db");
+const { Ganado, ControlVeterinario } = require("../../db");
 
 const getRecriaHandler = async (req, res) => {
     try {
         const ganadosRecria = await Ganado.findAll({
             where: {
-                estado: "RECRIA", // Filtrar por estado RECRIA
+                estado: "RECRIA"
             },
+            include: [
+                {
+                    model: ControlVeterinario,
+                }
+            ]
         });
         if (!ganadosRecria.length) {
             return res.status(404).json({ message: "No se encontraron ganados con estado RECRIA." });
