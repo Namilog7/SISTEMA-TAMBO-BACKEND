@@ -45,6 +45,10 @@ module.exports = (sequelize) => {
             },
             id_empleado: {
                 type: DataTypes.STRING
+            },
+            url_image: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         },
         { timestamps: true }

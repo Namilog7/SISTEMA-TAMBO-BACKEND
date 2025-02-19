@@ -1,12 +1,5 @@
 const { ControlVeterinario, Ganado } = require("../../../db");
-const cloudinary = require("cloudinary").v2;
-
-// Configura Cloudinary con variables de entorno
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+const postCloudinary = require("../../../controllers/postCloudinary")
 
 const postControlVeterinario = async (req, res) => {
     const { veterinario, detalle, arrayCaravanas, actaBase64 } = req.body;
@@ -17,22 +10,18 @@ const postControlVeterinario = async (req, res) => {
             return res.status(400).json({ message: "Faltan datos necesarios o la imagen acta no es válida." });
         }
 
-        /* const caravanas = JSON.parse(arrayCaravanas); */
-
         if (!Array.isArray(arrayCaravanas) || arrayCaravanas.length === 0) {
             return res.status(400).json({ message: "El campo arrayCaravanas debe ser un array válido." });
         }
 
-        // Subir la imagen a Cloudinary desde Base64
-        const uploadResult = await cloudinary.uploader.upload(`data:image/png;base64,${actaBase64}`, {
-            folder: "control_veterinario",
-        });
+        // Subir la imagen usando la función mejorada
+        const actaUrl = await postCloudinary(actaBase64, "control_veterinario");
 
         // Crear el registro en la base de datos
         const control = await ControlVeterinario.create({
             veterinario,
             detalle,
-            acta_url: uploadResult.secure_url, // Guardar la URL del acta subida a Cloudinary
+            acta_url: actaUrl, // Guardar la URL del acta subida a Cloudinary
         });
 
         // Validar que las caravanas de Ganado existan
@@ -54,7 +43,7 @@ const postControlVeterinario = async (req, res) => {
         return res.status(201).json({
             message: "Control creado exitosamente.",
             control,
-            acta_url: uploadResult.secure_url,
+            acta_url: actaUrl,
         });
     } catch (error) {
         console.error("Error al crear el control veterinario:", error);
@@ -65,3 +54,4 @@ const postControlVeterinario = async (req, res) => {
 module.exports = {
     postControlVeterinario,
 };
+

@@ -39,6 +39,10 @@ module.exports = (sequelize) => {
             },
             aclaracion: {
                 type: DataTypes.STRING
+            },
+            url_image: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         },
         { timestamps: false }

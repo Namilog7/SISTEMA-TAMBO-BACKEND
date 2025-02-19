@@ -2,9 +2,9 @@ const postLiquidacion = require("../../../../controllers/tambo/retiroLeche/liqui
 
 
 const liquidacionHandler = async (req, res) => {
-    const { arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro } = req.body
+    const { arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro, imagenBase64 } = req.body
     try {
-        const liquidacion = await postLiquidacion({ arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro });
+        const liquidacion = await postLiquidacion({ arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro, imagenBase64 });
         return res.json({
             message: `Se creo la liquidacion`,
             liquidacion
