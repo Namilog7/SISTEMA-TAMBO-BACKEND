@@ -1,5 +1,5 @@
 const { Inseminacion } = require('../../../../db');
-
+const postCloudinary = require("../../../postCloudinary")
 /**
  * Crea una nueva inseminación y asocia los ganados especificados en la tabla intermedia.
  * 
@@ -11,8 +11,9 @@ const { Inseminacion } = require('../../../../db');
  * @param {number[]} inseminacionData.arrayGanados - IDs de los ganados a asociar.
  * @returns {Promise<Object>} Objeto con la inseminación creada y un mensaje de éxito.
  */
-const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion }) => {
+const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion, imagenBase64 }) => {
     try {
+        const url_image = await postCloudinary(imagenBase64, "inseminacion")
         let bulkInseminacion = arrayGanados.map((ganado) => {
             return {
                 inseminador,
@@ -22,7 +23,8 @@ const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga,
                 caravana: ganado.caravana,
                 pajuela: ganado.pajuela,
                 sexado: ganado.sexado,
-                aclaracion
+                aclaracion,
+                url_image
             }
         })
         await Inseminacion.bulkCreate(bulkInseminacion);

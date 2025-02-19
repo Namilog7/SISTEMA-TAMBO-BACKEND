@@ -1,6 +1,7 @@
 const { Liquidacion, RetiroLeche } = require("../../../../db");
+const postCloudinary = require("../../../postCloudinary");
 
-const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro }) => {
+const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha, litros, importe_total, importe_blanco, importe_negro, imagenBase64 }) => {
     if (!arrayIdRetiros || arrayIdRetiros.length === 0) {
         throw new Error("El array de retiros no puede estar vacío.");
     }
@@ -27,6 +28,7 @@ const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha, litros, im
     // Calcular la cantidad total como la suma de los campos `cantidad` de los retiros
     const cantidadTotal = retiros.reduce((total, retiro) => total + retiro.cantidad, 0);
 
+    const url_image = await postCloudinary(imagenBase64, "liquidacionLeche")
     // Crear la liquidación con los valores calculados
     const nuevaLiquidacion = await Liquidacion.create({
         cantidad: cantidadTotal,
@@ -35,7 +37,8 @@ const postLiquidacion = async ({ arrayIdRetiros, precio_litro, fecha, litros, im
         litros,
         importe_total,
         importe_blanco,
-        importe_negro
+        importe_negro,
+        url_image
     });
 
     // Adjuntar el ID de la liquidación creada y actualizar `liquidado` a `true`

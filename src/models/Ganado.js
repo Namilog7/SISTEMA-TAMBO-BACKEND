@@ -27,6 +27,7 @@ module.exports = (sequelize) => {
             },
             tipo: {
                 type: DataTypes.ENUM("VACA", "TERNERA", "VAQUILLONA"),
+                defaultValue: "TERNERA",
                 allowNull: true
             },
             estado: {

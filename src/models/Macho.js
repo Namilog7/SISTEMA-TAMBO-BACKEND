@@ -9,10 +9,13 @@ module.exports = (sequelize) => {
                 defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
-            terneroContador: {
+            ternero_contador: {
                 type: DataTypes.INTEGER,
             },
-            aclaracion: {
+            ultimo_ingreso: {
+                type: DataTypes.DATE
+            },
+            movimiento_anotacion: {
                 type: DataTypes.STRING,
                 allowNull: true
             }

@@ -30,7 +30,8 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             importe: {
-                type: DataTypes.FLOAT
+                type: DataTypes.FLOAT,
+                allowNull: true
             }
         }
     );

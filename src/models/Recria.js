@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
             },
             caravana: {
                 type: DataTypes.STRING(),
-                allowNull: false
+                allowNull: true
             },
             peso: {
                 type: DataTypes.FLOAT,
@@ -27,6 +27,10 @@ module.exports = (sequelize) => {
             genero: {
                 type: DataTypes.ENUM("HEMBRA", "MACHO"),
                 allowNull: false
+            },
+            caravana_madre: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         }
     );
