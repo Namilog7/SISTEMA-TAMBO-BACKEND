@@ -2,18 +2,18 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "Macho",
+        "Movimiento_anotacion",
         {
             id: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
             },
-            ternero_contador: {
-                type: DataTypes.INTEGER,
-            },
-            ultimo_ingreso: {
+            fecha: {
                 type: DataTypes.DATE
+            },
+            texto: {
+                type: DataTypes.STRING
             }
         }
     );

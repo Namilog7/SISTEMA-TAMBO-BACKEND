@@ -70,7 +70,8 @@ const {
     User,
     TransaccionGanado,
     Macho,
-    Producto
+    Producto,
+    Movimiento_anotacion
 } = sequelize.models;
 
 //RELACIONES
