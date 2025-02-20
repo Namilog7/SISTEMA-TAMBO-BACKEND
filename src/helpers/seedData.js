@@ -80,7 +80,7 @@ const seedData = async () => {
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
             const tipo = faker.helpers.randomize(["VACA", "VAQUILLONA", "TERNERA"]);
-            const estado = faker.helpers.randomize(["RECRIA", "ORDEÑE", "ENGORDE"]);
+            const estado = tipo === "TERNERA" ? "RECRIA" : faker.helpers.randomize(["ORDEÑE", "ENGORDE"]);
 
             ganadoData.push({
                 caravana: faker.random.alphaNumeric(4),

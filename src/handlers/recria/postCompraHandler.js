@@ -1,4 +1,5 @@
-const { Ingreso_recria, Recria, Ganado, Macho } = require("../../db");
+const { text } = require("express");
+const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion } = require("../../db");
 
 const postCompraHandler = async (req, res) => {
     try {
@@ -52,14 +53,41 @@ const postCompraHandler = async (req, res) => {
         }
 
         // Contar machos y actualizar el contador en la tabla Macho
-        const cantidadMachos = arrayIngresos.filter((ingreso) => ingreso.genero === "MACHO").length;
-
-        if (cantidadMachos > 0) {
-            const machoRegistro = await Macho.create({
+        const cantidadMachos = arrayIngresos.filter((ingreso) => ingreso.genero === "MACHO");
+        let string = ""
+        cantidadMachos.forEach(macho => {
+            string += `${macho.caravana_madre} `
+        });
+        if (cantidadMachos.length > 0) {
+            const machoRegistro = await Macho.findOne();
+            if (!machoRegistro) await Macho.create({
                 ultimo_ingreso: new Date(),
-                ternero_contador: cantidadMachos,
-                movimientos_anotaciones: aclaracion
-            });
+                ternero_contador: cantidadMachos.length
+            })
+            else {
+                machoRegistro.ultimo_ingreso = new Date()
+                machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length;
+            }
+            let stringText;
+            switch (tipo_ingreso) {
+                case "PARTO":
+                    stringText = `Nacieron ${cantidadMachos.length} terneros de las vacas ${string}`;
+                    break;
+                case "COMPRA":
+                    stringText = `Se compraron ${cantidadMachos.length} terneros`;
+                    break;
+                case "ENTREGA":
+                    stringText = `Se entregaron ${cantidadMachos.length} terneros`;
+                    break;
+                default:
+                    stringText = "Tipo de ingreso no reconocido";
+                    break;
+            }
+            console.log(stringText)
+            await Movimiento_anotacion.create({
+                fecha: new Date(),
+                texto: stringText
+            })
         }
 
         res.status(201).json({
@@ -67,7 +95,7 @@ const postCompraHandler = async (req, res) => {
             ingreso,
             recria: recriaRecords,
             ganado: ganadoRecords.length > 0 ? ganadoRecords : "No se crearon registros en Ganado",
-            machos: cantidadMachos > 0 ? `Se sumaron ${cantidadMachos} machos al contador.` : "No se registraron machos.",
+            machos: cantidadMachos.length > 0 ? `Se sumaron ${cantidadMachos.length} machos al contador.` : "No se registraron machos.",
         });
     } catch (error) {
         console.error("Error en postCompraHandler:", error);

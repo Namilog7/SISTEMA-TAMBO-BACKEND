@@ -1,19 +1,14 @@
-const { Macho } = require("../../db");
+const { Macho, Movimiento_anotacion } = require("../../db");
 
 const getMachoHandler = async (req, res) => {
     try {
-        const machos = await Macho.findAll();
-
-        const terneroContadorTotal = machos.reduce((total, macho) => {
-            return total + (parseInt(macho.ternero_contador, 10) || 0);
-        }, 0);
-
-        const response = {
-            ternero_contador: terneroContadorTotal,
-            machos
-        };
-
-        return res.json(response);
+        const machos = await Macho.findOne()
+        const movimientos = await Movimiento_anotacion.findAll()
+        return res.json({
+            ternero_contador: machos.ternero_contador,
+            ultimo_ingreso: machos.ultimo_ingreso,
+            movimientos
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: error.message });

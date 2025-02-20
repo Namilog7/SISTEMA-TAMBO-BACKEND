@@ -4,7 +4,7 @@ const getRecriaHandler = async (req, res) => {
     try {
         const ganadosRecria = await Ganado.findAll({
             where: {
-                estado: "RECRIA"
+                tipo: "TERNERA"
             },
             include: [
                 {
@@ -13,7 +13,7 @@ const getRecriaHandler = async (req, res) => {
             ]
         });
         if (!ganadosRecria.length) {
-            return res.status(404).json({ message: "No se encontraron ganados con estado RECRIA." });
+            return res.status(404).json({ message: "No se encontraron ganados." });
         }
         res.status(200).json(ganadosRecria);
     } catch (error) {
