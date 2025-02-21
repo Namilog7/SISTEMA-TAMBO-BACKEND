@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const getTamboHandler = require("../../handlers/tambo/getTamboHandler");
 /* const postTamboHandler = require("../../handlers/tambo/postTamboHandler");
 const deleteTamboHandler = require("../../handlers/tambo/deleteTamboHandler");
 const putTamboHandler = require("../../handlers/tambo/putTamboHandler");
@@ -13,8 +12,6 @@ const controlLecheroRouter = require("../tamboRouter/controlLecheroRouter/contro
 const informeRouter = require("../tamboRouter/informeRouter/informeRouter");
 
 const tamboRouter = Router();
-
-tamboRouter.get("/", getTamboHandler);
 /* tamboRouter.post("/", postTamboMid, postTamboHandler);
 tamboRouter.delete("/:id", deleteTamboHandler);
 tamboRouter.put("/", putTamboHandler); */

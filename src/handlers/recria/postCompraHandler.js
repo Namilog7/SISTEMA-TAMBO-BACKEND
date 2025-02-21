@@ -1,4 +1,3 @@
-const { text } = require("express");
 const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion } = require("../../db");
 
 const postCompraHandler = async (req, res) => {
@@ -65,8 +64,11 @@ const postCompraHandler = async (req, res) => {
                 ternero_contador: cantidadMachos.length
             })
             else {
-                machoRegistro.ultimo_ingreso = new Date()
-                machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length;
+                /*  machoRegistro.ultimo_ingreso = new Date()
+                 machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
+                machoRegistro.ultimo_ingreso = new Date();
+                machoRegistro.ternero_contador += cantidadMachos.length;
+                await machoRegistro.save();
             }
             let stringText;
             switch (tipo_ingreso) {
