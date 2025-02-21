@@ -48,7 +48,6 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Desestructuracion de los modelos
 const {
     Sector,
-    Tambo,
     RetiroLeche,
     Liquidacion,
     Insumo,
@@ -76,17 +75,15 @@ const {
 
 //RELACIONES
 
-Sector.hasOne(Tambo);
-Tambo.hasOne(Sector);
 
-Tambo.hasMany(RetiroLeche, {
-    foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
+Sector.hasMany(RetiroLeche, {
+    foreignKey: 'id_sector',   // Nombre de la clave foránea en RetiroLeche
     as: 'RetirosLeche',       // Alias para acceder a los Retiros de Leche desde un Tambo
     onDelete: 'CASCADE',      // Si un Tambo se elimina, elimina los registros de RetiroLeche
     onUpdate: 'CASCADE',      // Si cambia el ID del Tambo, actualiza la FK en RetiroLeche
 });
 
-RetiroLeche.belongsTo(Tambo, {
+RetiroLeche.belongsTo(Sector, {
     foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
     as: 'Tambo',              // Alias para acceder al Tambo desde un Retiro de Leche
 });
@@ -107,8 +104,8 @@ RetiroLeche.belongsTo(Liquidacion, {
 Sector.hasMany(Insumo, { foreignKey: "id_sector" });
 Insumo.belongsTo(Sector, { foreignKey: "id_sector" });
 
-Tambo.hasMany(Ganado, { foreignKey: "id_tambo" });
-Ganado.belongsTo(Tambo, { foreignKey: "id_tambo" });
+Sector.hasMany(Ganado, { foreignKey: "id_sector" });
+Ganado.belongsTo(Sector, { foreignKey: "id_sector" });
 
 
 Ganado.belongsToMany(ControlVeterinario, { through: ControlGanado });
