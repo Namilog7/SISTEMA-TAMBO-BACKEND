@@ -58,12 +58,12 @@ const postCompraHandler = async (req, res) => {
         });
         if (cantidadMachos.length > 0) {
             const machoRegistro = await Macho.findOne();
-            console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
             if (!machoRegistro) {
                 await Macho.create({
                     ultimo_ingreso: new Date(),
                     ternero_contador: cantidadMachos.length
                 })
+                console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
             }
             else {
                 /*  machoRegistro.ultimo_ingreso = new Date()
