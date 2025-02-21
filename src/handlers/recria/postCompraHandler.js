@@ -71,6 +71,7 @@ const postCompraHandler = async (req, res) => {
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
                 machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
+                console.log(machoRegistro.ternero_contador + cantidadMachos.length, machoRegistro)
                 await machoRegistro.save();
             }
             let stringText;
