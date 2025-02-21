@@ -19,7 +19,7 @@ recriaRouter.post("/ingreso", postCompraHandler)
 recriaRouter.get("/macho", getMachoHandler)
 recriaRouter.delete("/macho/movimientos/:id", deleteMovimientoHandler)
 recriaRouter.delete("/laconchatumadre", async () => {
-    await Macho.drop()
+    await Macho.delete({ where: {} })
 })
 
 

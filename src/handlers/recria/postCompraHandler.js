@@ -69,6 +69,7 @@ const postCompraHandler = async (req, res) => {
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
                 machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
+                await Macho.save()
             }
             let stringText;
             switch (tipo_ingreso) {
