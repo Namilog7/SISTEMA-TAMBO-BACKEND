@@ -29,8 +29,7 @@ const postCompraHandler = async (req, res) => {
             genero: ingreso.genero,
             peso: ingreso.peso || null,
             fecha_ingreso: ingreso.fecha_ingreso || null,
-            caravana_madre: ingreso.caravana_madre || null,
-            ingresoRecriaId: ingreso.id, // Relacionar con el ingreso
+            origen: ingreso.origen || null,
         }));
 
         await Recria.bulkCreate(recriaRecords);
@@ -57,8 +56,8 @@ const postCompraHandler = async (req, res) => {
         cantidadMachos.forEach(macho => {
             string += `${macho.origen} `
         });
+        const machoRegistro = await Macho.findOne();
         if (cantidadMachos.length > 0) {
-            const machoRegistro = await Macho.findOne();
             console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
             if (!machoRegistro) {
                 await Macho.create({
@@ -71,8 +70,6 @@ const postCompraHandler = async (req, res) => {
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
                 machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
-                console.log(machoRegistro.ternero_contador + cantidadMachos.length, machoRegistro)
-                await machoRegistro.save();
             }
             let stringText;
             switch (tipo_ingreso) {
@@ -89,7 +86,6 @@ const postCompraHandler = async (req, res) => {
                     stringText = "Tipo de ingreso no reconocido";
                     break;
             }
-            console.log(stringText)
             await Movimiento_anotacion.create({
                 fecha: new Date(),
                 texto: stringText
