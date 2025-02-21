@@ -61,14 +61,12 @@ const seedData = async () => {
         q
         */
         // Insertar Ganado
-        const sectorId = uuidv4();
-        console.log({ sectorIdTambo: sectorId });
 
         // Insertar Sector
-        const sector = await Sector.create({
+        const tambo = await Sector.create({
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
-            id: sectorId
+
         });
 
         const fabricaId = uuidv4()

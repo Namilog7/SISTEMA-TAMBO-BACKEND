@@ -55,19 +55,22 @@ const postCompraHandler = async (req, res) => {
         const cantidadMachos = arrayIngresos.filter((ingreso) => ingreso.genero === "MACHO");
         let string = ""
         cantidadMachos.forEach(macho => {
-            string += `${macho.caravana_madre} `
+            string += `${macho.origen} `
         });
         if (cantidadMachos.length > 0) {
             const machoRegistro = await Macho.findOne();
-            if (!machoRegistro) await Macho.create({
-                ultimo_ingreso: new Date(),
-                ternero_contador: cantidadMachos.length
-            })
+            console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
+            if (!machoRegistro) {
+                await Macho.create({
+                    ultimo_ingreso: new Date(),
+                    ternero_contador: cantidadMachos.length
+                })
+            }
             else {
                 /*  machoRegistro.ultimo_ingreso = new Date()
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
-                machoRegistro.ternero_contador += cantidadMachos.length;
+                machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
                 await machoRegistro.save();
             }
             let stringText;

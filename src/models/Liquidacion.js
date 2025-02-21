@@ -32,6 +32,9 @@ module.exports = (sequelize) => {
             importe_negro: {
                 type: DataTypes.FLOAT,
                 allowNull: true
+            },
+            url_image: {
+                type: DataTypes.STRING
             }
         },
         { timestamps: true }

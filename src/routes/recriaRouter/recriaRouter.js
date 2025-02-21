@@ -6,6 +6,7 @@ const getVentaHandler = require("../../handlers/recria/getVentaHandler");
 const getCompraHandler = require("../../handlers/recria/getCompraHandler");
 const getIngresoHandler = require("../../handlers/recria/getIngreso");
 const getMachoHandler = require("../../handlers/recria/getMachoHandler");
+const deleteMovimientoHandler = require("../../handlers/recria/deleteMovimientoHandler");
 
 const recriaRouter = Router();
 recriaRouter.get("/", getRecriaHandler)
@@ -15,6 +16,7 @@ recriaRouter.get("/ingreso", getIngresoHandler)
 recriaRouter.post("/venta", postVentaRecria)
 recriaRouter.post("/ingreso", postCompraHandler)
 recriaRouter.get("/macho", getMachoHandler)
+recriaRouter.delete("/macho/movimientos/:id", deleteMovimientoHandler)
 
 
 
