@@ -56,8 +56,8 @@ const postCompraHandler = async (req, res) => {
         cantidadMachos.forEach(macho => {
             string += `${macho.origen} `
         });
-        const machoRegistro = await Macho.findOne();
         if (cantidadMachos.length > 0) {
+            const machoRegistro = await Macho.findOne();
             console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
             if (!machoRegistro) {
                 await Macho.create({
