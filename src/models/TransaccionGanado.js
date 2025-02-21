@@ -31,6 +31,10 @@ module.exports = (sequelize) => {
             monto_total: {
                 type: DataTypes.FLOAT,
                 allowNull: false
+            },
+            genero: {
+                type: DataTypes.ENUM("MACHO", "HEMBRA"),
+                allowNull: false
             }
         },
         { timestamps: false }

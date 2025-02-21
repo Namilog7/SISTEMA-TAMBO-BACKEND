@@ -2,7 +2,7 @@ const { TransaccionGanado } = require("../../db");
 
 const postVentaRecria = async (req, res) => {
     try {
-        const { tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha } = req.body;
+        const { tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero } = req.body;
 
         // Validar que el tipo de operación sea VENTA
         if (tipo_operacion !== "VENTA") {
@@ -18,6 +18,7 @@ const postVentaRecria = async (req, res) => {
             monto_total,
             cantidad,
             fecha,
+            genero
         });
         res.status(201).json({
             message: "Transacción de venta registrada con éxito.",
