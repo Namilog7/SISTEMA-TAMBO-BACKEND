@@ -63,7 +63,6 @@ const postCompraHandler = async (req, res) => {
                     ultimo_ingreso: new Date(),
                     ternero_contador: cantidadMachos.length
                 })
-                console.log(machoRegistro.ternero_contador, cantidadMachos.length, cantidadMachos.length + machoRegistro.ternero_contador)
             }
             else {
                 /*  machoRegistro.ultimo_ingreso = new Date()
