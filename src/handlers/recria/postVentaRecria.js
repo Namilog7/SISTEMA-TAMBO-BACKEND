@@ -3,7 +3,7 @@ const postCloudinary = require("../../controllers/postCloudinary")
 
 const postVentaRecria = async (req, res) => {
     try {
-        const { tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero, comprobanteBase64, otros_gastos } = req.body;
+        const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero, comprobanteBase64, otros_gastos } = req.body;
 
         // Validar que el tipo de operación sea VENTA
         if (tipo_operacion !== "VENTA") {
@@ -16,11 +16,13 @@ const postVentaRecria = async (req, res) => {
         const transaccion = await TransaccionGanado.create({
             tipo_operacion,
             comprador,
+            contacto,
             precio_kilo,
             monto_total,
             cantidad,
             fecha,
             genero,
+            peso_total,
             comprobante,
             otros_gastos
         });
