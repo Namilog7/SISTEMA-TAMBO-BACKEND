@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
             },
             texto: {
                 type: DataTypes.STRING
+            },
+            archivo: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         }
     );
