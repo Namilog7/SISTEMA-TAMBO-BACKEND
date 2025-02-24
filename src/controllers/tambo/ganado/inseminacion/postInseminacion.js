@@ -21,7 +21,7 @@ const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga,
             throw new Error("Datos insuficientes: Se requiere un inseminador y al menos un ganado.");
         }
         let image
-        if (url_image) {
+        if (imagenBase64) {
 
             image = await postCloudinary(imagenBase64, "inseminacion");
         }
