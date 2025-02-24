@@ -20,12 +20,11 @@ const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga,
         if (!inseminador || !Array.isArray(arrayGanados) || arrayGanados.length === 0) {
             throw new Error("Datos insuficientes: Se requiere un inseminador y al menos un ganado.");
         }
+        let image
+        if (url_image) {
 
-        if (!imagenBase64 || typeof imagenBase64 !== "string") {
-            throw new Error("Imagen inválida o no proporcionada.");
+            image = await postCloudinary(imagenBase64, "inseminacion");
         }
-
-        let url_image = await postCloudinary(imagenBase64, "inseminacion");
 
         // Preparar datos para la inserción
         let bulkInseminacion = arrayGanados.map(({ caravana, pajuela, sexado }) => ({
@@ -37,7 +36,7 @@ const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga,
             pajuela,
             sexado,
             aclaracion,
-            url_image
+            url_image: image
         }));
 
         // Guardar en la base de datos
