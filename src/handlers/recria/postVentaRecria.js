@@ -1,8 +1,9 @@
-const { TransaccionGanado } = require("../../db");
+const { TransaccionGanado, Macho, Movimiento_anotacion } = require("../../db");
+const postCloudinary = require("../../controllers/postCloudinary")
 
 const postVentaRecria = async (req, res) => {
     try {
-        const { tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero } = req.body;
+        const { tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero, comprobanteBase64, otros_gastos } = req.body;
 
         // Validar que el tipo de operación sea VENTA
         if (tipo_operacion !== "VENTA") {
@@ -11,6 +12,7 @@ const postVentaRecria = async (req, res) => {
         if (!comprador || !precio_kilo || !monto_total || !cantidad || !fecha) {
             return res.status(400).json({ message: "Todos los campos son obligatorios." });
         }
+        const comprobante = await postCloudinary(comprobanteBase64, "comprobantes")
         const transaccion = await TransaccionGanado.create({
             tipo_operacion,
             comprador,
@@ -18,8 +20,23 @@ const postVentaRecria = async (req, res) => {
             monto_total,
             cantidad,
             fecha,
-            genero
+            genero,
+            comprobante,
+            otros_gastos
         });
+        if (genero === "MACHO") {
+            const machos = await Macho.findOne()
+            if (!machos) {
+                throw new Error("Todavia no tienes machos")
+            }
+            machos.ternero_contador = machos.ternero_contador - cantidad
+            await machos.save()
+            await Movimiento_anotacion.create({
+                text: `Se vendieron ${cantidad} machos`,
+                fecha: new Date()
+            })
+        }
+
         res.status(201).json({
             message: "Transacción de venta registrada con éxito.",
             transaccion,
