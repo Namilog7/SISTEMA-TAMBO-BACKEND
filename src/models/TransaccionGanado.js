@@ -43,6 +43,14 @@ module.exports = (sequelize) => {
             comprobante: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            contacto: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            peso_total: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
         },
         { timestamps: false }
