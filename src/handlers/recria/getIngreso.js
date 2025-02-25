@@ -1,4 +1,4 @@
-const { Ingreso_recria } = require("../../db");
+const { Recria } = require("../../db");
 
 const getIngresoHandler = async (req, res) => {
     try {
