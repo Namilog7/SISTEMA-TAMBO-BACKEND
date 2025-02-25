@@ -1,9 +1,9 @@
 const postInseminacion = require("../../../../controllers/tambo/ganado/inseminacion/postInseminacion")
 
 const postInseminacionHandler = async (req, res) => {
-    const { inseminador, fecha, fecha_carga, hora_carga, arrayGanados, imageBase64 } = req.body
+    const { inseminador, fecha, fecha_carga, hora_carga, arrayGanados, imageBase64, aclaracion } = req.body
     try {
-        const response = await postInseminacion({ inseminador, fecha, fecha_carga, hora_carga, arrayGanados, imageBase64 })
+        const response = await postInseminacion({ aclaracion, inseminador, fecha, fecha_carga, hora_carga, arrayGanados, imageBase64 })
         // cambiar handler
         res.json({
             message:

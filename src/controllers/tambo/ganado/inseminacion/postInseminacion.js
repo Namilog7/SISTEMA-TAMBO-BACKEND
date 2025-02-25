@@ -1,40 +1,55 @@
 const { Inseminacion } = require('../../../../db');
-const postCloudinary = require("../../../postCloudinary")
+const postCloudinary = require("../../../postCloudinary");
+
 /**
  * Crea una nueva inseminación y asocia los ganados especificados en la tabla intermedia.
  * 
  * @param {Object} inseminacionData - Datos de la inseminación.
  * @param {string} inseminacionData.inseminador - Nombre del inseminador.
- * @param {string} inseminacionData.pajuela - Código de la pajuela.
- * @param {string} inseminacionData.origen_genetica - Origen de la genética.
- * @param {string} inseminacionData.tipo - Tipo de inseminación.
- * @param {number[]} inseminacionData.arrayGanados - IDs de los ganados a asociar.
+ * @param {Array} inseminacionData.arrayGanados - Array de objetos con información de los ganados.
+ * @param {string} inseminacionData.fecha - Fecha de la inseminación.
+ * @param {string} inseminacionData.fecha_carga - Fecha de carga.
+ * @param {string} inseminacionData.hora_carga - Hora de carga.
+ * @param {string} [inseminacionData.aclaracion] - Información adicional.
+ * @param {string} [inseminacionData.imagenBase64] - Imagen en formato Base64.
  * @returns {Promise<Object>} Objeto con la inseminación creada y un mensaje de éxito.
  */
-const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion, imagenBase64 }) => {
+const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion, imageBase64 }) => {
     try {
-        const url_image = await postCloudinary(imagenBase64, "inseminacion")
-        let bulkInseminacion = arrayGanados.map((ganado) => {
-            return {
-                inseminador,
-                fecha,
-                fecha_carga,
-                hora_carga,
-                caravana: ganado.caravana,
-                pajuela: ganado.pajuela,
-                sexado: ganado.sexado,
-                aclaracion,
-                url_image
-            }
-        })
-        await Inseminacion.bulkCreate(bulkInseminacion);
+        // Validación de datos
+        if (!inseminador || !Array.isArray(arrayGanados) || arrayGanados.length === 0) {
+            throw new Error("Datos insuficientes: Se requiere un inseminador y al menos un ganado.");
+        }
+        let image
+        console.log(imageBase64)
+        if (imageBase64) {
+
+            image = await postCloudinary(imageBase64, "inseminacion");
+        }
+        console.log(image)
+        // Preparar datos para la inserción
+        let bulkInseminacion = arrayGanados.map(({ caravana, pajuela, sexado }) => ({
+            inseminador,
+            fecha,
+            fecha_carga,
+            hora_carga,
+            caravana,
+            pajuela,
+            sexado,
+            aclaracion,
+            url_image: image
+        }));
+
+        // Guardar en la base de datos
+        const createdRecords = await Inseminacion.bulkCreate(bulkInseminacion);
 
         return {
-            message: 'Inseminación creada con éxito'
+            message: 'Inseminación creada con éxito',
+            totalInseminaciones: createdRecords.length
         };
     } catch (error) {
-        console.error('Error al crear la inseminación:', error.message);
-        throw new Error('No se pudo crear la inseminación. Verifica los datos e inténtalo de nuevo.');
+        console.error('Error al crear la inseminación:', error);
+        throw new Error(`No se pudo crear la inseminación: ${error.message}`);
     }
 };
 

@@ -11,7 +11,6 @@ const postCloudinary = async (base64Image, folderName) => {
         if (!base64Image.startsWith("data:image/")) {
             base64Image = `data:image/jpeg;base64,${base64Image}`;
         }
-
         const result = await cloudinary.uploader.upload(base64Image, {
             folder: folderName,
         });
