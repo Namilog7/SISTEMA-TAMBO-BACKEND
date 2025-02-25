@@ -1,5 +1,5 @@
 /**
- * Función para aplicar paginado a los datos.
+ * Función para aplicar paginado a los datos en orden descendente por fecha de carga.
  * @param {Array} data - El array de datos a paginar.
  * @param {number} page - Número de la página actual.
  * @param {number} limit - Cantidad de elementos por página.
@@ -13,11 +13,14 @@ const paginate = (data, page = 1, limit = 10) => {
         throw new Error("Los parámetros 'page' y 'limit' deben ser números mayores a 0.");
     }
 
-    const totalItems = data.length;
+    // Ordenar los datos del más nuevo al más viejo usando fecha_carga
+    const sortedData = [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const totalItems = sortedData.length;
     const totalPages = Math.ceil(totalItems / limitNumber);
     const startIndex = (pageNumber - 1) * limitNumber;
     const endIndex = startIndex + limitNumber;
-    const paginatedData = data.slice(startIndex, endIndex);
+    const paginatedData = sortedData.slice(startIndex, endIndex);
 
     return {
         totalItems,
