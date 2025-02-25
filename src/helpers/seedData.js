@@ -1,4 +1,4 @@
-const { Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User, Macho } = require("./../db"); // Asegúrate de importar el modelo User
+const { Inseminacion, Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User, Macho } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
@@ -61,7 +61,10 @@ const seedData = async () => {
         q
         */
         // Insertar Ganado
-
+        const Inseminaciones = await Inseminacion.findAll({})
+        if (Inseminaciones.length) {
+            await Inseminacion.destroy({})
+        }
         // Insertar Sector
         const tambo = await Sector.create({
             nombre: "Tambos",
