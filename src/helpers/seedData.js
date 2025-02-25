@@ -61,10 +61,6 @@ const seedData = async () => {
         q
         */
         // Insertar Ganado
-        const Inseminaciones = await Inseminacion.findAll({})
-        if (Inseminaciones.length) {
-            await Inseminacion.destroy({})
-        }
         // Insertar Sector
         const tambo = await Sector.create({
             nombre: "Tambos",
