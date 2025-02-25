@@ -14,17 +14,17 @@ const postCloudinary = require("../../../postCloudinary");
  * @param {string} [inseminacionData.imagenBase64] - Imagen en formato Base64.
  * @returns {Promise<Object>} Objeto con la inseminación creada y un mensaje de éxito.
  */
-const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion, imagenBase64 }) => {
+const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga, hora_carga, aclaracion, imageBase64 }) => {
     try {
         // Validación de datos
         if (!inseminador || !Array.isArray(arrayGanados) || arrayGanados.length === 0) {
             throw new Error("Datos insuficientes: Se requiere un inseminador y al menos un ganado.");
         }
         let image
-        console.log(imagenBase64)
-        if (imagenBase64) {
+        console.log(imageBase64)
+        if (imageBase64) {
 
-            image = await postCloudinary(imagenBase64, "inseminacion");
+            image = await postCloudinary(imageBase64, "inseminacion");
         }
         console.log(image)
         // Preparar datos para la inserción
