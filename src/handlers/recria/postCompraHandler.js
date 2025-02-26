@@ -4,8 +4,17 @@ const postCompraHandler = async (req, res) => {
     try {
         const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
 
-        if (!tipo_ingreso || !arrayIngresos || arrayIngresos.length === 0 || !usuario_carga || !fecha_carga || !hora_carga) {
-            return res.status(400).json({ message: "Todos los campos son obligatorios y debe haber al menos un ingreso." });
+        if (
+            !tipo_ingreso ||
+            !arrayIngresos ||
+            arrayIngresos.length === 0 ||
+            !usuario_carga ||
+            !fecha_carga ||
+            !hora_carga
+        ) {
+            return res
+                .status(400)
+                .json({ message: "Todos los campos son obligatorios y debe haber al menos un ingreso." });
         }
 
         if (!["COMPRA", "ENTREGA", "PARTO"].includes(tipo_ingreso)) {
@@ -19,7 +28,7 @@ const postCompraHandler = async (req, res) => {
             aclaraciones: aclaracion,
             usuario_carga,
             importe,
-            tipo_ingreso
+            tipo_ingreso,
         });
 
         // Crear registros en Recria y asociarlos con el Ingreso_recria
@@ -52,24 +61,23 @@ const postCompraHandler = async (req, res) => {
 
         // Contar machos y actualizar el contador en la tabla Macho
         const cantidadMachos = arrayIngresos.filter((ingreso) => ingreso.genero === "MACHO");
-        let string = ""
-        cantidadMachos.forEach(macho => {
-            string += `${macho.origen} `
+        let string = "";
+        cantidadMachos.forEach((macho) => {
+            string += `${macho.origen} `;
         });
         if (cantidadMachos.length > 0) {
             const machoRegistro = await Macho.findOne();
             if (!machoRegistro) {
                 await Macho.create({
                     ultimo_ingreso: new Date(),
-                    ternero_contador: cantidadMachos.length
-                })
-            }
-            else {
+                    ternero_contador: cantidadMachos.length,
+                });
+            } else {
                 /*  machoRegistro.ultimo_ingreso = new Date()
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
                 machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
-                await machoRegistro.save()
+                await machoRegistro.save();
             }
             let stringText;
             switch (tipo_ingreso) {
@@ -88,8 +96,10 @@ const postCompraHandler = async (req, res) => {
             }
             await Movimiento_anotacion.create({
                 fecha: new Date(),
-                texto: stringText
-            })
+                texto: stringText,
+                terneros_afectados: cantidadMachos.length,
+                tipo_movimiento: "INGRESO",
+            });
         }
 
         res.status(201).json({
@@ -97,7 +107,10 @@ const postCompraHandler = async (req, res) => {
             ingreso,
             recria: recriaRecords,
             ganado: ganadoRecords.length > 0 ? ganadoRecords : "No se crearon registros en Ganado",
-            machos: cantidadMachos.length > 0 ? `Se sumaron ${cantidadMachos.length} machos al contador.` : "No se registraron machos.",
+            machos:
+                cantidadMachos.length > 0
+                    ? `Se sumaron ${cantidadMachos.length} machos al contador.`
+                    : "No se registraron machos.",
         });
     } catch (error) {
         console.error("Error en postCompraHandler:", error);
