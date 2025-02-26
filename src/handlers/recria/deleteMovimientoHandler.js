@@ -4,10 +4,10 @@ const crudController = require("../../controllers/crudController");
 const deleteMovimientoHandler = async (req, res) => {
     const { id } = req.params;
     const deleteMovimiento = crudController(Movimiento_anotacion);
-    let terneros = await Macho.findOne();
     try {
         // modificar contador
-        const movimiento = await deleteMovimiento.readOne(id);
+        let movimiento = await Movimiento_anotacion.findOne({ where: { id: id } });
+        let terneros = await Macho.findOne();
         if (movimiento.tipo_movimiento === "INGRESO") {
             terneros.ternero_contador = Number(terneros.ternero_contador) - Number(movimiento.terneros_afectados);
         } else if (movimiento.tipo_movimiento === "BAJA") {
@@ -19,6 +19,7 @@ const deleteMovimientoHandler = async (req, res) => {
         const result = await deleteMovimiento.delete(id);
         return res.json({
             result,
+            terneros,
         });
     } catch (error) {
         console.log(error.message);
