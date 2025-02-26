@@ -9,9 +9,9 @@ const deleteMovimientoHandler = async (req, res) => {
         // modificar contador
         const movimiento = await deleteMovimiento.readOne(id);
         if (movimiento.tipo_movimiento === "INGRESO") {
-            terneros.ternero_contador = Number(terneros.ternero_contador) - Number(movimiento.ternero_contador);
+            terneros.ternero_contador = Number(terneros.ternero_contador) - Number(movimiento.terneros_afectados);
         } else if (movimiento.tipo_movimiento === "BAJA") {
-            terneros.ternero_contador = Number(terneros.ternero_contador) + Number(movimiento.ternero_contador);
+            terneros.ternero_contador = Number(terneros.ternero_contador) + Number(movimiento.terneros_afectados);
         }
         await terneros.save();
 
