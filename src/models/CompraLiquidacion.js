@@ -2,14 +2,14 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
     sequelize.define(
-        "RetiroLeche",
+        "CompraLiquidacion",
         {
             id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            cantidad: {
+            litros: {
                 type: DataTypes.FLOAT,
                 allowNull: false,
             },
@@ -17,33 +17,23 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            liquidado: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                defaultValue: false
-            },
-            estado: {
-                type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
-                allowNull: false,
-                defaultValue: "ACTIVO"
-            },
-            hora_carga: {
-                type: DataTypes.STRING,
+            importe_total: {
+                type: DataTypes.FLOAT,
                 allowNull: false
             },
-            encargado_retiro: {
-                type: DataTypes.STRING,
-                allowNull: true
-            },
-            hora_retiro: {
-                type: DataTypes.STRING,
+            precio_litro: {
+                type: DataTypes.FLOAT,
                 allowNull: false
             },
-            aclaracion: {
-                type: DataTypes.STRING,
+            importe_blanco: {
+                type: DataTypes.FLOAT,
                 allowNull: true
             },
-            usuario_carga: {
+            importe_negro: {
+                type: DataTypes.FLOAT,
+                allowNull: true
+            },
+            url_image: {
                 type: DataTypes.STRING
             }
         },

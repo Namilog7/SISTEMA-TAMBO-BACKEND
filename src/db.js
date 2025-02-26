@@ -5,17 +5,17 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
 const { ssl } = require("pg/lib/defaults");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    /*     dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        } */
 });
 
 // Obtención del nombre del archivo actual
@@ -70,23 +70,24 @@ const {
     TransaccionGanado,
     Macho,
     Producto,
-    Movimiento_anotacion
+    Movimiento_anotacion,
+    CompraLeche,
+    LoteSiembra,
+    EstadoSiembra,
+    ResumenCuenta
 } = sequelize.models;
 
 //RELACIONES
 
 
-Sector.hasMany(RetiroLeche, {
-    foreignKey: 'id_sector',   // Nombre de la clave foránea en RetiroLeche
-    as: 'RetirosLeche',       // Alias para acceder a los Retiros de Leche desde un Tambo
-    onDelete: 'CASCADE',      // Si un Tambo se elimina, elimina los registros de RetiroLeche
-    onUpdate: 'CASCADE',      // Si cambia el ID del Tambo, actualiza la FK en RetiroLeche
-});
+Sector.hasMany(RetiroLeche, { foreignKey: 'id_sector' });
+RetiroLeche.belongsTo(Sector, { foreignKey: 'id_sector' });
 
-RetiroLeche.belongsTo(Sector, {
-    foreignKey: 'id_tambo',   // Nombre de la clave foránea en RetiroLeche
-    as: 'Tambo',              // Alias para acceder al Tambo desde un Retiro de Leche
-});
+Sector.hasMany(CompraLeche, { foreignKey: "id_sector" });
+CompraLeche.belongsTo(Sector, { foreignKey: "id_sector" });
+
+Proveedor.hasMany(CompraLeche, { foreignKey: "id_proveedor" });
+CompraLeche.belongsTo(Proveedor, { foreignKey: "id_proveedor" });
 
 Liquidacion.hasMany(RetiroLeche, {
     foreignKey: 'id_liquidacion', // Nombre de la clave foránea en RetiroLeche
@@ -135,10 +136,12 @@ Caja.hasOne(Sector, { foreignKey: "id_sector" });
 Caja.hasMany(Transaccion, { foreignKey: "id_caja" });
 Transaccion.belongsTo(Caja, { foreignKey: "id_caja" });
 
-Proveedor.hasMany(Nota, { foreignKey: "id_afectado" });
-Nota.belongsTo(Proveedor, { foreignKey: "id_afectado" });
-Cliente.hasMany(Nota, { foreignKey: "id_afectado" });
-Nota.belongsTo(Cliente, { foreignKey: "id_afectado" });
+Nota.belongsTo(Cliente, { foreignKey: "id_afectado", constraints: false });
+Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", constraints: false });
+
+Cliente.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
+Proveedor.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
+
 
 
 Ganado.hasOne(TransaccionGanado);
@@ -146,6 +149,38 @@ TransaccionGanado.hasOne(Ganado);
 
 Sector.hasMany(Producto, { foreignKey: "id_sector" });
 Producto.belongsTo(Sector, { foreignKey: "id_sector" });
+
+LoteSiembra.hasMany(EstadoSiembra, { foreignKey: "id_lote" });
+EstadoSiembra.belongsTo(LoteSiembra, { foreignKey: "id_lote" });
+
+Cliente.hasMany(ResumenCuenta, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    }
+});
+
+ResumenCuenta.belongsTo(Cliente, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    }
+});
+
+Proveedor.hasMany(ResumenCuenta, {
+    foreignKey: {
+        name: "id_proveedor",
+        allowNull: true
+    }
+});
+
+ResumenCuenta.belongsTo(Proveedor, {
+    foreignKey: {
+        name: "id_proveedor",
+        allowNull: true
+    }
+});
+
 
 module.exports = {
     ...sequelize.models,

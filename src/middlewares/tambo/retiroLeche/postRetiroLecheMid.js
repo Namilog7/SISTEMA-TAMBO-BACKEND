@@ -10,7 +10,6 @@ const postRetiroLecheModel = {
         values: ["ACTIVO", "CANCELADO"], // Estado con valores restringidos
         required: true // Campo obligatorio
     },
-    id_cliente: { type: "int", required: true }, // Identificador numérico del cliente, campo obligatorio
     id_liquidacion: { type: "int", required: false } // Identificador numérico de la liquidación, campo opcional
 };
 
