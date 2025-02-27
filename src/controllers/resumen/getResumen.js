@@ -1,18 +1,18 @@
 const { ResumenCuenta } = require("../../db");
 
-const getResumen = async ({ id_cliente, id_proveedor }) => {
+const getResumen = async ({ id, tipo }) => {
     let resumen
-    if (id_cliente) {
+    if (tipo === "CLIENTE") {
         resumen = await ResumenCuenta.findAll({
             where: {
-                id_cliente: id_cliente
+                id_cliente: id
             }
         })
     }
-    if (id_proveedor) {
+    if (tipo === "PROVEEDOR") {
         resumen = await ResumenCuenta.findAll({
             where: {
-                id_proveedor: id_proveedor
+                id_proveedor: id
             }
         })
     }
