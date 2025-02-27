@@ -32,10 +32,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.FLOAT,
                 allowNull: false
             },
-            otros_gastos: {
-                type: DataTypes.FLOAT,
-                allowNull: true
-            },
             genero: {
                 type: DataTypes.ENUM("MACHO", "HEMBRA"),
                 allowNull: false

@@ -74,7 +74,9 @@ const {
     CompraLeche,
     LoteSiembra,
     EstadoSiembra,
-    ResumenCuenta
+    ResumenCuenta,
+    Pago,
+    MetodoPago
 } = sequelize.models;
 
 //RELACIONES
@@ -142,8 +144,6 @@ Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", constraints: false });
 Cliente.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
 Proveedor.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
 
-
-
 Ganado.hasOne(TransaccionGanado);
 TransaccionGanado.hasOne(Ganado);
 
@@ -181,6 +181,15 @@ ResumenCuenta.belongsTo(Proveedor, {
     }
 });
 
+
+Pago.belongsTo(Cliente, { foreignKey: "id_cliente", allowNull: true });
+Cliente.hasMany(Pago, { foreignKey: "id_cliente" });
+
+Pago.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true });
+Proveedor.hasMany(Pago, { foreignKey: "id_proveedor" });
+
+Pago.hasMany(MetodoPago, { foreignKey: "id_pago" });
+MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
 
 module.exports = {
     ...sequelize.models,
