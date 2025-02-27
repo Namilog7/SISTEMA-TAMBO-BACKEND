@@ -33,7 +33,7 @@ const postVentaRecria = async (req, res) => {
             machos.ternero_contador = machos.ternero_contador - cantidad
             await machos.save()
             await Movimiento_anotacion.create({
-                text: `Se vendieron ${cantidad} machos`,
+                texto: `Se vendieron ${cantidad} machos`,
                 fecha: new Date()
             })
         }
