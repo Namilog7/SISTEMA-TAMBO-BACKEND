@@ -1,11 +1,11 @@
 const crudController = require("../../controllers/crudController");
-const { Proovedor } = require("../../db");
+const { Proveedor } = require("../../db");
 
 const putProovedorHandler = async (req, res) => {
-    const putProovedor = crudController(Proovedor);
+    const putProveedor = crudController(Proveedor);
     const { id, nombre, contacto_1, contacto_2, localidad } = req.body
     try {
-        const response = await putProovedor.update({ id, nombre, contacto_1, contacto_2, localidad })
+        const response = await putProveedor.update({ id, nombre, contacto_1, contacto_2, localidad })
         return res.json({
             message: "Se actualizo el proovedor",
             response
