@@ -138,11 +138,18 @@ Caja.hasOne(Sector, { foreignKey: "id_sector" });
 Caja.hasMany(Transaccion, { foreignKey: "id_caja" });
 Transaccion.belongsTo(Caja, { foreignKey: "id_caja" });
 
-Nota.belongsTo(Cliente, { foreignKey: "id_afectado", constraints: false });
-Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", constraints: false });
+/* Nota.belongsTo(Cliente, { foreignKey: "id_afectado", allowNull: true, onDelete: "SET NULL" });
+Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", allowNull: true, onDelete: "SET NULL" });
 
 Cliente.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
-Proveedor.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
+Proveedor.hasMany(Nota, { foreignKey: "id_afectado", constraints: false }); */
+
+Nota.belongsTo(Cliente, { foreignKey: "id_cliente", allowNull: true, onDelete: "SET NULL" });
+Nota.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
+
+Cliente.hasMany(Nota, { foreignKey: "id_cliente", allowNull: true, onDelete: "SET NULL" });
+Proveedor.hasMany(Nota, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
+
 
 Ganado.hasOne(TransaccionGanado);
 TransaccionGanado.hasOne(Ganado);
