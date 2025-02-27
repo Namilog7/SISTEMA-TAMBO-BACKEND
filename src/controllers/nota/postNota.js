@@ -1,4 +1,5 @@
 const { Cliente, Proveedor, Nota } = require("../../db");
+const postResumen = require("../resumen/postResumen");
 
 const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado }) => {
     // Buscar el destinatario en la respectiva tabla
@@ -8,10 +9,11 @@ const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_e
     } else if (tipo_destinatario === "PROVEEDOR") {
         afectado = await Proveedor.findByPk(id_afectado);
     }
-    console.log(id_afectado)
     if (!afectado) {
         throw new Error(`${tipo_destinatario} no encontrado con id ${id_afectado}.`);
     }
+    // id_afectado, nota_tipo, fecha, detalle, pago, factura, model, importe 
+    await postResumen({ id_afectado, nota_tipo: tipo, fecha: fecha_emision, detalle: descripcion, importe, model: tipo_destinatario })
 
     // Actualizar el saldo según el tipo de nota
     if (tipo === "CREDITO") {

@@ -17,11 +17,14 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         debe: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.FLOAT,
+            allowNull: true,
+            defaultValue: 0.0
         },
         haber: {
-            type: DataTypes.STRING
+            type: DataTypes.FLOAT,
+            allowNull: true,
+            defaultValue: 0.0
         }
     })
 };

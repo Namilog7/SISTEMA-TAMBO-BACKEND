@@ -6,6 +6,8 @@ const postProveedorHandler = require("../../handlers/proveedor/postProovedorHand
 const putProovedorHandler = require("../../handlers/proveedor/putProovedorHandler");
 const deleteProveedorHandler = require("../../handlers/proveedor/deleteProveedorHandler")
 const notaRouter = require("../notaRouter/notaRouter");
+const pagoRouter = require("../pagoRouter/pagoRouter");
+const getResumenHandler = require("../../handlers/resumen/getResumenHandler");
 
 
 const proveedorRouter = Router();
@@ -13,7 +15,9 @@ proveedorRouter.get("/", getProveedorHandler);
 proveedorRouter.post("/", modelValidateMid(proovedorValidateMid), postProveedorHandler);
 proveedorRouter.put("/", putProovedorHandler)
 proveedorRouter.delete("/:id", deleteProveedorHandler)
+proveedorRouter.get("/resumen/:id", getResumenHandler)
 proveedorRouter.use("/nota", notaRouter)
+proveedorRouter.use("/pago", pagoRouter)
 
 
 
