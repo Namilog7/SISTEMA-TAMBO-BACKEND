@@ -3,7 +3,11 @@ const { Producto } = require("../../db");
 const deleteProductoHandler = async (req, res) => {
     const { id } = req.params
     try {
-        const deleteProducto = await Producto.destroy(id);
+        const deleteProducto = await Producto.destroy({
+            where: {
+                id: id
+            }
+        });
         res.json({
             message: `Se eliminaron ${deleteProducto}`
         })
