@@ -19,12 +19,12 @@ module.exports = (sequelize) => {
         debe: {
             type: DataTypes.FLOAT,
             allowNull: true,
-            defaultValue: 0.0
+            defaultValue: 0
         },
         haber: {
             type: DataTypes.FLOAT,
             allowNull: true,
-            defaultValue: 0.0
+            defaultValue: 0
         }
     })
 };
