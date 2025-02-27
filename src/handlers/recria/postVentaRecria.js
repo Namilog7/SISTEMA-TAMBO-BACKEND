@@ -3,7 +3,7 @@ const postCloudinary = require("../../controllers/postCloudinary")
 
 const postVentaRecria = async (req, res) => {
     try {
-        const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero, comprobanteBase64, otros_gastos } = req.body;
+        const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto_total, cantidad, fecha, genero, comprobanteBase64 } = req.body;
 
         // Validar que el tipo de operación sea VENTA
         if (tipo_operacion !== "VENTA") {
@@ -24,7 +24,6 @@ const postVentaRecria = async (req, res) => {
             genero,
             peso_total,
             comprobante,
-            otros_gastos
         });
         if (genero === "MACHO") {
             const machos = await Macho.findOne()
@@ -34,7 +33,7 @@ const postVentaRecria = async (req, res) => {
             machos.ternero_contador = machos.ternero_contador - cantidad
             await machos.save()
             await Movimiento_anotacion.create({
-                text: `Se vendieron ${cantidad} machos`,
+                texto: `Se vendieron ${cantidad} machos`,
                 fecha: new Date()
             })
         }
