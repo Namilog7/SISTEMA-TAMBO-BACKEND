@@ -10,7 +10,7 @@ const pagoRouter = require("../pagoRouter/pagoRouter");
 const getResumenHandler = require("../../handlers/resumen/getResumenHandler");
 
 const clienteRouter = Router()
-clienteRouter.get("/", getClienteHandler)
+clienteRouter.get("/:id_sector", getClienteHandler)
 clienteRouter.post("/", modelValidateMid(empresaValidationModel), postClienteHandler);
 clienteRouter.put("/", putClienteHandler)
 clienteRouter.get("/resumen/:id", getResumenHandler)
