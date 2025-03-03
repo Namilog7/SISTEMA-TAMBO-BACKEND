@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
             },
             ternero_contador: {
                 type: DataTypes.INTEGER,
+                defaultValue: 0
             },
             ultimo_ingreso: {
                 type: DataTypes.DATE

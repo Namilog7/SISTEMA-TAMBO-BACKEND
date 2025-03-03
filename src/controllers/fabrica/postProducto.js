@@ -6,7 +6,6 @@ const postProducto = async ({ id_sector, nombre, stock, ultimo_ingreso, precio_m
         const producto = await Producto.create({
             nombre,
             stock,
-            fecha_ultimo_movimiento: new Date(),
             id_sector,
             ultimo_ingreso,
             precio_mayorista,
