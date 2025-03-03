@@ -5,17 +5,17 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
 const { ssl } = require("pg/lib/defaults");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    /*    dialectOptions: {
+           ssl: {
+               require: true,
+               rejectUnauthorized: false
+           }
+       } */
 });
 
 // Obtención del nombre del archivo actual
@@ -76,7 +76,11 @@ const {
     EstadoSiembra,
     ResumenCuenta,
     Pago,
-    MetodoPago
+    MetodoPago,
+    Ingreso_recria,
+    Recria,
+    GastoIngreso,
+    MetodoGastoIngreso
 } = sequelize.models;
 
 //RELACIONES
@@ -133,10 +137,11 @@ ControlLechero.belongsTo(Lote, { foreignKey: "id_lote" });
 Insumo.belongsToMany(Proveedor, { through: ProveedorInsumo, foreignKey: 'id_insumo' });
 Proveedor.belongsToMany(Insumo, { through: ProveedorInsumo, foreignKey: 'id_proveedor' });
 
-Sector.hasOne(Caja, { foreignKey: "id_sector" });
-Caja.hasOne(Sector, { foreignKey: "id_sector" });
-Caja.hasMany(Transaccion, { foreignKey: "id_caja" });
-Transaccion.belongsTo(Caja, { foreignKey: "id_caja" });
+GastoIngreso.hasMany(MetodoGastoIngreso, { foreignKey: "id_gasto_ingreso" });
+MetodoGastoIngreso.belongsTo(GastoIngreso, { foreignKey: "id_gasto_ingreso" });
+
+Sector.hasMany(GastoIngreso, { foreignKey: "id_sector" });
+GastoIngreso.belongsTo(Sector, { foreignKey: "id_sector" });
 
 /* Nota.belongsTo(Cliente, { foreignKey: "id_afectado", allowNull: true, onDelete: "SET NULL" });
 Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", allowNull: true, onDelete: "SET NULL" });
@@ -197,6 +202,9 @@ Proveedor.hasMany(Pago, { foreignKey: "id_proveedor" });
 
 Pago.hasMany(MetodoPago, { foreignKey: "id_pago" });
 MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
+
+Ingreso_recria.hasMany(Recria, { foreignKey: "id_ingreso" });
+Recria.belongsTo(Ingreso_recria, { foreignKey: "id_ingreso" });
 
 module.exports = {
     ...sequelize.models,

@@ -34,7 +34,8 @@ const createController = (model) => ({
     async update(obj) {
         const { id } = obj
         try {
-            const [updated] = await model.update(obj, { where: { id: id } });
+            const idUpdate = id.replace(/"/g, "");
+            const [updated] = await model.update(obj, { where: { id: idUpdate } });
             if (updated) {
                 const updatedData = await model.findByPk(id);
                 return updatedData;

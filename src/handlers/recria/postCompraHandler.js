@@ -31,6 +31,7 @@ const postCompraHandler = async (req, res) => {
             tipo_ingreso,
         });
 
+        const id = ingreso.id
         // Crear registros en Recria y asociarlos con el Ingreso_recria
         const recriaRecords = arrayIngresos.map((ingreso) => ({
             origen: ingreso.origen,
@@ -39,6 +40,7 @@ const postCompraHandler = async (req, res) => {
             peso: ingreso.peso || null,
             fecha_ingreso: ingreso.fecha_ingreso || null,
             origen: ingreso.origen || null,
+            id_ingreso: id
         }));
 
         await Recria.bulkCreate(recriaRecords);
