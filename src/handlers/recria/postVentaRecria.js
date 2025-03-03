@@ -12,7 +12,10 @@ const postVentaRecria = async (req, res) => {
         if (!comprador || !precio_kilo || !monto_total || !cantidad || !fecha) {
             return res.status(400).json({ message: "Todos los campos son obligatorios." });
         }
-        const comprobante = await postCloudinary(comprobanteBase64, "comprobantes")
+        let comprobante
+        if (comprobante) {
+            comprobante = await postCloudinary(comprobanteBase64, "comprobantes")
+        }
         const transaccion = await TransaccionGanado.create({
             tipo_operacion,
             comprador,
@@ -34,7 +37,9 @@ const postVentaRecria = async (req, res) => {
             await machos.save()
             await Movimiento_anotacion.create({
                 texto: `Se vendieron ${cantidad} machos`,
-                fecha: new Date()
+                fecha: new Date(),
+                terneros_afectados: cantidad,
+                tipo_movimiento: tipo_operacion
             })
         }
 
