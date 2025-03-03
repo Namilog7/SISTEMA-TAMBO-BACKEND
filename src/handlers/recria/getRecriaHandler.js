@@ -21,7 +21,8 @@ const getRecriaHandler = async (req, res) => {
                     caravana: recria.caravana,
                     genero: recria.genero,
                     tipo_ingreso: ingreso.tipo_ingreso,
-                    importe: ingreso.importe
+                    importe: ingreso.importe,
+                    fecha_ingreso: recria.fecha_ingreso
                 }))
             )
             .flat();
