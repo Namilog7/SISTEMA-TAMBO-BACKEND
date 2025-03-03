@@ -10,7 +10,7 @@ const deleteMovimientoHandler = async (req, res) => {
         let terneros = await Macho.findOne();
         if (movimiento.tipo_movimiento === "INGRESO") {
             terneros.ternero_contador = Number(terneros.ternero_contador) - Number(movimiento.terneros_afectados);
-        } else if (movimiento.tipo_movimiento === "BAJA") {
+        } else if (movimiento.tipo_movimiento === "BAJA" || movimiento.tipo_movimiento === "VENTA") {
             terneros.ternero_contador = Number(terneros.ternero_contador) + Number(movimiento.terneros_afectados);
         }
         await terneros.save();
