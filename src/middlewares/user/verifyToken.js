@@ -14,6 +14,7 @@ const verifyToken = (requiredRole) => {
             // Obtener el token del encabezado Authorization
             const authHeader = req.headers.authorization;
 
+            console.log(authHeader)
             if (!authHeader || !authHeader.startsWith("Bearer ")) {
                 return res.status(403).json({ message: "Token no proporcionado o inválido." });
             }
