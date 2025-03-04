@@ -19,7 +19,7 @@ const verifyToken = (requiredRole) => {
                 return res.status(403).json({ message: "Token no proporcionado o inválido." });
             }
 
-            const token = authHeader.split(" ")[1];
+            const token = authHeader.split(" ")[1].replace(/"/g, "");
 
             // Verificar y decodificar el token
             const decoded = jwt.verify(token, process.env.JWT_SECRET);

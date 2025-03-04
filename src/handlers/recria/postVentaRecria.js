@@ -13,7 +13,7 @@ const postVentaRecria = async (req, res) => {
             return res.status(400).json({ message: "Todos los campos son obligatorios." });
         }
         let comprobante
-        if (comprobante) {
+        if (comprobanteBase64) {
             comprobante = await postCloudinary(comprobanteBase64, "comprobantes")
         }
         const transaccion = await TransaccionGanado.create({
