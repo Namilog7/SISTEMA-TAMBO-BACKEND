@@ -33,7 +33,7 @@ const verifyToken = (requiredRole) => {
 
             next();
         } catch (error) {
-            console.error("Error al verificar el token:", error.message);
+            console.error("Error al verificar el token:", error);
             res.status(401).json({ message: "Token inválido o expirado." });
         }
     };
