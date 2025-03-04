@@ -33,6 +33,15 @@ module.exports = (sequelize) => {
             estado: {
                 type: DataTypes.ENUM("RECRIA", "ORDEÑE", "ENGORDE"),
                 allowNull: true
+            },
+            fecha_inseminado: {
+                type: DataTypes.DATE,
+                allowNull: true
+            },
+            inseminado: {
+                type: DataTypes.BOOLEAN,
+                allowNull: true,
+                defaultValue: false
             }
         },
         {

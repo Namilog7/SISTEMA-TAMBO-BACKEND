@@ -1,4 +1,4 @@
-const { Inseminacion } = require('../../../../db');
+const { Inseminacion, Ganado } = require('../../../../db');
 const postCloudinary = require("../../../postCloudinary");
 
 /**
@@ -40,9 +40,16 @@ const postInseminacion = async ({ inseminador, arrayGanados, fecha, fecha_carga,
             url_image: image
         }));
 
-        // Guardar en la base de datos
         const createdRecords = await Inseminacion.bulkCreate(bulkInseminacion);
 
+        const caravanas = arrayGanados.map(g => g.caravana);
+        await Ganado.update(
+            {
+                inseminado: true,
+                fecha_inseminado: new Date()
+            },
+            { where: { caravana: caravanas } }
+        );
         return {
             message: 'Inseminación creada con éxito',
             totalInseminaciones: createdRecords.length
