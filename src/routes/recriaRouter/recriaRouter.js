@@ -7,7 +7,7 @@ const getCompraHandler = require("../../handlers/recria/getCompraHandler");
 const getIngresoHandler = require("../../handlers/recria/getIngreso");
 const getMachoHandler = require("../../handlers/recria/getMachoHandler");
 const deleteMovimientoHandler = require("../../handlers/recria/deleteMovimientoHandler");
-const { Macho } = require("../../db");
+const { Macho, LoteSiembra } = require("../../db");
 const postMovimientoHandler = require("../../handlers/recria/postMovimiento");
 
 const recriaRouter = Router();
@@ -22,6 +22,7 @@ recriaRouter.post("/macho/movimientos", postMovimientoHandler)
 recriaRouter.delete("/macho/movimientos/:id", deleteMovimientoHandler)
 recriaRouter.delete("/laconchatumadre", async () => {
     await Macho.destroy({ where: {} })
+    await LoteSiembra.destroy({ where: {} })
 })
 
 

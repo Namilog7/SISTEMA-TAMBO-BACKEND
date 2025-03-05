@@ -162,8 +162,14 @@ TransaccionGanado.hasOne(Ganado);
 Sector.hasMany(Producto, { foreignKey: "id_sector" });
 Producto.belongsTo(Sector, { foreignKey: "id_sector" });
 
-LoteSiembra.hasMany(EstadoSiembra, { foreignKey: "id_lote" });
-EstadoSiembra.belongsTo(LoteSiembra, { foreignKey: "id_lote" });
+LoteSiembra.hasMany(EstadoSiembra, {
+    foreignKey: "id_lote",
+    onDelete: "CASCADE"
+});
+
+EstadoSiembra.belongsTo(LoteSiembra, {
+    foreignKey: "id_lote"
+});
 
 Cliente.hasMany(ResumenCuenta, {
     foreignKey: {
