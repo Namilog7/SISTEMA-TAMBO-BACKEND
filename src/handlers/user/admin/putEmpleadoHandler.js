@@ -9,7 +9,7 @@ const putEmpleadoHandler = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { email, role, password, nombre, apellido, localidad, contacto, dni, cuit_cuil } = req.body;
+        const { email, password, nombre, apellido, localidad, contacto, dni, cuit_cuil } = req.body;
 
         const empleado = await User.findByPk(id);
         if (!empleado) {
@@ -26,7 +26,6 @@ const putEmpleadoHandler = async (req, res) => {
 
         await empleado.update({
             email: email || empleado.email,
-            role: role || empleado.role,
             password: passwordHasheada,
             nombre: nombre || empleado.nombre,
             apellido: apellido || empleado.apellido,
