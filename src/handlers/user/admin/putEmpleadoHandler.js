@@ -9,24 +9,20 @@ const putEmpleadoHandler = async (req, res) => {
         }
 
         const { id } = req.params;
-        const { email, password, nombre, apellido, localidad, contacto, dni, cuit_cuil } = req.body;
+        const { email, nombre, apellido, localidad, contacto, dni, cuit_cuil } = req.body;
 
         const empleado = await User.findByPk(id);
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado." });
         }
-
-        let passwordHasheada = empleado.password;
         if (password) {
             if (password.length < 5) {
                 return res.status(400).json({ message: "La contraseña debe tener al menos 5 caracteres." });
             }
-            passwordHasheada = await bcrypt.hash(password, 10);
         }
 
         await empleado.update({
             email: email || empleado.email,
-            password: passwordHasheada,
             nombre: nombre || empleado.nombre,
             apellido: apellido || empleado.apellido,
             localidad: localidad || empleado.localidad,
@@ -41,8 +37,6 @@ const putEmpleadoHandler = async (req, res) => {
                 id: empleado.id,
                 nombre: empleado.nombre,
                 apellido: empleado.apellido,
-                email: empleado.email,
-                role: empleado.role,
             },
         });
     } catch (error) {
