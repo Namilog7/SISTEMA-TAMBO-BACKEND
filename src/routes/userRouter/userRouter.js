@@ -9,8 +9,8 @@ const userRouter = express.Router();
 
 userRouter.post("/login", loginUser)
 userRouter.post("/crear-empleado", verifyToken("ADMIN"), postEmpleadoHandler)
-userRouter.delete("/eliminar-empleado", deleteEmpleadoHandler);
+userRouter.delete("/eliminar-empleado", verifyToken("ADMIN"), deleteEmpleadoHandler);
 userRouter.get("/", getUserHandler)
-userRouter.put("/:id", putEmpleadoHandler)
+userRouter.put("/:id", verifyToken("ADMIN"), putEmpleadoHandler)
 
 module.exports = userRouter;
