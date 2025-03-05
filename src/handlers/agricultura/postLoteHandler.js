@@ -12,6 +12,8 @@ const postLoteHandler = async (req, res) => {
         const estadoLote = await EstadoSiembra.create({
             estado,
             id_lote: newLote.id,
+            fecha,
+            detalle
         })
         res.json({
             message: "Se creo el Lote con su estado",
