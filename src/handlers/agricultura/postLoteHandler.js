@@ -1,29 +1,29 @@
 const { LoteSiembra, EstadoSiembra } = require("../../db");
 
 const postLoteHandler = async (req, res) => {
-    const { nombre, hectareas, ubicacion, propiedad, estado } = req.body
+    const { nombre, hectareas, ubicacion, propiedad, estado, fecha, detalle } = req.body;
     try {
         const newLote = await LoteSiembra.create({
             nombre,
             hectareas,
             ubicacion,
             propiedad,
-        })
+        });
         const estadoLote = await EstadoSiembra.create({
             estado,
             id_lote: newLote.id,
             fecha,
-            detalle
-        })
+            detalle,
+        });
         res.json({
             message: "Se creo el Lote con su estado",
             newLote,
-            estadoLote
-        })
+            estadoLote,
+        });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error.message })
+        console.log(error);
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
-module.exports = postLoteHandler
+module.exports = postLoteHandler;
