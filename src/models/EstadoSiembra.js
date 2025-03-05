@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         estado: {
-            type: DataTypes.ENUM("FUMIGADO", "SEMBRA0DO", "COSECHADO"),
+            type: DataTypes.STRING,
             allowNull: false
         },
         detalle: {
