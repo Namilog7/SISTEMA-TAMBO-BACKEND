@@ -1,12 +1,12 @@
 const { Insumo } = require("../../db");
 
 const deleteInsumo = async ({ id_sector, id }) => {
-
-
+    const userId = id.replace(/"/g, "");
+    const sectorId = id_sector.replace(/"/g, "");
     const insumo = await Insumo.findOne({
         where: {
-            id,
-            id_sector,
+            id: userId,
+            id_sector: sectorId
         },
     });
 
