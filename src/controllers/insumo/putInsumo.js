@@ -16,7 +16,7 @@ const putInsumo = async (obj) => {
     );
 
     if (rowsUpdatedIntermedia === 0) {
-        throw new Error(`No se encontró la relación entre el insumo con ID ${id} y el proveedor con ID ${id_proovedor}.`);
+        throw new Error(`No se encontró la relación entre el insumo con ID ${id} y el proveedor con ID ${id_proveedor}.`);
     }
 
     // Si se proporciona un tipo, actualizar el modelo Insumo
