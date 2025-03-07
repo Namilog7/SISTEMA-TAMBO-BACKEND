@@ -3,7 +3,7 @@ const getLoteByIdHandler = async (req, res) => {
     const { id } = req.params
     try {
         const response = await LoteSiembra.findOne({
-            where: id,
+            where: { id },
             include: [{
                 model: EstadoSiembra
             }]

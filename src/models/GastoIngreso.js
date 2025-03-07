@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
                 defaultValue: DataTypes.UUIDV4,
             },
             tipo: {
-                type: DataTypes.ENUM("GASTO", "INGRESO"),
+                type: DataTypes.ENUM("EGRESO", "INGRESO"),
                 allowNull: false
             },
             estado: {
