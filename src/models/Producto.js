@@ -26,8 +26,17 @@ module.exports = (sequelize) => {
             precio_minorista: {
                 type: DataTypes.FLOAT
             },
+            precio_3: {
+                type: DataTypes.FLOAT
+            },
             ultima_venta: {
                 type: DataTypes.DATE
+            },
+            litro_variedad: {
+                type: DataTypes.FLOAT
+            },
+            masa_sin_elaborar: {
+                type: DataTypes.FLOAT
             }
         },
         { timestamps: false }
