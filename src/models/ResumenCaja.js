@@ -24,5 +24,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        tipo: {
+            type: DataTypes.ENUM("INGRESO", "EGRESO"),
+            allowNull: false
+        }
     })
 };

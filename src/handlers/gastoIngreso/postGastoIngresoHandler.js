@@ -2,7 +2,7 @@ const { GastoIngreso, SaldoCaja } = require("../../db");
 const crudController = require("../../controllers/crudController");
 
 const postGastoIngresoHandler = async (req, res) => {
-    const { detalle, estado, tipo, fecha, id_sector, monto } = req.body;
+    const { detalle, estado, tipo, fecha, id_sector } = req.body;
     const gastoIngreso = crudController(GastoIngreso);
 
     try {
@@ -11,7 +11,7 @@ const postGastoIngresoHandler = async (req, res) => {
             return res.status(400).json({ message: "El monto debe ser un número válido y mayor a 0" });
         }
 
-        const newGastoIngreso = await gastoIngreso.create({ detalle, estado, tipo, fecha, id_sector, monto });
+        const newGastoIngreso = await gastoIngreso.create({ detalle, estado, tipo, fecha, id_sector });
 
         let saldoCaja = await SaldoCaja.findOne();
         if (!saldoCaja) {
@@ -27,12 +27,13 @@ const postGastoIngresoHandler = async (req, res) => {
         }
 
         await saldoCaja.save();
+        await
 
-        res.status(201).json({
-            message: "Gasto/Ingreso registrado y saldo actualizado",
-            gastoIngreso: newGastoIngreso,
-            saldoActual: saldoCaja.saldo,
-        });
+            res.status(201).json({
+                message: "Gasto/Ingreso registrado y saldo actualizado",
+                gastoIngreso: newGastoIngreso,
+                saldoActual: saldoCaja.saldo,
+            });
 
     } catch (error) {
         console.error("Error en postGastoIngresoHandler:", error);
