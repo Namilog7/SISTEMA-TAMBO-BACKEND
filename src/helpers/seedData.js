@@ -1,4 +1,4 @@
-const { Inseminacion, Sector, Tambo, RetiroLeche, Ganado, Caja, Proveedor, ProduccionLeche, conn, ControlLechero, User, Macho } = require("./../db"); // Asegúrate de importar el modelo User
+const { Inseminacion, Sector, Tambo, RetiroLeche, Ganado, SaldoCaja, User } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
@@ -58,10 +58,14 @@ const seedData = async () => {
                     contacto: faker.phone.phoneNumber(),
                 };
                 await Tambo.create(tambo);
-        q
-        */
+                q
+                */
         // Insertar Ganado
         // Insertar Sector
+        const caja = await SaldoCaja.create({
+            saldo: 0
+        })
+        console.log("Caja creada", caja)
         const tambo = await Sector.create({
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",

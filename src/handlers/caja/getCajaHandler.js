@@ -1,12 +1,9 @@
-const getCaja = require("../../controllers/caja/getCaja");
-const crudController = require("../../controllers/crudController")
-const { Caja } = require("../../db");
+const { SaldoCaja } = require("../../db");
 
 const getCajaHandler = async (req, res) => {
-    const { id } = req.query
-    const getAllCaja = crudController(Caja)
     try {
-        const response = id ? await getCaja(id) : await getAllCaja.readAll()
+        const response = await SaldoCaja.findOne({})
+        if (!response) return res.json({ message: "No se registro ningun saldo" })
         res.json(response)
     } catch (error) {
         console.log(error);

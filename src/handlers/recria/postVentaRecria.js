@@ -38,6 +38,7 @@ const postVentaRecria = async (req, res) => {
             await Movimiento_anotacion.create({
                 texto: `Se vendieron ${cantidad} machos`,
                 fecha: new Date(),
+                archivo: comprobante,
                 terneros_afectados: cantidad,
                 tipo_movimiento: tipo_operacion
             })

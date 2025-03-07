@@ -1,13 +1,9 @@
 const { GastoIngreso } = require("../../db");
 
 const getGastoIngresoHandler = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.query
     try {
-        const gastoIngreso = await GastoIngreso.findAll({
-            where: {
-                id: id
-            }
-        })
+        const gastoIngreso = id ? await GastoIngreso.findByPk(id) : await GastoIngreso.findAll({})
         res.json(gastoIngreso)
     } catch (error) {
         console.log(error);
