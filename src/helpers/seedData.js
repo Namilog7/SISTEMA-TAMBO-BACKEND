@@ -66,6 +66,11 @@ const seedData = async () => {
             saldo: 0
         })
         console.log("Caja creada", caja)
+        await Sector.create({
+            nombre: "Agricultura",
+            descripcion: "Sector dedicado a la agricultura"
+        })
+
         const tambo = await Sector.create({
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
