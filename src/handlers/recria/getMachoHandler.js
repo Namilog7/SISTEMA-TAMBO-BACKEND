@@ -4,6 +4,7 @@ const getMachoHandler = async (req, res) => {
     try {
         const machos = await Macho.findOne()
         const movimientos = await Movimiento_anotacion.findAll()
+        if (machos.ternero_contador === 0) return res.json({ message: "Todavia no tiene terneros" })
         return res.json({
             ternero_contador: machos.ternero_contador,
             ultimo_ingreso: machos.ultimo_ingreso,
