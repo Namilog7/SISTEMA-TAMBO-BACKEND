@@ -9,7 +9,7 @@ const getLoteByIdHandler = require("../../handlers/agricultura/getLoteByIdHandle
 
 const agriculturaRouter = Router();
 agriculturaRouter.get("/", getLoteHandler);
-agriculturaRouter.get("/", getLoteByIdHandler)
+agriculturaRouter.get("/:id", getLoteByIdHandler)
 agriculturaRouter.post("/", postLoteHandler);
 agriculturaRouter.put("/", putLoteHandler);
 agriculturaRouter.delete("/:id", deleteLoteHandler);
