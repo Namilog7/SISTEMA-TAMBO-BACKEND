@@ -6,6 +6,7 @@ const deleteEstadoHandler = async (req, res) => {
         const deleteEstado = await EstadoSiembra.destroy({
             where: id
         })
+        res.json({ message: `Se elimino ${deleteEstado} registro` })
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: error.message })
