@@ -1,4 +1,4 @@
-const { RetiroLeche, User, CompraRetiro } = require("../../../db");
+const { RetiroLeche, User, CompraLeche } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 
 const postRetiroLecheHandler = async (req, res) => {
@@ -29,7 +29,7 @@ const postRetiroLecheHandler = async (req, res) => {
         // Construir el nombre completo del empleado
         const usuario_carga = empleado.nombre;
         if (id_proveedor) {
-            response = await CompraRetiro.create({
+            response = await CompraLeche.create({
                 cantidad,
                 fecha,
                 liquidado,
@@ -40,6 +40,7 @@ const postRetiroLecheHandler = async (req, res) => {
                 id_empleado,
                 estado,
                 id_liquidacion,
+                id_proveedor
             })
         } else {
             // Crear el registro en RetiroLeche con el nombre completo del empleado
