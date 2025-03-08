@@ -1,12 +1,13 @@
 const { EstadoSiembra } = require("../../db");
 
 const postEstadoHandler = async (req, res) => {
-    const { detalle, id_lote, fecha } = req.body
+    const { detalle, id_lote, fecha, estado } = req.body
     try {
         const newEstado = await EstadoSiembra.create({
             detalle,
             id_lote,
-            fecha
+            fecha,
+            estado
         })
         res.json({
             message: `Se creo el nuevo estado para el lote`,
