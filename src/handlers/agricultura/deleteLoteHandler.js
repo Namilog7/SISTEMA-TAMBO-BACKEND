@@ -4,7 +4,7 @@ const deleteLoteHandler = async (req, res) => {
     const { id } = req.params
     try {
         const deleteLote = await LoteSiembra.destroy({
-            where: id
+            where: { id }
         });
         res.json({
             message: `Se eliminaron ${deleteLote} Lotes`
