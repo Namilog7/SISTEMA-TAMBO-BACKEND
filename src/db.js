@@ -79,7 +79,8 @@ const {
     Ingreso_recria,
     Recria,
     GastoIngreso,
-    MetodoGastoIngreso
+    MetodoGastoIngreso,
+    Venta,
 } = sequelize.models;
 
 //RELACIONES
@@ -210,6 +211,9 @@ MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
 
 Ingreso_recria.hasMany(Recria, { foreignKey: "id_ingreso" });
 Recria.belongsTo(Ingreso_recria, { foreignKey: "id_ingreso" });
+
+Producto.belongsToMany(Venta, { through: "VentaProducto", foreignKey: "id_producto" });
+Venta.belongsToMany(Producto, { through: "VentaProducto", foreignKey: "id_venta" });
 
 module.exports = {
     ...sequelize.models,
