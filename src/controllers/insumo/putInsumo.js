@@ -22,7 +22,7 @@ const putInsumo = async (obj) => {
     // Si se proporciona un tipo, actualizar el modelo Insumo
     if (tipo) {
         const [rowsUpdatedInsumo] = await Insumo.update(
-            { tipo },
+            { tipo, nombre },
             {
                 where: { id },
             }
