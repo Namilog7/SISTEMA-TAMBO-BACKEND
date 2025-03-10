@@ -5,17 +5,17 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
 const { ssl } = require("pg/lib/defaults");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    /*     dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        } */
 });
 
 // Obtención del nombre del archivo actual
@@ -81,6 +81,7 @@ const {
     GastoIngreso,
     MetodoGastoIngreso,
     Venta,
+    VentaProducto
 } = sequelize.models;
 
 //RELACIONES
@@ -212,8 +213,8 @@ MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
 Ingreso_recria.hasMany(Recria, { foreignKey: "id_ingreso" });
 Recria.belongsTo(Ingreso_recria, { foreignKey: "id_ingreso" });
 
-Producto.belongsToMany(Venta, { through: "VentaProducto", foreignKey: "id_producto" });
-Venta.belongsToMany(Producto, { through: "VentaProducto", foreignKey: "id_venta" });
+Producto.belongsToMany(Venta, { through: VentaProducto, });
+Venta.belongsToMany(Producto, { through: VentaProducto, });
 
 module.exports = {
     ...sequelize.models,

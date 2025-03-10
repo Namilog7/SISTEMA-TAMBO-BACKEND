@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
             nombre: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                unique: true
             },
             stock: {
                 type: DataTypes.INTEGER,
@@ -20,13 +21,13 @@ module.exports = (sequelize) => {
             ultimo_ingreso: {
                 type: DataTypes.DATE
             },
-            precio_mayorista: {
+            precio_reventa: {
                 type: DataTypes.FLOAT
             },
-            precio_minorista: {
+            precio_comercio: {
                 type: DataTypes.FLOAT
             },
-            precio_3: {
+            precio_consumidor_final: {
                 type: DataTypes.FLOAT
             },
             ultima_venta: {
