@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
                 type: DataTypes.FLOAT,
                 allowNull: false
             },
-            monto_total: {
+            monto: {
                 type: DataTypes.FLOAT,
                 allowNull: false
             },
