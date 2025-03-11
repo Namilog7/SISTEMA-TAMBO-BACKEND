@@ -1,7 +1,7 @@
 const { ProveedorInsumo, Insumo } = require("../../db");
 
 const putInsumo = async (obj) => {
-    const { id, id_proveedor, precio, stock, ultimo_ingreso, tipo } = obj;
+    const { id, id_proveedor, precio, stock, ultimo_ingreso, tipo, nombre } = obj;
 
 
     // Actualizar los campos en la tabla intermedia

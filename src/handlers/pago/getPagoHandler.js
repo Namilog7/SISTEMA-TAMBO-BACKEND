@@ -5,7 +5,7 @@ const getPagoHandler = async (req, res) => {
     try {
         const pagos = await Pago.findAll({
             where: {
-                id: id
+                id_cliente: id
             }
         });
         res.json({

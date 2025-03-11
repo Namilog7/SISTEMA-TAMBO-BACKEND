@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        importe_total: {
+        monto: {
             type: DataTypes.FLOAT,
             allowNull: false
         }
