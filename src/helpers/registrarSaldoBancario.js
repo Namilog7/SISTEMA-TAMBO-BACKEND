@@ -1,14 +1,19 @@
 const { CajaBancaria } = require("../db");
 
-const registrarSaldoBancario = async ({ estado, importe }) => {
-    const cajaBancaria = await CajaBancaria.findOne({})
+const registrarSaldoBancario = async ({ estado, importe }, transaction) => {
+    let cajaBancaria = await CajaBancaria.findOne({ transaction })
+    if (!cajaBancaria) {
+        cajaBancaria = await CajaBancaria.create({
+            saldo: 0
+        }, { transaction })
+    }
     if (estado === "ACREDITADO") {
         cajaBancaria.saldo += importe
     }
     if (estado === "CONFIRMADA" || estado === "COBRADO") {
         cajaBancaria.saldo -= importe
     }
-    cajaBancaria.save()
+    cajaBancaria.save({ transaction })
     return {
         message: `Se actualizo el saldo de la Caja Bancaria`,
         nuevoSaldo: cajaBancaria.saldo

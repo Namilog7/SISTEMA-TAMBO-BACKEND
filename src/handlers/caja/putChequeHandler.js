@@ -1,8 +1,9 @@
 const { Cheque } = require("../../db");
+const registrarSaldoBancario = require("../../helpers/registrarSaldoBancario")
 
 const putChequeHandler = async (req, res) => {
     const { id } = req.params;
-    const { estado, detalle } = req.body;
+    const { estado, detalle, importe } = req.body;
     try {
 
         const cheque = await Cheque.findByPk(id);
@@ -15,9 +16,15 @@ const putChequeHandler = async (req, res) => {
 
         await cheque.save();
 
+        let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
+        if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
+            registroCaja = await registrarSaldoBancario({ estado, importe })
+        }
+
         res.json({
             message: "Cheque actualizado exitosamente",
-            cheque
+            cheque,
+            registroCaja
         });
 
     } catch (error) {

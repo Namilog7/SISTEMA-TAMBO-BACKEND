@@ -62,13 +62,18 @@ const seedData = async () => {
                 */
         // Insertar Ganado
         // Insertar Sector
-        const cajaBancaria = await CajaBancaria.create({
-            saldo: 0
-        })
-        const caja = await SaldoCaja.create({
-            saldo: 0
-        })
-        console.log("Cajas creada", caja, cajaBancaria)
+        const cajaBancaria = await CajaBancaria.findOne({})
+        if (!cajaBancaria) {
+            await CajaBancaria.create({
+                saldo: 0
+            })
+        }
+        const caja = await SaldoCaja.findOne({})
+        if (!caja) {
+            await SaldoCaja.create({
+                saldo: 0
+            })
+        }
         await Sector.create({
             nombre: "Agricultura",
             descripcion: "Sector dedicado a la agricultura"

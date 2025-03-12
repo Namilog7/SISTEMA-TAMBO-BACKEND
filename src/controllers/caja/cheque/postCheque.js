@@ -14,7 +14,7 @@ const postCheque = async ({
     fecha_emision,
     fecha_pago,
     fecha_cobro
-}) => {
+}, transaction) => {
 
     const nuevoCheque = await Cheque.create({
         importe,
@@ -29,11 +29,11 @@ const postCheque = async ({
         fecha_emision,
         fecha_pago,
         fecha_cobro
-    })
+    }, { transaction })
 
     let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
     if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
-        registroCaja = await registrarSaldoBancario({ estado, importe })
+        registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
     }
     return {
         registroCaja,
