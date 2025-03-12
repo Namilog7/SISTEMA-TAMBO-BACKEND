@@ -16,7 +16,7 @@ const postProveedorHandler = async (req, res) => {
         }
         return res.json({
             message: "Se creo el proovedor",
-            response
+            nuevoProveedor
         })
     } catch (error) {
         console.log(error)
