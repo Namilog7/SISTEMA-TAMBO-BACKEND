@@ -4,9 +4,9 @@ const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago")
 
 const postVentaRecria = async (req, res) => {
+    const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto, cantidad, fecha, genero, comprobanteBase64, tipo = "INGRESO", id_sector, metodosPago, detalle = "", estado = "ACEPTADO" } = req.body;
     const transaction = await conn.transaction()
     try {
-        const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto, cantidad, fecha, genero, comprobanteBase64, tipo = "INGRESO", id_sector, metodosPago, detalle = "", estado = "ACEPTADO" } = req.body;
 
         // Validar que el tipo de operación sea VENTA
         if (tipo_operacion !== "VENTA") {
@@ -31,10 +31,12 @@ const postVentaRecria = async (req, res) => {
             peso_total,
             comprobante,
         }, { transaction });
+        let machos = await Macho.findOne({ transaction })
         if (genero === "MACHO") {
-            const machos = await Macho.findOne({ transaction })
             if (!machos) {
-                throw new Error("Todavia no tienes machos")
+                machos = Macho.create({
+                    ternero_contador: 0
+                }, { transaction })
             }
             if (cantidad > machos.ternero_contador) throw new Error("La cantidad no puede ser mayor a lo que que hay actualmente")
             machos.ternero_contador = machos.ternero_contador - cantidad
@@ -45,15 +47,17 @@ const postVentaRecria = async (req, res) => {
                 archivo: comprobante,
                 terneros_afectados: cantidad,
                 tipo_movimiento: tipo_operacion
-            })
+            }, { transaction })
         }
-        const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector, transaction });
-        let allMetodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+        const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
+        const id_gasto_ingreso = nuevoGastoIngreso.id
+        let allMetodos = await registrarMetodosPago(id_gasto_ingreso, metodosPago, transaction)
 
-        res.status(201).json({
+        await transaction.commit();
+        return res.status(201).json({
             message: "Transacción de venta registrada con éxito.",
             transaccion,
-            newGastoIngreso,
+            nuevoGastoIngreso,
             allMetodos
         });
     } catch (error) {

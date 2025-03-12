@@ -1,16 +1,16 @@
-const { VentaProducto, Venta } = require("../../db");
+const { VentaProducto, Venta, conn } = require("../../db");
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
-const postMetodoGastoIngreso = require("../../controllers/caja/postMetodoGastoIngreso");
+const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const postVentaProductoHandler = async (req, res) => {
     const { monto, fecha, arrayObjsVenta, id_cliente, id_sector, metodosPago, tipo = "INGRESO" } = req.body;
-
+    const transaction = await conn.transaction()
     try {
         if (!fecha || !arrayObjsVenta?.length) {
             throw new Error("Proporcione todos los datos");
         }
 
-        const venta = await Venta.create({ fecha, monto, id_cliente });
+        const venta = await Venta.create({ fecha, monto, id_cliente }, { transaction });
 
         const bulkVenta = arrayObjsVenta.map(({ cantidad, precio, id }) => ({
             cantidad,
@@ -26,27 +26,16 @@ const postVentaProductoHandler = async (req, res) => {
             tipo,
             fecha,
             id_sector
-        });
+        }, transaction);
 
-        let metodosRegistrados = [];
-
-        if (Array.isArray(metodosPago) && metodosPago.length > 0) {
-            for (const metodo of metodosPago) {
-                const metodoRegistrado = await postMetodoGastoIngreso({
-                    id_gasto_ingreso: newGastoIngreso.id,
-                    metodo: metodo.metodo,
-                    importe: metodo.importe
-                });
-                metodosRegistrados.push(metodoRegistrado);
-            }
-        }
+        const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
 
         res.json({
             message: "Venta registrada exitosamente",
             venta,
             productosVendidos: bulkVenta,
             gastoIngreso: newGastoIngreso,
-            metodosPago: metodosRegistrados
+            metodosPago: metodos
         });
 
     } catch (error) {

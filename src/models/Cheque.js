@@ -13,7 +13,11 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         estado: {
-            type: DataTypes.ENUM("ENCARTERA", "ENTREGADO", "ANULADO"),
+            type: DataTypes.ENUM('RECIBIDO', 'DEPOSITADO', 'ACREDITADO', 'RECHAZADO', 'EMITIDO', 'ENTREGADO', 'COBRADO', 'ANULADO'),
+            allowNull: false
+        },
+        tipo: {
+            type: DataTypes.ENUM("EMITIDO", "RECIBIDO", "TERCERO"),
             allowNull: false
         },
         detalle: {
@@ -27,6 +31,10 @@ module.exports = (sequelize) => {
         destino: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        actual_destino: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         banco: {
             type: DataTypes.STRING,
@@ -43,7 +51,11 @@ module.exports = (sequelize) => {
         },
         fecha_pago: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: true
+        },
+        fecha_cobro: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
     })
 };

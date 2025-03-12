@@ -13,9 +13,8 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         estado: {
-            type: DataTypes.ENUM("ACEPTADA", "RECHAZADA", "ANULADA", "VERIFICAR"),
-            allowNull: false,
-            defaultValue: "VERIFICAR"
+            type: DataTypes.ENUM("PENDIENTE", "PROCESO", "ACREDITADO", "RECHAZADA", "ENVIADA", "CONFIRMADA", "FALLIDA"),
+            allowNull: false
         },
         cuenta_origen: {
             type: DataTypes.INTEGER,
@@ -26,9 +25,6 @@ module.exports = (sequelize) => {
         importe: {
             type: DataTypes.FLOAT,
             allowNull: false
-        },
-        detalle: {
-            type: DataTypes.STRING
         }
     })
 };
