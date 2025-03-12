@@ -1,8 +1,9 @@
-const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion } = require("../../db");
+const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion, conn } = require("../../db");
 
 const postCompraHandler = async (req, res) => {
+    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
+    const transaction = conn.transaction()
     try {
-        const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
 
         if (
             !tipo_ingreso ||
@@ -21,6 +22,11 @@ const postCompraHandler = async (req, res) => {
             return res.status(400).json({ message: "El tipo de operación debe ser COMPRA, ENTREGA o PARTO." });
         }
 
+        /*    if (tipo_ingreso === "COMPRA") {
+   
+               const registerCompra = await registrarCompraGanado()
+           }
+    */
         // Crear el registro en Ingreso_recria
         const ingreso = await Ingreso_recria.create({
             fecha_carga,
@@ -29,7 +35,7 @@ const postCompraHandler = async (req, res) => {
             usuario_carga,
             importe,
             tipo_ingreso,
-        });
+        }, { transaction });
 
         const id = ingreso.id
         // Crear registros en Recria y asociarlos con el Ingreso_recria
@@ -43,7 +49,7 @@ const postCompraHandler = async (req, res) => {
             id_ingreso: id
         }));
 
-        await Recria.bulkCreate(recriaRecords);
+        await Recria.bulkCreate(recriaRecords, { transaction });
 
         // Procesar hembras en la tabla Ganado
         const ganadoRecords = arrayIngresos
@@ -58,7 +64,7 @@ const postCompraHandler = async (req, res) => {
             }));
 
         if (ganadoRecords.length > 0) {
-            await Ganado.bulkCreate(ganadoRecords);
+            await Ganado.bulkCreate(ganadoRecords, { transaction });
         }
 
         // Contar machos y actualizar el contador en la tabla Macho
@@ -68,7 +74,7 @@ const postCompraHandler = async (req, res) => {
             string += `${macho.origen} `;
         });
         if (cantidadMachos.length > 0) {
-            const machoRegistro = await Macho.findOne();
+            const machoRegistro = await Macho.findOne({ transaction });
             if (!machoRegistro) {
                 await Macho.create({
                     ultimo_ingreso: new Date(),
@@ -79,7 +85,7 @@ const postCompraHandler = async (req, res) => {
                  machoRegistro.ternero_contador = ternero_contador + cantidadMachos.length; */
                 machoRegistro.ultimo_ingreso = new Date();
                 machoRegistro.ternero_contador = machoRegistro.ternero_contador + cantidadMachos.length;
-                await machoRegistro.save();
+                await machoRegistro.save({ transaction });
             }
             let stringText;
             switch (tipo_ingreso) {
@@ -101,8 +107,9 @@ const postCompraHandler = async (req, res) => {
                 texto: stringText,
                 terneros_afectados: cantidadMachos.length,
                 tipo_movimiento: "INGRESO",
-            });
+            }, { transaction });
         }
+        await transaction.commit()
 
         res.status(201).json({
             message: "Ingreso y recría creados con éxito. Ganado y contador de machos actualizados.",

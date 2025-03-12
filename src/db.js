@@ -81,7 +81,8 @@ const {
     GastoIngreso,
     MetodoGastoIngreso,
     Venta,
-    VentaProducto
+    VentaProducto,
+    TamboProveedor
 } = sequelize.models;
 
 //RELACIONES
@@ -218,6 +219,9 @@ Venta.belongsToMany(Producto, { through: VentaProducto, });
 
 Cliente.hasMany(Venta, { foreignKey: "id_cliente" });
 Venta.belongsTo(Cliente, { foreignKey: "id_venta" });
+
+TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_compra" });
+CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_compra" });
 
 module.exports = {
     ...sequelize.models,

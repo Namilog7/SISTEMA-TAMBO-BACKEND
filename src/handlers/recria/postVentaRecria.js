@@ -1,7 +1,8 @@
 const { TransaccionGanado, Macho, Movimiento_anotacion, conn } = require("../../db");
 const postCloudinary = require("../../controllers/postCloudinary")
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
-const registrarMetodosPago = require("../../helpers/registrarMetodosPago")
+const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const postTransaccionGanado = require("../../controllers/transaccionGanado/postTransaccionGanado");
 
 const postVentaRecria = async (req, res) => {
     const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto, cantidad, fecha, genero, comprobanteBase64, tipo = "INGRESO", id_sector, metodosPago, detalle = "", estado = "ACEPTADO" } = req.body;
@@ -19,7 +20,7 @@ const postVentaRecria = async (req, res) => {
         if (comprobanteBase64) {
             comprobante = await postCloudinary(comprobanteBase64, "comprobantes")
         }
-        const transaccion = await TransaccionGanado.create({
+        /* const transaccion = await TransaccionGanado.create({
             tipo_operacion,
             comprador,
             contacto,
@@ -30,7 +31,19 @@ const postVentaRecria = async (req, res) => {
             genero,
             peso_total,
             comprobante,
-        }, { transaction });
+        }, { transaction }); */
+        const nuevaTransaccion = await postTransaccionGanado({
+            tipo_operacion,
+            comprador,
+            contacto,
+            precio_kilo,
+            monto,
+            cantidad,
+            fecha,
+            genero,
+            peso_total,
+            comprobante,
+        }, transaction)
         let machos = await Macho.findOne({ transaction })
         if (genero === "MACHO") {
             if (!machos) {
