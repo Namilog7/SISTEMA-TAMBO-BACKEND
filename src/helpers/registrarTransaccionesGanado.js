@@ -1,0 +1,5 @@
+
+
+const registrarTransaccionesGanado = async ({ arrayCompras, }) => {
+
+}
