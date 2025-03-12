@@ -13,10 +13,8 @@ const deleteEmpleadoHandler = async (req, res) => {
         if (!user) {
             return res.json({ message: "No existe el usuario" })
         }
-        const empleado = await userDelete.destroy({ where: { id: user.id } })
-        res.json({
-            message: `Datos actualizados ${empleado} eliminado`
-        })
+        const empleado = await userDelete.delete(user.id)
+        res.json({ message: "Se elimino al usuario" })
     } catch (error) {
         console.error({ error: error.message })
         res.status(500).json({ error: "Ocurrio un problema en el servidor" })
