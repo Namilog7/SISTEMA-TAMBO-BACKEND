@@ -8,6 +8,11 @@ const deleteProveedorHandler = async (req, res) => {
                 id: id
             }
         })
+        if (deleteProveedor === 0) {
+            await TamboProveedor.destroy({
+                where: { id: id }
+            })
+        }
         res.json({
             message: `Se eliminaron ${deleteProveedor} registros`
         })
