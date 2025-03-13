@@ -1,5 +1,7 @@
 const { Liquidacion, RetiroLeche } = require("../../../../db");
 const postCloudinary = require("../../../postCloudinary");
+const postGastoIngreso = require("../../../caja/postGastoIngreso");
+const registrarMetodosPago = require("../../../../helpers/registrarMetodosPago")
 
 const postLiquidacion = async ({
     arrayIdRetiros,
