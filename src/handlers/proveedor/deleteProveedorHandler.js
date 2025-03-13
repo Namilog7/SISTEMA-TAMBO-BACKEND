@@ -1,15 +1,16 @@
-const { Proveedor } = require("../../db");
+const { Proveedor, TamboProveedor } = require("../../db");
 
 const deleteProveedorHandler = async (req, res) => {
     const { id } = req.params
     try {
-        const deleteProveedor = await Proveedor.destroy({
+        let deleteProveedor;
+        deleteProveedor = await Proveedor.destroy({
             where: {
                 id: id
             }
         })
         if (deleteProveedor === 0) {
-            await TamboProveedor.destroy({
+            deleteProveedor = await TamboProveedor.destroy({
                 where: { id: id }
             })
         }
