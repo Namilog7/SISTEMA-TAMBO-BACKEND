@@ -26,8 +26,7 @@ const postIngresoHandler = async (req, res) => {
         let allMetodos
         if (tipo_ingreso === "COMPRA") {
             const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
-            const id_gasto_ingreso = nuevoGastoIngreso.id
-            allMetodos = await registrarMetodosPago(id_gasto_ingreso, metodosPago, transaction)
+            allMetodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction)
         }
         // Crear el registro en Ingreso_recria
         const ingreso = await Ingreso_recria.create({
@@ -39,7 +38,7 @@ const postIngresoHandler = async (req, res) => {
             tipo_ingreso,
         }, { transaction });
         // Crear registros en Recria y asociarlos con el Ingreso_recria
-        console.log(ingreso.id)
+
         const recriaRecords = arrayIngresos.map((ingreso) => ({
             origen: ingreso.origen,
             caravana: ingreso.caravana,

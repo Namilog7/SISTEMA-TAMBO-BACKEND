@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4
         },
         importe: {
-            type: DataTypes.STRING,
+            type: DataTypes.FLOAT,
             allowNull: false
         },
         estado: {

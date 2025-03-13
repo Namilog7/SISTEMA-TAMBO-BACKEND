@@ -15,7 +15,7 @@ const postMetodoGastoIngreso = async ({ id_gasto_ingreso, metodo, monto }, trans
         throw new Error("El gasto/ingreso no existe");
     }
 
-    const nuevoMetodo = await MetodoGastoIngreso.create({
+    await MetodoGastoIngreso.create({
         id_gasto_ingreso,
         metodo,
         monto: importeNum,
@@ -39,7 +39,7 @@ const postMetodoGastoIngreso = async ({ id_gasto_ingreso, metodo, monto }, trans
 
         await saldoCaja.save({ transaction });
     }
-    return nuevoMetodo
+    return
 
 };
 
