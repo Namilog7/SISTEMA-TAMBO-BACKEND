@@ -1,14 +1,22 @@
 const crudController = require("../../controllers/crudController");
-const { Proveedor } = require("../../db");
+const { Proveedor, TamboProveedor } = require("../../db");
 
 const putProovedorHandler = async (req, res) => {
     const putProveedor = crudController(Proveedor);
-    const { id, nombre, contacto_1, contacto_2, localidad } = req.body
+    const putTamboProveedor = crudController(TamboProveedor);
+
+    const { id, nombre, contacto_1, contacto_2, localidad, isTamboProveedor } = req.body
     try {
-        const response = await putProveedor.update({ id, nombre, contacto_1, contacto_2, localidad })
+        let proveedor;
+        if (isTamboProveedor) {
+            proveedor = await putTamboProveedor.update({ id, nombre, contacto_1, contacto_2, localidad, saldo })
+        }
+        else {
+            proveedor = await putProveedor.update({ id, nombre, contacto_1, contacto_2, localidad, saldo })
+        }
         return res.json({
             message: "Se actualizo el proovedor",
-            response
+            proveedor
         })
     } catch (error) {
         console.log(error)

@@ -66,7 +66,6 @@ const {
     Nota,
     PagoSueldo,
     User,
-    TransaccionGanado,
     Macho,
     Producto,
     Movimiento_anotacion,
@@ -157,9 +156,6 @@ Nota.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true, onDelet
 Cliente.hasMany(Nota, { foreignKey: "id_cliente", allowNull: true, onDelete: "SET NULL" });
 Proveedor.hasMany(Nota, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
 
-
-Ganado.hasOne(TransaccionGanado);
-TransaccionGanado.hasOne(Ganado);
 
 Sector.hasMany(Producto, { foreignKey: "id_sector" });
 Producto.belongsTo(Sector, { foreignKey: "id_sector" });

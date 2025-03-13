@@ -1,7 +1,9 @@
 const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion, conn } = require("../../db");
+const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
+const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
-const postCompraHandler = async (req, res) => {
-    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso } = req.body;
+const postIngresoHandler = async (req, res) => {
+    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago } = req.body;
     const transaction = conn.transaction()
     try {
 
@@ -21,12 +23,12 @@ const postCompraHandler = async (req, res) => {
         if (!["COMPRA", "ENTREGA", "PARTO"].includes(tipo_ingreso)) {
             return res.status(400).json({ message: "El tipo de operación debe ser COMPRA, ENTREGA o PARTO." });
         }
-
-        /*    if (tipo_ingreso === "COMPRA") {
-   
-               const registerCompra = await registrarCompraGanado()
-           }
-    */
+        let allMetodos
+        if (tipo_ingreso === "COMPRA") {
+            const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
+            const id_gasto_ingreso = nuevoGastoIngreso.id
+            allMetodos = await registrarMetodosPago(id_gasto_ingreso, metodosPago, transaction)
+        }
         // Crear el registro en Ingreso_recria
         const ingreso = await Ingreso_recria.create({
             fecha_carga,
@@ -120,6 +122,7 @@ const postCompraHandler = async (req, res) => {
                 cantidadMachos.length > 0
                     ? `Se sumaron ${cantidadMachos.length} machos al contador.`
                     : "No se registraron machos.",
+            allMetodos
         });
     } catch (error) {
         console.error("Error en postCompraHandler:", error);
@@ -127,4 +130,4 @@ const postCompraHandler = async (req, res) => {
     }
 };
 
-module.exports = postCompraHandler;
+module.exports = postIngresoHandler;
