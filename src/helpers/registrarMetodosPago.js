@@ -36,86 +36,30 @@ const postMetodoGastoIngreso = require("../controllers/caja/postMetodoGastoIngre
  * @throws {Error} - Lanza un error si ocurre un problema al registrar los métodos de pago.
  */
 const registrarMetodosPago = async (id_gasto_ingreso, metodosPago, transaction) => {
-    if (!Array.isArray(metodosPago) || metodosPago.length === 0) {
-        return [];
+    if (!Array.isArray(metodosPago) || metodosPago.length === 0) return [];
+
+    let metodosRegistrados = [];
+
+    for (const metodo of metodosPago) {
+        const metodoRegistrado = await postMetodoGastoIngreso({
+            id_gasto_ingreso,
+            metodo: metodo.metodo,
+            monto: metodo.monto
+        }, transaction);
+
+        let resultado = { metodoRegistrado };
+
+        if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
+            resultado.transferencia = await postTransferencia(metodo.datosTransferencia, transaction);
+        }
+        if (metodo.metodo === "CHEQUE" && metodo.datosCheque) {
+            resultado.cheque = await postCheque(metodo.datosCheque, transaction);
+        }
+
+        metodosRegistrados.push(resultado);
     }
-    let transferencia;
-    let cheque;
-    let metodos = []
-    const metodosRegistrados = await Promise.all(
-        metodosPago.map(async (metodo) => {
 
-            let metodoRegistrado = await postMetodoGastoIngreso({
-                id_gasto_ingreso,
-                metodo: metodo.metodo,
-                monto: metodo.monto
-            }, transaction);
-            metodos.push(metodoRegistrado)
-            // Si es transferencia o cheque, ejecutar las funciones correspondientes
-            if (metodo.metodo === "TRANSFERENCIA") {
-                const {
-                    fecha,
-                    cuenta_origen,
-                    cuenta_destino,
-                    importe,
-                    detalle,
-                    estado,
-                } = metodo.datosTransferencia;
-                transferencia = await postTransferencia({
-                    fecha,
-                    cuenta_origen,
-                    cuenta_destino,
-                    importe,
-                    detalle,
-                    estado,
-                }, transaction);
-            }
-
-            if (metodo.metodo === "CHEQUE") {
-                const {
-                    importe,
-                    estado,
-                    tipo,
-                    detalle,
-                    origen,
-                    destino,
-                    actual_destino,
-                    banco,
-                    numero_cheque,
-                    fecha_emision,
-                    fecha_pago,
-                    fecha_cobro
-                } = metodo.datosCheque;
-                cheque = await postCheque({
-                    importe,
-                    estado,
-                    tipo,
-                    detalle,
-                    origen,
-                    destino,
-                    actual_destino,
-                    banco,
-                    numero_cheque,
-                    fecha_emision,
-                    fecha_pago,
-                    fecha_cobro
-                }, transaction);
-            }
-
-            return {
-                metodoRegistrado,
-                transferencia,
-                cheque,
-            };
-        })
-    );
-
-    return {
-        metodosRegistrados,
-        metodos,
-        transferencia,
-        cheque
-    };
+    return metodosRegistrados;
 };
 
-module.exports = registrarMetodosPago;
+module.exports = registrarMetodosPago

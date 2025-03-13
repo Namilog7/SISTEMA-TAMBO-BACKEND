@@ -35,8 +35,10 @@ const postCheque = async ({
     if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
         registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
     }
-    return datosActualizados = registroCaja, nuevoCheque
-
+    return {
+        registroCaja,
+        nuevoCheque
+    }
 
 
 }
