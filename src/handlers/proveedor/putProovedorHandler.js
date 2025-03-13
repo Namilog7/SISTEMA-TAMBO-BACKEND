@@ -5,7 +5,7 @@ const putProovedorHandler = async (req, res) => {
     const putProveedor = crudController(Proveedor);
     const putTamboProveedor = crudController(TamboProveedor);
 
-    const { id, nombre, contacto_1, contacto_2, localidad, isTamboProveedor } = req.body
+    const { id, nombre, contacto_1, contacto_2, localidad, isTamboProveedor, saldo } = req.body
     try {
         let proveedor;
         if (isTamboProveedor) {
