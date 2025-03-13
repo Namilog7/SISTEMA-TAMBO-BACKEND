@@ -22,10 +22,7 @@ const postTransferencia = async ({
     if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
         registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
     }
-    return {
-        registroCaja,
-        nuevaTransferencia
-    }
+    return datosActualizados = registroCaja, nuevaTransferencia
 }
 
 module.exports = postTransferencia

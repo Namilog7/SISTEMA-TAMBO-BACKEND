@@ -10,8 +10,7 @@ const postMetodoGastoIngreso = async ({ id_gasto_ingreso, metodo, monto }, trans
         throw new Error("El importe debe ser un número válido y mayor a 0");
     }
 
-    const id = id_gasto_ingreso.replace(/"/g, "");
-    const gastoIngreso = await GastoIngreso.findByPk(id, { transaction });
+    const gastoIngreso = await GastoIngreso.findByPk(id_gasto_ingreso, { transaction });
     if (!gastoIngreso) {
         throw new Error("El gasto/ingreso no existe");
     }

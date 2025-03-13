@@ -4,7 +4,7 @@ const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const postIngresoHandler = async (req, res) => {
     const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago, detalle = "" } = req.body;
-    const transaction = conn.transaction()
+    const transaction = await conn.transaction()
     try {
 
         if (
@@ -38,9 +38,8 @@ const postIngresoHandler = async (req, res) => {
             importe,
             tipo_ingreso,
         }, { transaction });
-
-        const id = ingreso.id
         // Crear registros en Recria y asociarlos con el Ingreso_recria
+        console.log(ingreso.id)
         const recriaRecords = arrayIngresos.map((ingreso) => ({
             origen: ingreso.origen,
             caravana: ingreso.caravana,
@@ -48,7 +47,7 @@ const postIngresoHandler = async (req, res) => {
             peso: ingreso.peso || null,
             fecha_ingreso: ingreso.fecha_ingreso || null,
             origen: ingreso.origen || null,
-            id_ingreso: id
+            id_ingreso: ingreso.id
         }));
 
         await Recria.bulkCreate(recriaRecords, { transaction });
