@@ -157,6 +157,7 @@ Cliente.hasMany(Nota, { foreignKey: "id_cliente", allowNull: true, onDelete: "SE
 Proveedor.hasMany(Nota, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
 
 
+
 Sector.hasMany(Producto, { foreignKey: "id_sector" });
 Producto.belongsTo(Sector, { foreignKey: "id_sector" });
 
