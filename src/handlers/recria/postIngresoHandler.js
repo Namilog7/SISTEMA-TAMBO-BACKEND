@@ -3,7 +3,7 @@ const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const postIngresoHandler = async (req, res) => {
-    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago } = req.body;
+    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago, detalle = "" } = req.body;
     const transaction = conn.transaction()
     try {
 
@@ -125,7 +125,7 @@ const postIngresoHandler = async (req, res) => {
             allMetodos
         });
     } catch (error) {
-        console.error("Error en postCompraHandler:", error);
+        console.error("Error en postIngresoHandler:", error);
         res.status(500).json({ error: error.message });
     }
 };
