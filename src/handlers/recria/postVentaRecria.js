@@ -1,10 +1,11 @@
-const { TransaccionGanado, Macho, Movimiento_anotacion, conn } = require("../../db");
+const { Macho, Movimiento_anotacion, conn } = require("../../db");
 const postCloudinary = require("../../controllers/postCloudinary")
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
-const postTransaccionGanado = require("../../controllers/transaccionGanado/postTransaccionGanado");
+
 
 const postVentaRecria = async (req, res) => {
+    // peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto, cantidad, fecha, genero,
     const { peso_total, contacto, tipo_operacion, comprador, precio_kilo, monto, cantidad, fecha, genero, comprobanteBase64, tipo = "INGRESO", id_sector, metodosPago, detalle = "", estado = "ACEPTADO" } = req.body;
     const transaction = await conn.transaction()
     try {
@@ -32,18 +33,6 @@ const postVentaRecria = async (req, res) => {
             peso_total,
             comprobante,
         }, { transaction }); */
-        const nuevaTransaccion = await postTransaccionGanado({
-            tipo_operacion,
-            comprador,
-            contacto,
-            precio_kilo,
-            monto,
-            cantidad,
-            fecha,
-            genero,
-            peso_total,
-            comprobante,
-        }, transaction)
         let machos = await Macho.findOne({ transaction })
         if (genero === "MACHO") {
             if (!machos) {
@@ -68,8 +57,7 @@ const postVentaRecria = async (req, res) => {
 
         await transaction.commit();
         return res.status(201).json({
-            message: "Transacción de venta registrada con éxito.",
-            transaccion,
+            message: "Venta realizada con éxito.",
             nuevoGastoIngreso,
             allMetodos
         });
