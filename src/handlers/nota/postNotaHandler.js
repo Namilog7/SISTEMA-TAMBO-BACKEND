@@ -38,6 +38,7 @@ module.exports = postNotaHandler;
  */
 
 const postNota = require("../../controllers/nota/postNota");
+const postResumen = require("../../controllers/resumen/postResumen");
 
 const postNotaHandler = async (req, res) => {
     const { descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado } = req.body;
@@ -58,6 +59,8 @@ const postNotaHandler = async (req, res) => {
         // Determinar a qué columna debe ir el id
         const id_cliente = tipo_destinatario === "CLIENTE" ? id_afectado : null;
         const id_proveedor = tipo_destinatario === "PROVEEDOR" ? id_afectado : null;
+
+        // funcion que registra Resumen 
 
         // Llamar al controlador con los datos corregidos
         const result = await postNota({

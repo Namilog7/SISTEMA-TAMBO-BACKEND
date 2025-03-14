@@ -5,17 +5,17 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
 const { ssl } = require("pg/lib/defaults");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
+    /* dialectOptions: {
         ssl: {
             require: true,
             rejectUnauthorized: false
         }
-    }
+    } */
 });
 
 // Obtención del nombre del archivo actual
@@ -90,11 +90,14 @@ const {
 Sector.hasMany(RetiroLeche, { foreignKey: 'id_sector' });
 RetiroLeche.belongsTo(Sector, { foreignKey: 'id_sector' });
 
+Cliente.hasMany(RetiroLeche, { foreignKey: "id_cliente" });
+RetiroLeche.belongsTo(Cliente, { foreignKey: "id_cliente" })
+
 Sector.hasMany(CompraLeche, { foreignKey: "id_sector" });
 CompraLeche.belongsTo(Sector, { foreignKey: "id_sector" });
 
-Proveedor.hasMany(CompraLeche, { foreignKey: "id_proveedor" });
-CompraLeche.belongsTo(Proveedor, { foreignKey: "id_proveedor" });
+TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_tambo_proveedor" });
+CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_tambo_proveedor" });
 
 Liquidacion.hasMany(RetiroLeche, {
     foreignKey: 'id_liquidacion', // Nombre de la clave foránea en RetiroLeche
