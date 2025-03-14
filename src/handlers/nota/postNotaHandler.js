@@ -38,6 +38,7 @@ module.exports = postNotaHandler;
  */
 
 const postNota = require("../../controllers/nota/postNota");
+const postResumen = require("../../controllers/resumen/postResumen");
 
 const postNotaHandler = async (req, res) => {
     const { descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado } = req.body;

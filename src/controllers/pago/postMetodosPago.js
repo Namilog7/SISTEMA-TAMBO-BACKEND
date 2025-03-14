@@ -3,27 +3,86 @@ const postPago = require("../../controllers/pago/postPago");
 const postTransferencia = require("../../controllers/caja/transferencia/postTransferencia");
 const postCheque = require("../../controllers/caja/cheque/postCheque");
 const postResumen = require("../../controllers/resumen/postResumen");
+const postMetodoGastoIngreso = require("../caja/postMetodoGastoIngreso");
+const postGastoIngreso = require("../caja/postGastoIngreso");
 
-const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detalle = "" }, transaction) => {
-    // datosTransferencia: fecha,cuenta_origen,cuenta_destino,importe, detalle, estado
-    // datosCheque: importe,estado,tipo,detalle,origen, destino, actual_destino,banco,numero_cheque,fecha_emision,fecha_pago,fecha_cobro
-    if (metodos.length == 0 || !id_pago) throw new Error("No mandaste bien las cosas corneta")
-    const nuevoPago = await postPago({ detalle, fecha, id_cliente, id_proveedor }, transaction)
+/**
+ * Registra múltiples métodos de pago y sus transacciones asociadas.
+ *
+ * @param {Object} params - Parámetros del pago.
+ * @param {Array} params.metodos - Lista de métodos de pago a registrar.
+ * @param {string} params.fecha - Fecha del pago.
+ * @param {string} params.id_cliente - ID del cliente que realiza el pago (opcional).
+ * @param {string} params.id_proveedor - ID del proveedor que recibe el pago (opcional).
+ * @param {string} [params.detalle=""] - Detalles adicionales del pago.
+ * @param {string} params.model - Puede ser "CLIENTE" o "PROVEEDOR".
+ * @param {Object} transaction - Transacción de Sequelize para garantizar atomicidad.
+ *
+ * @throws {Error} Si la lista de métodos de pago está vacía.
+ *
+ * @returns {Promise<Object>} Objeto con la información de los pagos registrados:
+ *  - totalMetodos: Métodos de pago registrados en la base de datos.
+ *  - resultado: Información sobre transferencias y cheques procesados.
+ *  - nuevoResumen: Registro en el resumen de pagos.
+ *
+ * @description
+ * - Crea un nuevo registro de pago en la base de datos.
+ * - Recorre la lista de métodos de pago y los registra en la tabla `MetodoPago`.
+ * - Si el método de pago es "TRANSFERENCIA", ejecuta `postTransferencia`.
+ * - Si el método de pago es "CHEQUE", ejecuta `postCheque`.
+ * - Registra cada método de pago en `postMetodoGastoIngreso`.
+ * - Registra un nuevo gasto o ingreso en `postGastoIngreso`.
+ * - Calcula el total del importe pagado y los métodos utilizados.
+ * - Registra un resumen de la transacción en la base de datos.
+ */
+
+const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detalle = "", model, id_sector }, transaction) => {
+    if (metodos.length === 0) throw new Error("No se enviaron métodos de pago.");
+
+    const nuevoPago = await postPago({ detalle, fecha, id_cliente, id_proveedor }, transaction);
+
     let totalMetodos = [];
     let resultado = {};
-    let pagosUsados = []
+    let pagosUsados = [];
+    let importe = 0;
+
     for (const metodo of metodos) {
-        let metodoRegistrado = await MetodoPago.create({
-            id_pago: nuevoPago.id,
-            detalle: metodo.detalle,
-            fecha: metodo.fecha,
-            id_cliente: metodo.id_cliente,
-            id_proveedor: metodo.id_proveedor,
-            importe: metodo.importe,
-            metodo: metodo.metodo
-        })
-        totalMetodos.push(metodoRegistrado)
-        pagos.push(metodo.metodo)
+        let metodoRegistrado = await MetodoPago.create(
+            {
+                id_pago: nuevoPago.id,
+                detalle: metodo.detalle,
+                fecha: metodo.fecha,
+                id_cliente: metodo.id_cliente,
+                id_proveedor: metodo.id_proveedor,
+                importe: metodo.importe,
+                metodo: metodo.metodo,
+            },
+            { transaction }
+        );
+
+        importe += metodo.importe;
+        totalMetodos.push(metodoRegistrado);
+        pagosUsados.push(metodo.metodo);
+
+        const { nuevoGastoIngreso } = await postGastoIngreso(
+            {
+                detalle,
+                estado: metodo.estado,
+                tipo: metodo.tipo,
+                fecha,
+                id_sector
+            },
+            transaction
+        );
+
+        await postMetodoGastoIngreso(
+            {
+                id_gasto_ingreso: nuevoGastoIngreso.id,
+                metodo: metodo.metodo,
+                monto: metodo.importe,
+            },
+            transaction
+        );
 
         if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
             resultado.transferencia = await postTransferencia(metodo.datosTransferencia, transaction);
@@ -32,12 +91,16 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
             resultado.cheque = await postCheque(metodo.datosCheque, transaction);
         }
     }
-    const pagos = pagosUsados.join(",")
-    const id_afectado = id_cliente ? id_cliente : id_proveedor
-    /*  const nuevoResumen = await postResumen({id_afectado, nota_tipo, fecha, detalle, pago, factura, model, importe}) */
+
+    const id_afectado = id_cliente ? id_cliente : id_proveedor;
+    const pago = pagosUsados.join(", ");
+    const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe }, transaction);
+
     return {
         totalMetodos,
-        resultado
-    }
-}
-module.exports = postMetodosPago
+        resultado,
+        nuevoResumen,
+    };
+};
+
+module.exports = postMetodosPago;
