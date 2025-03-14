@@ -1,19 +1,20 @@
-const { ProduccionLeche, User } = require("../../../db");
+const { ProduccionLeche, User, EquipoFrio, conn } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 
 const postProduccionLecheHandler = async (req, res) => {
     const postProduccionLeche = crudController(ProduccionLeche);
+    const equipoFrio = crudController(EquipoFrio);
     const { litros, fecha, hora_recoleccion, hora_carga, id_empleado, cantidad_animales, aclaracion, estado } = req.body;
 
     try {
-        // Verificar que el empleado exista
+
+        const transaction = await conn.transaction()
         const userId = id_empleado.replace(/"/g, "");
-        const empleado = await User.findByPk(userId);
+        const empleado = await User.findByPk(userId, { transaction });
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
 
-        // Crear el registro en ProduccionLeche
         const response = await postProduccionLeche.create({
             litros,
             fecha,
@@ -23,8 +24,18 @@ const postProduccionLecheHandler = async (req, res) => {
             aclaracion,
             estado,
             id_empleado: userId
-        });
+        },);
 
+        let litrosEnEquipo
+        litrosEnEquipo = await EquipoFrio.findOne({ transaction })
+        if (!litrosEnEquipo) {
+            litrosEnEquipo = await equipoFrio.create({
+                litros: 0,
+                capacidad: 0
+            });
+            litrosEnEquipo.litros += litros
+            await litrosEnEquipo.save({ transaction })
+        }
         res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear la producción de leche:", error);

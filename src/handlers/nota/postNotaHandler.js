@@ -59,6 +59,8 @@ const postNotaHandler = async (req, res) => {
         const id_cliente = tipo_destinatario === "CLIENTE" ? id_afectado : null;
         const id_proveedor = tipo_destinatario === "PROVEEDOR" ? id_afectado : null;
 
+        // funcion que registra Resumen 
+
         // Llamar al controlador con los datos corregidos
         const result = await postNota({
             descripcion,

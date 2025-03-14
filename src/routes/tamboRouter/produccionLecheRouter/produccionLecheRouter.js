@@ -7,6 +7,7 @@ const getPartialProduccionLecheHandler = require("../../../handlers/tambo/produc
 const { recoleccionPostModel, recoleccionPutModel } = require("../../../middlewares/tambo/produccionLeche/postProduccionLecheMid")
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
 const getEstadisticasHandler = require("../../../handlers/tambo/estadisticas/getEstadisticasHandler");
+const putEquipoFrioHandler = require("../../../handlers/tambo/produccionLeche/putEquipoFrioHandler");
 
 const produccionLecheRouter = Router();
 produccionLecheRouter.get("/", getProduccionHandler)
@@ -15,6 +16,7 @@ produccionLecheRouter.post("/", modelValidateMid(recoleccionPostModel), postProd
 produccionLecheRouter.delete("/:id", deleteProduccionHandler) // endpoint que no se va a usar 
 produccionLecheRouter.put("/", modelValidateMid(recoleccionPutModel), putProduccionLecheHandler);
 produccionLecheRouter.get("/estadisticas", getEstadisticasHandler)
+produccionLecheRouter.put("/equipofrio", putEquipoFrioHandler)
 
 
 module.exports = produccionLecheRouter

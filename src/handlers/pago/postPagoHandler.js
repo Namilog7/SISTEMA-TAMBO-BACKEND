@@ -1,17 +1,14 @@
-const { Pago } = require("../../db");
+const postMetodosPago = require("../../controllers/pago/postMetodosPago");
+const { conn } = require("../../db");
 
 const postPagoHandler = async (req, res) => {
-    const { detalle, fecha, id_cliente, id_proveedor } = req.body
+    const { detalle, fecha, id_cliente, id_proveedor, metodos } = req.body
+    const transaction = await conn.transaction()
     try {
-        const newPago = await Pago.create({
-            detalle,
-            fecha,
-            id_cliente,
-            id_proveedor
-        })
-        res.json({
+        const nuevoPago = await postMetodosPago({ metodos, fecha, id_cliente, id_proveedor, detalle }, transaction)
+        return res.json({
             message: "Se creo el nuevo pago",
-            newPago
+            nuevoPago
         })
     } catch (error) {
         console.log(error);

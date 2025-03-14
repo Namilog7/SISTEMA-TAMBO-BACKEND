@@ -1,4 +1,4 @@
-const { RetiroLeche, User, CompraLeche } = require("../../../db");
+const { RetiroLeche, User, CompraLeche, EquipoFrio } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 
 const postRetiroLecheHandler = async (req, res) => {
@@ -57,6 +57,12 @@ const postRetiroLecheHandler = async (req, res) => {
                 id_cliente,
                 id_liquidacion,
             });
+            let equipoFrio = await EquipoFrio.findOne({});
+            if (!equipoFrio) {
+                throw new Error("No hay un equipo de frio")
+            }
+            equipoFrio.litros -= cantidad;
+            equipoFrio.save()
         }
         return res.status(201).json(response);
     } catch (error) {

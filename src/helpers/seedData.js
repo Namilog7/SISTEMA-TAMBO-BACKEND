@@ -1,4 +1,4 @@
-const { Inseminacion, Sector, Tambo, RetiroLeche, Ganado, SaldoCaja, User, CajaBancaria } = require("./../db"); // Asegúrate de importar el modelo User
+const { Inseminacion, Sector, Tambo, EquipoFrio, Ganado, SaldoCaja, User, CajaBancaria } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require("bcrypt");
@@ -62,6 +62,13 @@ const seedData = async () => {
                 */
         // Insertar Ganado
         // Insertar Sector
+        const equipoFrio = await EquipoFrio.findOne({});
+        if (!equipoFrio) {
+            await EquipoFrio.create({
+                litros: 0,
+                capacidad: 0
+            })
+        }
         const cajaBancaria = await CajaBancaria.findOne({})
         if (!cajaBancaria) {
             await CajaBancaria.create({
