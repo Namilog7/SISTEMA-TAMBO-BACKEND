@@ -67,8 +67,8 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
         const { nuevoGastoIngreso } = await postGastoIngreso(
             {
                 detalle,
-                estado: metodo.estado,
-                tipo: metodo.tipo,
+                estado: "ACEPTADO",
+                tipo: "INGRESO",
                 fecha,
                 id_sector
             },

@@ -5,10 +5,10 @@ const postProveedorHandler = async (req, res) => {
     const postProveedor = crudController(Proveedor);
     const postProveedorTambo = crudController(TamboProveedor);
 
-    const { nombre, contacto_1, contacto_2, localidad, saldo, isProveedorTambo } = req.body
+    const { nombre, contacto_1, contacto_2, localidad, saldo, isTamboProveedor } = req.body
     try {
         let nuevoProveedor;
-        if (isProveedorTambo) {
+        if (isTamboProveedor) {
             nuevoProveedor = await postProveedorTambo.create({ nombre, contacto_1, contacto_2, localidad, saldo });
         }
         else {
