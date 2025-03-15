@@ -7,6 +7,7 @@ const getRetiroByIdHandler = async (req, res) => {
         const retiros = await RetiroLeche.findAll({
             where: { id_cliente: id }
         })
+        res.json({ retiros })
     } catch (error) {
         console.log(error)
     }
