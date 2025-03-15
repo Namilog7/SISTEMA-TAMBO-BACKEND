@@ -94,7 +94,7 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
 
     const id_afectado = id_cliente ? id_cliente : id_proveedor;
     const pago = pagosUsados.join(", ");
-    const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe }, transaction);
+    const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe, cuenta_corriente }, transaction);
 
     return {
         totalMetodos,

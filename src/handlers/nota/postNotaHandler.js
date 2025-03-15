@@ -39,9 +39,11 @@ module.exports = postNotaHandler;
 
 const postNota = require("../../controllers/nota/postNota");
 const postResumen = require("../../controllers/resumen/postResumen");
+const { conn } = require("../../db");
 
 const postNotaHandler = async (req, res) => {
     const { descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado } = req.body;
+    const transaction = await conn.transaction()
 
     try {
         if (!["PROVEEDOR", "CLIENTE"].includes(tipo_destinatario)) {
@@ -60,8 +62,6 @@ const postNotaHandler = async (req, res) => {
         const id_cliente = tipo_destinatario === "CLIENTE" ? id_afectado : null;
         const id_proveedor = tipo_destinatario === "PROVEEDOR" ? id_afectado : null;
 
-        // funcion que registra Resumen 
-
         // Llamar al controlador con los datos corregidos
         const result = await postNota({
             descripcion,
@@ -70,10 +70,11 @@ const postNotaHandler = async (req, res) => {
             fecha_emision,
             id_cliente,
             id_proveedor
-        });
-
+        }, transaction);
+        await transaction.commit()
         return res.status(201).json(result);
     } catch (error) {
+        await transaction.rollback()
         console.error("Error en postNotaHandler:", error);
         res.status(500).json({ error: `Error en el servidor: ${error.message}` });
     }
