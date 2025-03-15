@@ -10,7 +10,7 @@ const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factu
         detalle = pago
         resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
         resumen.haber = resumen.haber += importe;
-        operacion = "+"
+        operacion = "-"
         await putClienteProveedor({ id, importe, model, operacion }, transaction)
     }
 
@@ -19,7 +19,7 @@ const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factu
         detalle = factura
         resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
         resumen.debe = resumen.debe -= importe;
-        operacion = "-"
+        operacion = "+"
         await putClienteProveedor({ id, importe, model, operacion }, transaction)
     }
 
