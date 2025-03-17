@@ -1,5 +1,6 @@
 const { RetiroLeche, User, CompraLeche, EquipoFrio } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
+const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
 
 const postRetiroLecheHandler = async (req, res) => {
     const { id_proveedor } = req.query
@@ -64,6 +65,7 @@ const postRetiroLecheHandler = async (req, res) => {
             equipoFrio.litros -= cantidad;
             equipoFrio.save()
         }
+        await postSistemaMovimiento({ user_tipo: empleado.tipo, fecha, nombre_sector: "TAMBO", actividad: "CARGA RETIRO DE LECHE", hora: hora_carga })
         return res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear el retiro de leche:", error);

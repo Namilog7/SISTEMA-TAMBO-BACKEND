@@ -10,10 +10,10 @@ const putChequeHandler = require("../../handlers/caja/putChequeHandler");
 const cajaRouter = Router();
 
 cajaRouter.get("/", verifyToken("ADMIN"), getCajaHandler)
-cajaRouter.post("/resumen", postResumenHandler)
-cajaRouter.post("/transferencia", postTransferenciaHandler)
-cajaRouter.put("/transferencia/:id", putTransferenciaHandler)
-cajaRouter.post("/cheque", postChequeHandler)
-cajaRouter.put("/cheque/:id", putChequeHandler)
+cajaRouter.post("/resumen", verifyToken("ADMIN"), postResumenHandler)
+cajaRouter.post("/transferencia", verifyToken("ADMIN"), postTransferenciaHandler)
+cajaRouter.put("/transferencia/:id", verifyToken("ADMIN"), putTransferenciaHandler)
+cajaRouter.post("/cheque", verifyToken("ADMIN"), postChequeHandler)
+cajaRouter.put("/cheque/:id", verifyToken("ADMIN"), putChequeHandler)
 
 module.exports = cajaRouter
