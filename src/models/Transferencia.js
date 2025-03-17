@@ -17,10 +17,10 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         cuenta_origen: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER, // string
         },
         cuenta_destino: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING  // string
         },
         importe: {
             type: DataTypes.FLOAT,
