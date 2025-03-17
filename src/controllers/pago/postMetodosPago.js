@@ -60,7 +60,7 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
             { transaction }
         );
 
-        importe += metodo.importe;
+        importe += Number(metodo.importe);
         totalMetodos.push(metodoRegistrado);
         pagosUsados.push(metodo.metodo);
 
