@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         metodo: {
-            type: DataTypes.ENUM("EFECTIVO", "CHEQUE", "TRANSFERENCIA", "OTROS"),
+            type: DataTypes.ENUM("EFECTIVO", "CHEQUE", "TRANSFERENCIA", "OTROS", "CUENTA_CORRIENTE"),
             allowNull: false
         },
     })
