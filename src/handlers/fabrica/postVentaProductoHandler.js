@@ -1,9 +1,13 @@
-const { VentaProducto, Venta, conn } = require("../../db");
+const { VentaProducto, Venta, conn, Remito, Factura } = require("../../db");
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const crearBulkTablaIntermedia = require("../../helpers/crearBulkParaIntermedia");
+const actualizarStock = require("../../controllers/fabrica/actualizarStock");
+const postFacturacion = require("../../controllers/caja/postFacturacion");
+const postResumen = require("../../controllers/resumen/postResumen");
 
 const postVentaProductoHandler = async (req, res) => {
-    const { monto, fecha, arrayObjsVenta, id_cliente, id_sector, metodosPago, tipo = "INGRESO" } = req.body;
+    const { monto, fecha, arrayObjsVenta, id_cliente, id_sector, metodosPago, tipo = "INGRESO", model, datosFacturacion } = req.body; //model Remito o Factura
     const transaction = await conn.transaction()
     try {
         if (!fecha || !arrayObjsVenta?.length) {
@@ -12,14 +16,14 @@ const postVentaProductoHandler = async (req, res) => {
 
         const venta = await Venta.create({ fecha, monto, id_cliente }, { transaction });
 
-        const bulkVenta = arrayObjsVenta.map(({ cantidad, precio, id }) => ({
-            cantidad,
-            precio,
-            id_venta: venta.id,
-            id_producto: id
-        }));
+        const bulkVenta = crearBulkTablaIntermedia(arrayObjsVenta, venta.id, "id_venta");
 
         await VentaProducto.bulkCreate(bulkVenta);
+
+        await actualizarStock(arrayObjsVenta, transaction);
+
+        if (model === "REMITO") await postFacturacion({ datosFacturacion }, Remito, transaction);
+        if (model === "FACTURA") await postFacturacion({ datosFacturacion }, Factura, transaction);
 
         const { newGastoIngreso } = await postGastoIngreso({
             detalle: `Venta ID :${venta.id}`,
@@ -29,6 +33,8 @@ const postVentaProductoHandler = async (req, res) => {
         }, transaction);
 
         const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+
+        await postResumen({ id_afectado: id_cliente, fecha, detalle, factura: datosFacturacion.numero, model: "CLIENTE", importe: monto }, transaction)
 
         res.json({
             message: "Venta registrada exitosamente",

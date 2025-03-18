@@ -1,7 +1,7 @@
 const createResumen = require("../../helpers/createResumen");
 const putClienteProveedor = require("../../controllers/cliente/putClienteProveedor");
 
-const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factura, model, importe, cuenta_corriente }, transaction) => {
+const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factura, model, importe }, transaction) => {
     let resumen;
     let operacion;
     let id = id_afectado;
@@ -14,13 +14,14 @@ const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factu
         await putClienteProveedor({ id, importe, model, operacion }, transaction);
     }
 
-    if (nota_tipo === "DEBITO" || factura || cuenta_corriente) {
-        detalle = cuenta_corriente ? "Pasado a cuenta corriente" : factura;
+    else if (nota_tipo === "DEBITO" || factura) {
+        detalle = factura;
         resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
         resumen.debe += Number(importe);
         operacion = "+";
         await putClienteProveedor({ id, importe, model, operacion }, transaction);
     }
+    else { throw new Error("Algo fallo en postResumen") }
 
     await resumen.save({ transaction });
 };
