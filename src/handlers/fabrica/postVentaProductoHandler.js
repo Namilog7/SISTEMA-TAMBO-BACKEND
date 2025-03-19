@@ -25,8 +25,8 @@ const postVentaProductoHandler = async (req, res) => {
 
         const montoMetodos = calcularMontoMetodos({ metodosPago })
 
-        if (model === "REMITO") await postFacturacion({ ...datosFacturacion, id_cliente }, montoMetodos, Remito, transaction);
-        if (model === "FACTURA") await postFacturacion({ ...datosFacturacion, id_cliente }, montoMetodos, Factura, transaction);
+        if (model === "REMITO") await postFacturacion({ ...datosFacturacion, id_cliente, id_venta: venta.id }, montoMetodos, Remito, transaction);
+        if (model === "FACTURA") await postFacturacion({ ...datosFacturacion, id_cliente, id_venta: venta.id }, montoMetodos, Factura, transaction);
 
         const { newGastoIngreso } = await postGastoIngreso({
             detalle: `Venta ID :${venta.id}`,
