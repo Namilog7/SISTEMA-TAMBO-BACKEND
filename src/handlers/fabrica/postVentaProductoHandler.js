@@ -5,6 +5,7 @@ const crearBulkTablaIntermedia = require("../../helpers/crearBulkParaIntermedia"
 const actualizarStock = require("../../controllers/fabrica/actualizarStock");
 const postFacturacion = require("../../controllers/caja/postFacturacion");
 const postResumen = require("../../controllers/resumen/postResumen");
+const calcularMontoMetodos = require("../../helpers/calcularMontoMetodos");
 
 const postVentaProductoHandler = async (req, res) => {
     const { monto, fecha, arrayObjsVenta, id_cliente, id_sector, metodosPago, tipo = "INGRESO", model, datosFacturacion } = req.body; //model Remito o Factura
@@ -22,8 +23,10 @@ const postVentaProductoHandler = async (req, res) => {
 
         await actualizarStock(arrayObjsVenta, transaction);
 
-        if (model === "REMITO") await postFacturacion({ datosFacturacion }, Remito, transaction);
-        if (model === "FACTURA") await postFacturacion({ datosFacturacion }, Factura, transaction);
+        const montoMetodos = calcularMontoMetodos({ metodosPago })
+
+        if (model === "REMITO") await postFacturacion({ ...datosFacturacion, id_cliente }, montoMetodos, Remito, transaction);
+        if (model === "FACTURA") await postFacturacion({ ...datosFacturacion, id_cliente }, montoMetodos, Factura, transaction);
 
         const { newGastoIngreso } = await postGastoIngreso({
             detalle: `Venta ID :${venta.id}`,
