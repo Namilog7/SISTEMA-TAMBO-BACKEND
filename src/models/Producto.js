@@ -46,6 +46,16 @@ module.exports = (sequelize) => {
                 allowNull: false
             }
         },
-        { timestamps: false }
+        {
+            timestamps: false,
+            hooks: {
+                beforeUpdate: (async (producto, options) => {
+                    const nuevoStock = producto.stock;
+                    if (nuevoStock < 0) {
+                        throw new Error("El stock no puede ser menor a cero.");
+                    }
+                })
+            }
+        }
     );
 };
