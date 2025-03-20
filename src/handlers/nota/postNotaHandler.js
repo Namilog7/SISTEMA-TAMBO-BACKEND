@@ -68,8 +68,8 @@ const postNotaHandler = async (req, res) => {
             tipo,
             importe,
             fecha_emision,
-            id_cliente,
-            id_proveedor
+            if_afectado: id_cliente ? id_cliente : id_proveedor,
+            tipo_destinatario,
         }, transaction);
         await transaction.commit()
         return res.status(201).json(result);
