@@ -4,7 +4,7 @@ const getNotaHandler = require("../../handlers/nota/getNotaHandler");
 const getNotasHandler = require("../../handlers/nota/getNotasHandler");
 
 const notaRouter = Router();
-notaRouter.get("/", getNotasHandler)
+notaRouter.get("/todo", getNotasHandler)
 notaRouter.get("/:id_afectado", getNotaHandler);
 notaRouter.post("/", postNotaHandler)
 

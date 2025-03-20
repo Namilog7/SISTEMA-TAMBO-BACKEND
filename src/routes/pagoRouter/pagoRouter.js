@@ -4,7 +4,7 @@ const postPagoHandler = require("../../handlers/pago/postPagoHandler");
 const getPagosHandler = require("./getPagosHandler");
 
 const pagoRouter = Router();
-pagoRouter.get("/", getPagosHandler);
+pagoRouter.get("/todo", getPagosHandler);
 pagoRouter.get("/:id", getPagoHandler);
 pagoRouter.post("/", postPagoHandler);
 
