@@ -1,16 +1,26 @@
 const { EquipoFrio } = require("../../../db");
 
 const putEquipoFrioHandler = async (req, res) => {
-    const { litros, capacidad } = req.body
-    try {
-        let litrosActuales = await EquipoFrio.findOne({});
-        litrosActuales.litros += litros;
-        litrosActuales.capacidad = capacidad
-        litros.save()
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: error.message })
-    }
-}
+    const { litros, capacidad, id } = req.body;
 
-module.exports = putEquipoFrioHandler
+    try {
+        let equipoFrio = await EquipoFrio.findOne({ where: { id } });
+
+        if (!equipoFrio) {
+            return res.status(404).json({ error: "Equipo frío no encontrado" });
+        }
+
+        equipoFrio.litros += litros;
+        equipoFrio.capacidad = capacidad;
+
+        await equipoFrio.save();
+
+        res.json({ message: "Equipo frío actualizado", equipoFrio });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = putEquipoFrioHandler;
