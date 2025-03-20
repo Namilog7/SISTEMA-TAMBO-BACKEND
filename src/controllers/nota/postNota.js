@@ -3,6 +3,7 @@ const postResumen = require("../resumen/postResumen");
 
 const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado }, transaction) => {
     // Buscar el destinatario en la respectiva tabla
+    console.log(descripcion)
     let afectado;
     if (tipo_destinatario === "CLIENTE") {
         afectado = await Cliente.findByPk(id_afectado, { transaction });

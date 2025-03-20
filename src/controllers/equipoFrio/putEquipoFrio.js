@@ -1,7 +1,10 @@
 const { EquipoFrio } = require("../../db");
 
-const putEquipoFrio = async ({ nombre, litros, capacidad }) => {
-    const equipo = await EquipoFrio.findOne({ where: { nombre } });
+const putEquipoFrio = async ({ nombre, litros, capacidad }, transaction) => {
+    const equipo = await EquipoFrio.findOne({ where: { nombre } }, { transaction });
     equipo.litros += litros,
-        equipo.capacidad = capacidad
+        equipo.capacidad = capacidad,
+        await equipo.save({ transaction })
 }
+
+module.exports = putEquipoFrio
