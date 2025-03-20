@@ -58,18 +58,14 @@ const postNotaHandler = async (req, res) => {
             return res.status(400).json({ error: "id_afectado e importe deben ser válidos." });
         }
 
-        // Determinar a qué columna debe ir el id
-        const id_cliente = tipo_destinatario === "CLIENTE" ? id_afectado : null;
-        const id_proveedor = tipo_destinatario === "PROVEEDOR" ? id_afectado : null;
-
         // Llamar al controlador con los datos corregidos
         const result = await postNota({
             descripcion,
             tipo,
             importe,
             fecha_emision,
-            if_afectado: id_cliente ? id_cliente : id_proveedor,
-            tipo_destinatario,
+            id_afectado,
+            tipo_destinatario
         }, transaction);
         await transaction.commit()
         return res.status(201).json(result);
