@@ -27,11 +27,12 @@ const postProduccionLecheHandler = async (req, res) => {
         },);
 
         let litrosEnEquipo
-        litrosEnEquipo = await EquipoFrio.findOne({ transaction })
+        litrosEnEquipo = await EquipoFrio.findOne({ where: { nombre: "Tambo" } }, { transaction })
         if (!litrosEnEquipo) {
             litrosEnEquipo = await equipoFrio.create({
+                nombre: "Tambo",
                 litros: 0,
-                capacidad: 0
+                capacidad: 135000
             });
             litrosEnEquipo.litros += litros
             await litrosEnEquipo.save({ transaction })

@@ -9,6 +9,10 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
+            nombre: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
             litros: {
                 type: DataTypes.FLOAT,
                 allowNull: true,
