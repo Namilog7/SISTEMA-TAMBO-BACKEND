@@ -1,4 +1,4 @@
-const { RetiroLeche, User, CompraLeche, EquipoFrio } = require("../../../db");
+const { RetiroLeche, User, CompraLeche } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
@@ -44,7 +44,7 @@ const postRetiroLecheHandler = async (req, res) => {
                 id_liquidacion,
                 id_proveedor
             });
-            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad })
+            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "+" })
         } else {
             // Crear el registro en RetiroLeche con el nombre completo del empleado
             response = await postRetiroLeche.create({
@@ -60,12 +60,7 @@ const postRetiroLecheHandler = async (req, res) => {
                 id_cliente,
                 id_liquidacion,
             });
-            let equipoFrio = await EquipoFrio.findOne({});
-            if (!equipoFrio) {
-                throw new Error("No hay un equipo de frio")
-            }
-            equipoFrio.litros -= cantidad;
-            equipoFrio.save()
+            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "-" })
         }
         await postSistemaMovimiento({ user_tipo: empleado.tipo, fecha, nombre_sector: "TAMBO", actividad: "CARGA RETIRO DE LECHE", hora: hora_carga })
         return res.status(201).json(response);
