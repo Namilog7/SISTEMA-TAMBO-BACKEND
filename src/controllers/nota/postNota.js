@@ -18,9 +18,9 @@ const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_e
 
     // Actualizar el saldo según el tipo de nota
     if (tipo === "CREDITO") {
-        afectado.saldo = afectado.saldo - importe;
+        afectado.saldo -= Number(importe);
     } else if (tipo === "DEBITO") {
-        afectado.saldo = afectado.saldo + importe;
+        afectado.saldo += Number(importe);
     }
 
     // Guardar los cambios en el saldo

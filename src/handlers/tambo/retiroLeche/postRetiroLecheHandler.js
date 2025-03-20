@@ -1,6 +1,7 @@
 const { RetiroLeche, User, CompraLeche, EquipoFrio } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
+const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
 
 const postRetiroLecheHandler = async (req, res) => {
     const { id_proveedor } = req.query
@@ -42,7 +43,8 @@ const postRetiroLecheHandler = async (req, res) => {
                 estado,
                 id_liquidacion,
                 id_proveedor
-            })
+            });
+            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad })
         } else {
             // Crear el registro en RetiroLeche con el nombre completo del empleado
             response = await postRetiroLeche.create({
