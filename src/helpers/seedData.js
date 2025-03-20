@@ -62,11 +62,20 @@ const seedData = async () => {
                 */
         // Insertar Ganado
         // Insertar Sector
-        const equipoFrio = await EquipoFrio.findOne({});
-        if (!equipoFrio) {
+        const equipoFrioTambo = await EquipoFrio.findOne({ where: { nombre: "Tambo" } });
+        if (!equipoFrioTambo) {
             await EquipoFrio.create({
+                nombre: "Tambo",
                 litros: 0,
-                capacidad: 0
+                capacidad: 13500
+            })
+        }
+        const equipoFrioFabrica = await EquipoFrio.findOne({ where: { nombre: "Fabrica" } });
+        if (!equipoFrioFabrica) {
+            await EquipoFrio.create({
+                nombre: "Fabrica",
+                litros: 0,
+                capacidad: 15000
             })
         }
         const cajaBancaria = await CajaBancaria.findOne({})
