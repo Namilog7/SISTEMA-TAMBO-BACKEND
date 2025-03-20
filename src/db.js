@@ -155,11 +155,27 @@ Nota.belongsTo(Proveedor, { foreignKey: "id_afectado", allowNull: true, onDelete
 Cliente.hasMany(Nota, { foreignKey: "id_afectado", constraints: false });
 Proveedor.hasMany(Nota, { foreignKey: "id_afectado", constraints: false }); */
 
-Nota.belongsTo(Cliente, { foreignKey: "id_cliente", allowNull: true, onDelete: "SET NULL" });
-Nota.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
+Nota.belongsTo(Cliente, {
+    foreignKey: "id_afectado",
+    constraints: false
+});
 
-Cliente.hasMany(Nota, { foreignKey: "id_cliente", allowNull: true, onDelete: "SET NULL" });
-Proveedor.hasMany(Nota, { foreignKey: "id_proveedor", allowNull: true, onDelete: "SET NULL" });
+Nota.belongsTo(Proveedor, {
+    foreignKey: "id_afectado",
+    constraints: false
+});
+
+
+Cliente.hasMany(Nota, {
+    foreignKey: "id_afectado",
+    constraints: false
+});
+
+Proveedor.hasMany(Nota, {
+    foreignKey: "id_afectado",
+    constraints: false
+});
+
 
 
 
