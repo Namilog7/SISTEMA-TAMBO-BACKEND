@@ -59,6 +59,7 @@ const postNotaHandler = async (req, res) => {
         }
 
         // Llamar al controlador con los datos corregidos
+        console.log(descripcion)
         const result = await postNota({
             descripcion,
             tipo,
