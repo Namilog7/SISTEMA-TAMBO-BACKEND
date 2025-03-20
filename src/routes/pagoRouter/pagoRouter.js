@@ -4,9 +4,9 @@ const postPagoHandler = require("../../handlers/pago/postPagoHandler");
 const getPagosHandler = require("./getPagosHandler");
 
 const pagoRouter = Router();
+pagoRouter.get("/", getPagosHandler);
 pagoRouter.get("/:id", getPagoHandler);
-pagoRouter.get("/", getPagosHandler)
-pagoRouter.post("/", postPagoHandler)
+pagoRouter.post("/", postPagoHandler);
 
 
 module.exports = pagoRouter
