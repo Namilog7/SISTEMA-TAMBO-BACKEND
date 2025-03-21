@@ -1,6 +1,8 @@
-const { ProduccionLeche, User, EquipoFrio, conn } = require("../../../db");
+const { ProduccionLeche, User, conn } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
+const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
+const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj")
 
 const postProduccionLecheHandler = async (req, res) => {
     const postProduccionLeche = crudController(ProduccionLeche);
@@ -26,7 +28,14 @@ const postProduccionLecheHandler = async (req, res) => {
             id_empleado: userId
         },);
 
-        await putEquipoFrio({ nombre: "Tambo", litros: litros })
+        await putEquipoFrio({ nombre: "Tambo", litros: litros, operacion: "+" })
+        await postSistemaMovimiento(
+            {
+                user_tipo: empleado.role,
+                nombre_sector: "tambo",
+                movimiento: sistemaMovimientoObj.cargaProduccion,
+                fecha: new Date()
+            }, transaction)
 
         res.status(201).json(response);
     } catch (error) {

@@ -38,7 +38,6 @@ module.exports = postNotaHandler;
  */
 
 const postNota = require("../../controllers/nota/postNota");
-const postResumen = require("../../controllers/resumen/postResumen");
 const { conn } = require("../../db");
 
 const postNotaHandler = async (req, res) => {

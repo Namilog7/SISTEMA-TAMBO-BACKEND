@@ -13,10 +13,6 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            propietario: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
             cuit_cuil: {
                 type: DataTypes.STRING(20),
                 allowNull: false
@@ -25,11 +21,7 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            contacto_2: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            numero_cuenta: {
+            localidad: {
                 type: DataTypes.STRING,
                 allowNull: true
             },
