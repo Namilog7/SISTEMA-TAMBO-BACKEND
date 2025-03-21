@@ -11,6 +11,14 @@ module.exports = (sequelize) => {
         ultimo_movimiento: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        usuario: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        fecha: {
+            type: DataTypes.DATE,
+            allowNull: false
         }
     })
 };

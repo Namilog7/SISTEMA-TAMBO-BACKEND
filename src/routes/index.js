@@ -11,6 +11,7 @@ const userRouter = require("./userRouter/userRouter");
 const fabricaRouter = require("./fabricaRouter/fabricaRouter");
 const agriculturaRouter = require("./agriculturaRouter/agriculturaRouter");
 
+const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler")
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.use("/recria", recriaRouter)
 router.use("/user", userRouter)
 router.use("/fabrica", fabricaRouter)
 router.use("/agricultura", agriculturaRouter)
+router.get("/sistema-movimiento", getSistemaMovimientoHandler)
 
 
 module.exports = router

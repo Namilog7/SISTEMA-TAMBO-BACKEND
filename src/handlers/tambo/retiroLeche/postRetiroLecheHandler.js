@@ -2,6 +2,7 @@ const { RetiroLeche, User, CompraLeche } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
+const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj")
 
 const postRetiroLecheHandler = async (req, res) => {
     const { id_proveedor } = req.query
@@ -62,7 +63,13 @@ const postRetiroLecheHandler = async (req, res) => {
             });
             await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "-" })
         }
-        await postSistemaMovimiento({ user_tipo: empleado.tipo, fecha, nombre_sector: "TAMBO", actividad: "CARGA RETIRO DE LECHE", hora: hora_carga })
+        await postSistemaMovimiento(
+            {
+                user_tipo: empleado.role,
+                nombre_sector: "tambo",
+                movimiento: sistemaMovimientoObj.retiroLeche,
+                fecha: new Date()
+            }, transaction)
         return res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear el retiro de leche:", error);

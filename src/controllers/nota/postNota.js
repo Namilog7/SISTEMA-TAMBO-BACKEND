@@ -36,7 +36,6 @@ const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_e
         id_afectado,
     }, { transaction });
 
-    // Retornar la respuesta estructurada
     return {
         message: "Nota creada exitosamente.",
         nota: nuevaNota,
