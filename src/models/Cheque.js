@@ -32,26 +32,17 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        actual_destino: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         banco: {
             type: DataTypes.STRING,
             allowNull: false
         },
         numero_cheque: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: 0
         },
         fecha_emision: {
             type: DataTypes.DATE,
             allowNull: false
-        },
-        fecha_pago: {
-            type: DataTypes.DATE,
-            allowNull: true
         },
         fecha_cobro: {
             type: DataTypes.DATE,

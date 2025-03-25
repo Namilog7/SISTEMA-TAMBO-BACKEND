@@ -11,7 +11,7 @@ const getResumenHandler = require("../../handlers/resumen/getResumenHandler");
 
 const clienteRouter = Router()
 clienteRouter.get("/:id_sector", getClienteHandler)
-clienteRouter.post("/", modelValidateMid(empresaValidationModel), postClienteHandler);
+clienteRouter.post("/", postClienteHandler);
 clienteRouter.put("/", putClienteHandler)
 clienteRouter.get("/resumen/:id", getResumenHandler)
 clienteRouter.delete("/:id", deleteClienteHandler);
