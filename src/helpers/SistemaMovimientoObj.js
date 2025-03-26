@@ -1,5 +1,5 @@
 
-export const movimientosPosibles = {
+const movimientosPosibles = {
     ventaRollos: "venta de rollos",
     inseminacion: "inseminacion ganado",
     cobro: "cobro ingresado",
@@ -12,3 +12,4 @@ export const movimientosPosibles = {
     compraLeche: "compra de leche",
     retiroLeche: "retiro de leche"
 }
+module.exports = movimientosPosibles
