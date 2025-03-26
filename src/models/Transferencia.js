@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         cuenta_origen: {
-            type: DataTypes.INTEGER, // string
+            type: DataTypes.STRING, // string
         },
         cuenta_destino: {
             type: DataTypes.STRING  // string
