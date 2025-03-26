@@ -9,17 +9,13 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            nombre: {
+            nombre_empresa: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
             contacto_1: {
                 type: DataTypes.STRING,
                 allowNull: false
-            },
-            contacto_2: {
-                type: DataTypes.STRING,
-                allowNull: true
             },
             localidad: {
                 type: DataTypes.STRING,
