@@ -8,7 +8,8 @@ const { recoleccionPostModel, recoleccionPutModel } = require("../../../middlewa
 const modelValidateMid = require("../../../middlewares/modelValidateMid");
 const getEstadisticasHandler = require("../../../handlers/tambo/estadisticas/getEstadisticasHandler");
 const putEquipoFrioHandler = require("../../../handlers/tambo/produccionLeche/putEquipoFrioHandler");
-const getEquipoFrioHandler = require("../../../handlers/tambo/produccionLeche/getEquipoFrioHandler")
+const getEquipoFrioHandler = require("../../../handlers/tambo/produccionLeche/getEquipoFrioHandler");
+const cambioFabricaHandler = require("../../../handlers/fabrica/cambioFabricaHandler");
 
 const produccionLecheRouter = Router();
 produccionLecheRouter.get("/", getProduccionHandler)
@@ -18,6 +19,7 @@ produccionLecheRouter.delete("/:id", deleteProduccionHandler) // endpoint que no
 produccionLecheRouter.put("/", modelValidateMid(recoleccionPutModel), putProduccionLecheHandler);
 produccionLecheRouter.get("/estadisticas", getEstadisticasHandler)
 produccionLecheRouter.get("/equipofrio", getEquipoFrioHandler)
+produccionLecheRouter.post("/equipofrio/paso_fabrica", cambioFabricaHandler)
 produccionLecheRouter.put("/equipofrio", putEquipoFrioHandler)
 
 
