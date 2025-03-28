@@ -6,6 +6,7 @@ const actualizarStock = require("../../controllers/fabrica/actualizarStock");
 const postFacturacion = require("../../controllers/caja/postFacturacion");
 const postResumen = require("../../controllers/resumen/postResumen");
 const calcularMontoMetodos = require("../../helpers/calcularMontoMetodos");
+const postVenta = require("../../controllers/venta/postVenta");
 
 const postVentaProductoHandler = async (req, res) => {
     const { monto, fecha, arrayObjsVenta, id_cliente, id_sector, metodosPago, tipo = "INGRESO", model, datosFacturacion } = req.body; //model Remito o Factura
@@ -15,7 +16,7 @@ const postVentaProductoHandler = async (req, res) => {
             throw new Error("Proporcione todos los datos");
         }
 
-        const venta = await Venta.create({ fecha, monto, id_cliente }, { transaction });
+        const venta = await postVenta({ fecha, monto, id_cliente }, transaction);
 
         const bulkVenta = crearBulkTablaIntermedia(arrayObjsVenta, venta.id, "id_venta");
 

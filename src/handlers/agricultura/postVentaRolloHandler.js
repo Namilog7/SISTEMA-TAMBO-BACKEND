@@ -2,10 +2,11 @@ const { conn } = require("../../db");
 const postMovimientoRollo = require("../../controllers/agricultura/postMovimientoRollo");
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const postVenta = require("../../controllers/venta/postVenta")
 
 
 const postVentaRolloHandler = async (req, res) => {
-    const { cantidad, precio, comprador, importe, fecha, rollos_afectados, metodosPago, detalle, id_sector, tipo, estado } = req.body
+    const { comprador, importe, fecha, rollos_afectados, metodosPago, detalle, id_sector, tipo, estado } = req.body
     const transaction = await conn.transaction()
     try {
 
@@ -18,6 +19,8 @@ const postVentaRolloHandler = async (req, res) => {
             tipo_movimiento: "VENTA",
             archivo
         }, transaction)
+
+        await postVenta({ id_cliente: comprador, monto: importe, fecha }, transaction)
 
         await transaction.commit()
         res.json({

@@ -2,6 +2,7 @@ const { Macho, Movimiento_anotacion, conn } = require("../../db");
 const postCloudinary = require("../../controllers/postCloudinary")
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const postVenta = require("../../controllers/venta/postVenta");
 
 
 const postVentaRecria = async (req, res) => {
@@ -54,6 +55,8 @@ const postVentaRecria = async (req, res) => {
         const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
         const id_gasto_ingreso = nuevoGastoIngreso.id
         let allMetodos = await registrarMetodosPago(id_gasto_ingreso, metodosPago, transaction)
+
+        await postVenta({ id_cliente: comprador, monto, fecha }, transaction)
 
         await transaction.commit();
         return res.status(201).json({

@@ -11,9 +11,11 @@ const cambioLitros = async ({ litros }, transaction) => {
             nombre: "Fabrica"
         }
     })
-    if (!equipoTambo) throw new Error("No existe el equipo")
+    if (!equipoTambo) throw new Error("No existe el equipo Tambo")
+    if (!equipoFabrica) throw new Error("No existe el equipo Fabrica")
     equipoFabrica.litros += Number(litros)
     equipoTambo.litros -= Number(litros)
+
     equipoFabrica.save({ transaction })
     equipoTambo.save({ transaction })
 }
