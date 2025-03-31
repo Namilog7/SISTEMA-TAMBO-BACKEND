@@ -11,7 +11,8 @@ const userRouter = require("./userRouter/userRouter");
 const fabricaRouter = require("./fabricaRouter/fabricaRouter");
 const agriculturaRouter = require("./agriculturaRouter/agriculturaRouter");
 
-const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler")
+const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler");
+const casaRouter = require("./casaRouter/casaRouter");
 
 const router = Router();
 
@@ -26,6 +27,7 @@ router.use("/recria", recriaRouter)
 router.use("/user", userRouter)
 router.use("/fabrica", fabricaRouter)
 router.use("/agricultura", agriculturaRouter)
+router.use("/casa", casaRouter)
 router.get("/sistema-movimiento", getSistemaMovimientoHandler)
 
 

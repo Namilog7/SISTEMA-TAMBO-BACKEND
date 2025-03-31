@@ -83,7 +83,10 @@ const {
     VentaProducto,
     TamboProveedor,
     Factura,
-    Remito
+    Remito,
+    CasaPropietario,
+    CompromisoDePago,
+    CasaPagoEventual
 } = sequelize.models;
 
 //RELACIONES
@@ -252,6 +255,13 @@ CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_compra" });
 
 Factura.belongsTo(Venta, { foreignKey: "id_factura" });
 Venta.hasOne(Factura, { foreignKey: "id_factura" });
+
+CasaPropietario.hasMany(CompromisoDePago, { foreignKey: "id_propietario" });
+CompromisoDePago.belongsTo(CasaPropietario, { foreignKey: "id_propietario" });
+
+CasaPropietario.hasMany(CasaPagoEventual, { foreignKey: "id_propietario" });
+CasaPagoEventual.belongsTo(CasaPagoEventual, { foreignKey: "id_propietario" });
+
 
 module.exports = {
     ...sequelize.models,
