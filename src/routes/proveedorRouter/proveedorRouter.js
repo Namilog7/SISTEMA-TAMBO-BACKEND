@@ -12,7 +12,7 @@ const getResumenHandler = require("../../handlers/resumen/getResumenHandler");
 
 const proveedorRouter = Router();
 proveedorRouter.get("/", getProveedorHandler);
-proveedorRouter.post("/", modelValidateMid(proovedorValidateMid), postProveedorHandler);
+proveedorRouter.post("/", postProveedorHandler);
 proveedorRouter.put("/", putProovedorHandler)
 proveedorRouter.delete("/:id", deleteProveedorHandler)
 proveedorRouter.get("/resumen/:id", getResumenHandler)
