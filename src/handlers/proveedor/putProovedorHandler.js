@@ -5,14 +5,14 @@ const putProovedorHandler = async (req, res) => {
     const putProveedor = crudController(Proveedor);
     const putTamboProveedor = crudController(TamboProveedor);
 
-    const { id, nombre, contacto_1, contacto_2, localidad, isTamboProveedor, saldo } = req.body
+    const { id, nombre_empresa, contacto_1, contacto_2, localidad, isTamboProveedor, saldo } = req.body
     try {
         let proveedor;
         if (isTamboProveedor) {
-            proveedor = await putTamboProveedor.update({ id, nombre, contacto_1, contacto_2, localidad, saldo })
+            proveedor = await putTamboProveedor.update({ id, nombre_empresa, contacto_1, contacto_2, localidad, saldo })
         }
         else {
-            proveedor = await putProveedor.update({ id, nombre, contacto_1, contacto_2, localidad, saldo })
+            proveedor = await putProveedor.update({ id, nombre_empresa, contacto_1, contacto_2, localidad, saldo })
         }
         return res.json({
             message: "Se actualizo el proovedor",
