@@ -19,7 +19,7 @@ produccionLecheRouter.delete("/:id", deleteProduccionHandler) // endpoint que no
 produccionLecheRouter.put("/", modelValidateMid(recoleccionPutModel), putProduccionLecheHandler);
 produccionLecheRouter.get("/estadisticas", getEstadisticasHandler)
 produccionLecheRouter.get("/equipofrio", getEquipoFrioHandler)
-produccionLecheRouter.post("/equipofrio/paso_fabrica", cambioFabricaHandler)
+produccionLecheRouter.post("/equipofrio/paso-fabrica", cambioFabricaHandler)
 produccionLecheRouter.put("/equipofrio", putEquipoFrioHandler)
 
 

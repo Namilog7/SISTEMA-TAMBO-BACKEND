@@ -18,6 +18,7 @@ const cambioLitros = async ({ litros }, transaction) => {
 
     equipoFabrica.save({ transaction })
     equipoTambo.save({ transaction })
+    return
 }
 
 module.exports = cambioLitros
