@@ -18,7 +18,8 @@ module.exports = (sequelize) => {
             },
             capacidad: {
                 type: DataTypes.FLOAT,
-                allowNull: true,
+                allowNull: false,
+                defaultValue: 0
             }
         },
         { timestamps: true }
