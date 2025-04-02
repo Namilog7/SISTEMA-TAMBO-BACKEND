@@ -14,7 +14,6 @@ const getRolloHandler = require("../../controllers/agricultura/getRolloHandler")
 
 const agriculturaRouter = Router();
 agriculturaRouter.get("/", getLoteHandler);
-agriculturaRouter.get("/:id", getLoteByIdHandler)
 agriculturaRouter.post("/", postLoteHandler);
 agriculturaRouter.put("/", putLoteHandler);
 agriculturaRouter.delete("/:id", deleteLoteHandler);
@@ -25,6 +24,7 @@ agriculturaRouter.post("/rollo", postRolloHandler)
 agriculturaRouter.put("/rollo", putRolloHandler)
 agriculturaRouter.post("/movimiento-rollo", postMovimientoRolloHandler)
 agriculturaRouter.post("/venta-rollo", postVentaRolloHandler)
+agriculturaRouter.get("/:id", getLoteByIdHandler)
 
 
 module.exports = agriculturaRouter
