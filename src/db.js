@@ -86,7 +86,8 @@ const {
     Remito,
     CasaPropietario,
     CompromisoDePago,
-    CasaPagoEventual
+    CasaPagoEventual,
+    Comprobante
 } = sequelize.models;
 
 //RELACIONES
@@ -179,7 +180,8 @@ Proveedor.hasMany(Nota, {
     constraints: false
 });
 
-
+Sector.hasMany(Comprobante, { foreignKey: "id_sector" });
+Comprobante.belongsTo(Sector, { foreignKey: "id_sector" });
 
 
 Sector.hasMany(Producto, { foreignKey: "id_sector" });

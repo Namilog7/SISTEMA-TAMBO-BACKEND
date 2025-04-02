@@ -2,7 +2,7 @@ const { Comprobante } = require("../../db");
 const postCloudinary = require("../../controllers/postCloudinary")
 
 const postComprobanteHandler = async (req, res) => {
-    const { detalle, fecha, image } = req.body
+    const { detalle, fecha, image, id_sector } = req.body
     try {
         let url_image
         if (image) {
@@ -11,7 +11,8 @@ const postComprobanteHandler = async (req, res) => {
         const comprobante = await Comprobante.create({
             detalle,
             fecha,
-            url_image
+            url_image,
+            id_sector
         });
         res.json({
             message: "Se creo el archivo",
