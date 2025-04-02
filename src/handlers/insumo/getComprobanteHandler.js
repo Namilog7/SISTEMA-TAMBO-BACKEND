@@ -1,10 +1,11 @@
 const { Comprobante } = require("../../db");
-const crudController = require("../../controllers/crudController");
 
 const getComprobanteHandler = async (req, res) => {
-    const allComprobantes = crudController(Comprobante);
+    const { id_sector } = req.body;
     try {
-        const comprobantes = await allComprobantes.readAll()
+        const comprobantes = await Comprobante.findAll({
+            where: { id_sector }
+        })
         res.json(comprobantes)
     } catch (error) {
         console.log(error);
