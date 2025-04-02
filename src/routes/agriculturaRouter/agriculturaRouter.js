@@ -10,6 +10,7 @@ const postRolloHandler = require("../../handlers/agricultura/postRolloHandler");
 const postVentaRolloHandler = require("../../handlers/agricultura/postVentaRolloHandler");
 const putRolloHandler = require("../../handlers/agricultura/putRolloHandler");
 const postMovimientoRolloHandler = require("../../handlers/agricultura/postMovimientoRolloHandler");
+const getRolloHandler = require("../../controllers/agricultura/getRolloHandler");
 
 const agriculturaRouter = Router();
 agriculturaRouter.get("/", getLoteHandler);
@@ -19,6 +20,7 @@ agriculturaRouter.put("/", putLoteHandler);
 agriculturaRouter.delete("/:id", deleteLoteHandler);
 agriculturaRouter.post("/estado", postEstadoHandler)
 agriculturaRouter.delete("/estado/:id", deleteEstadoHandler)
+agriculturaRouter.get("/rollo", getRolloHandler)
 agriculturaRouter.post("/rollo", postRolloHandler)
 agriculturaRouter.put("/rollo", putRolloHandler)
 agriculturaRouter.post("/movimiento-rollo", postMovimientoRolloHandler)
