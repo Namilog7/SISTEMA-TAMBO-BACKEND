@@ -11,7 +11,7 @@ const putEquipoFrioHandler = async (req, res) => {
         }
 
         equipoFrio.litros += Number(litros);
-        equipoFrio.capacidad = Number(capacidad);
+        if (capacidad) equipoFrio.capacidad = Number(capacidad)
 
         await equipoFrio.save();
 
