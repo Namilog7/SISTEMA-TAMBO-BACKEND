@@ -13,7 +13,7 @@ const postRolloHandler = async (req, res) => {
             precio
         }, { transaction })
         const movimiento = await postMovimientoRollo({
-            rollos_afectados: { tipo, cantidad, precio },
+            rollos_afectados: [{ tipo, cantidad, precio }],
             tipo_movimiento: "INGRESO",
             archivo
         }, transaction)
