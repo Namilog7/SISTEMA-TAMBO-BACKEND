@@ -6,16 +6,18 @@ const postControlVeterinario = async (req, res) => {
 
     try {
         // Validar datos requeridos
-        if (!veterinario || !arrayCaravanas || !actaBase64) {
-            return res.status(400).json({ message: "Faltan datos necesarios o la imagen acta no es válida." });
+        if (!veterinario || !arrayCaravanas) {
+            return res.status(400).json({ message: "Faltan datos necesarios" });
         }
 
         if (!Array.isArray(arrayCaravanas) || arrayCaravanas.length === 0) {
             return res.status(400).json({ message: "El campo arrayCaravanas debe ser un array válido." });
         }
 
-        // Subir la imagen usando la función mejorada
-        const actaUrl = await postCloudinary(actaBase64, "control_veterinario");
+        let actaUrl;
+        if (actaBase64) {
+            actaUrl = await postCloudinary(actaBase64, "control_veterinario");
+        }
 
         // Crear el registro en la base de datos
         const control = await ControlVeterinario.create({
