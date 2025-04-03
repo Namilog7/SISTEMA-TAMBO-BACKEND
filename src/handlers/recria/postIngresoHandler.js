@@ -1,6 +1,7 @@
 const { Ingreso_recria, Recria, Ganado, Macho, Movimiento_anotacion, conn } = require("../../db");
 const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const resetInseminacion = require("../../helpers/resetInseminacion");
 
 const postIngresoHandler = async (req, res) => {
     const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago, detalle = "" } = req.body;
@@ -27,6 +28,10 @@ const postIngresoHandler = async (req, res) => {
         if (tipo_ingreso === "COMPRA") {
             const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
             allMetodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction)
+        }
+
+        if (tipo_ingreso === "PARTO") {
+            await resetInseminacion({ arrayIngresos }, transaction)
         }
         // Crear el registro en Ingreso_recria
         const ingreso = await Ingreso_recria.create({
@@ -123,6 +128,7 @@ const postIngresoHandler = async (req, res) => {
             allMetodos
         });
     } catch (error) {
+        await transaction.rollback()
         console.error("Error en postIngresoHandler:", error);
         res.status(500).json({ error: error.message });
     }
