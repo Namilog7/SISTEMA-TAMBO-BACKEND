@@ -18,11 +18,14 @@ const postRolloHandler = async (req, res) => {
             archivo
         }, transaction)
 
+        await transaction.commit()
+
         res.json({
             nuevoRollo,
             movimiento
         })
     } catch (error) {
+        await transaction.rollback()
         console.log(error);
         res.status(500).json({ error: error.message })
     }
