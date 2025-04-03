@@ -1,4 +1,4 @@
-const { Ganado } = require("..");
+const { Ganado } = require("../db");
 const { Op } = require("sequelize");
 
 const resetInseminacion = async ({ arrayIngresos }, transaction) => {
