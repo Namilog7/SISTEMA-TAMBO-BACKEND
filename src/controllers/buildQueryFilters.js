@@ -8,11 +8,6 @@ const buildQueryFilters = (Model, query) => {
         if (Object.prototype.hasOwnProperty.call(modelAttributes, key)) {
             let value = query[key];
 
-            // Intentar convertir a número (incluyendo flotantes)
-            if (!isNaN(value) && value.trim() !== '') {
-                value = parseFloat(value); // Usar parseFloat para aceptar decimales
-            }
-
             // Lógica para atributos ENUM
             const attributeType = modelAttributes[key].type.constructor.key;
             if (attributeType === "ENUM") {
@@ -24,35 +19,20 @@ const buildQueryFilters = (Model, query) => {
                 }
                 continue;
             }
-
-            // Si el atributo es un campo numérico, no usamos Op.iLike
-            if (typeof value === 'number') {
-                filters[key] = value; // Comparación exacta para números
+            if (value === "true" || value === "false") {
+                filters[key] = value === "true";
                 continue;
             }
-
-            // Resto de la lógica de filtros (booleanos, strings, etc.)
-            if (key) {
-                const capitalizedValue = value
-                    .toString()
-                    .toLowerCase()
-                    .split(" ")
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
-
+            if (typeof value === "string") {
                 filters[key] = {
-                    [Op.iLike]: `%${capitalizedValue}%`, // Para Postgres
+                    [Op.iLike]: `%${value}%`
                 };
                 continue;
             }
 
-            if (Array.isArray(value)) {
-                filters[key] = { [Op.in]: value }; // Si es un array
-            } else {
-                filters[key] = value; // Comparación exacta
-            }
         }
     }
+    console.log(filters)
     return filters;
 };
 
