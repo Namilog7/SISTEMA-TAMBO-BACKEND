@@ -16,6 +16,7 @@ const resetInseminacion = async ({ arrayIngresos }, transaction) => {
             }
         }
     );
+    return
 };
 
 module.exports = resetInseminacion;
