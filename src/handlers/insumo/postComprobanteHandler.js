@@ -8,6 +8,7 @@ const postComprobanteHandler = async (req, res) => {
         if (image) {
             url_image = await postCloudinary(image, "comprobantes")
         }
+        if (!id_sector) throw new Error("Debe mandar el id_sector")
         const comprobante = await Comprobante.create({
             detalle,
             fecha,
