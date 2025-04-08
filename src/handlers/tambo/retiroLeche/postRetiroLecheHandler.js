@@ -61,7 +61,7 @@ const postRetiroLecheHandler = async (req, res) => {
                 id_cliente,
                 id_liquidacion,
             });
-            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "-" })
+            await putEquipoFrio({ nombre: "Tambo", litros: cantidad, operacion: "-" })
         }
         await postSistemaMovimiento(
             {
