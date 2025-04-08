@@ -47,7 +47,7 @@ const postMovimientoRollo = async ({ tipo_movimiento, rollos_afectados, archivo 
             rollos_afectados.map(async ({ tipo, cantidad }) => {
 
                 const rollo = await Rollo.findOne({
-                    where: { nombre: tipo },
+                    where: { tipo },
                     transaction
                 });
 
