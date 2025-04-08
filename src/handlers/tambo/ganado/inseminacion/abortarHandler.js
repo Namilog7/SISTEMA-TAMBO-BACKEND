@@ -11,7 +11,6 @@ const abortarHandler = async (req, res) => {
                 }
             }
         );
-
         res.json({ message: "Se aborto la inseminacion" });
     } catch (error) {
         console.log(error);

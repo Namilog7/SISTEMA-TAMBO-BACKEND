@@ -3,7 +3,7 @@ const { conn } = require("../../db");
 
 const postMovimientoRolloHandler = async (req, res) => {
     const { tipo_movimiento, rollos_afectados, archivo } = req.body
-    const transaction = conn.transaction();
+    const transaction = await conn.transaction();
 
     try {
         const movimiento = await postMovimientoRollo({ tipo_movimiento, rollos_afectados, archivo }, transaction);
