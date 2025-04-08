@@ -11,12 +11,14 @@ const resetInseminacion = async ({ arrayIngresos }, transaction) => {
         },
         {
             where: {
-                caravana: { [Op.in]: caravanas },
-                transaction
-            }
+                caravana: { [Op.in]: caravanas }
+            },
+            transaction
         }
     );
-    return
+
+    return;
 };
 
 module.exports = resetInseminacion;
+
