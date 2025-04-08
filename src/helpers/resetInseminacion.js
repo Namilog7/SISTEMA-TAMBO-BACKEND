@@ -2,7 +2,7 @@ const { Ganado } = require("../db");
 const { Op } = require("sequelize");
 
 const resetInseminacion = async ({ arrayIngresos }, transaction) => {
-    const caravanas = arrayIngresos.map(({ caravana_madre }) => caravana_madre);
+    const caravanas = arrayIngresos.map(({ origen }) => origen);
 
     await Ganado.update(
         {
