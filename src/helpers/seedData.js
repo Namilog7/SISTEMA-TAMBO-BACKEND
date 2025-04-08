@@ -91,6 +91,10 @@ const seedData = async () => {
             })
         }
         await Sector.create({
+            nombre: "Recria",
+            descripcion: "Sector dedicado a la recria"
+        })
+        await Sector.create({
             nombre: "Agricultura",
             descripcion: "Sector dedicado a la agricultura"
         })
