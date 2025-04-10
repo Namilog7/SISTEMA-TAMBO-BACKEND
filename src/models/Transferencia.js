@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM("CREDITO", "DEBITO", "INTERNO")
         },
         estado: {
-            type: DataTypes.ENUM("ANULADA", "ACEPTADA"),
+            type: DataTypes.ENUM("ANULADA", "ACEPTADA", "PENDIENTE"),
             allowNull: false
         },
         cuenta_origen: {

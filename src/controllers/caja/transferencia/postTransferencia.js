@@ -8,6 +8,7 @@ const postTransferencia = async ({
     importe,
     detalle,
     estado,
+    tipo,
 }, transaction) => {
 
     const nuevaTransferencia = await Transferencia.create({
@@ -17,10 +18,11 @@ const postTransferencia = async ({
         importe,
         detalle,
         estado,
+        tipo
     }, { transaction })
     let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
-    if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
-        registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
+    if (tipo === "CREDITO" || tipo === "DEBITO") {
+        registroCaja = await registrarSaldoBancario({ tipo, importe }, transaction)
     }
     return {
         registroCaja,
