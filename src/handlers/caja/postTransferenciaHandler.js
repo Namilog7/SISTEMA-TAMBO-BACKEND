@@ -9,6 +9,7 @@ const postTransferenciaHandler = async (req, res) => {
         importe,
         detalle,
         estado,
+        tipo
     } = req.body
     try {
         const nuevaTransferencia = await postTransferencia({
@@ -18,6 +19,7 @@ const postTransferenciaHandler = async (req, res) => {
             importe,
             detalle,
             estado,
+            tipo
         })
         res.json({
             nuevaTransferencia
