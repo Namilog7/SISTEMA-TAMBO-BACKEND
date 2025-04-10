@@ -13,6 +13,9 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         //tipo : credito, debito, interno : credito suma , debito resta, interno cambia entre cuentas pero no en saldo general
+        tipo: {
+            type: DataTypes.ENUM("CREDITO", "DEBITO", "INTERNO")
+        },
         estado: {
             type: DataTypes.ENUM("ANULADA", "ACEPTADA"),
             allowNull: false

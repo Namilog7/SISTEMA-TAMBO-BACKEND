@@ -87,7 +87,9 @@ const {
     CasaPropietario,
     CompromisoDePago,
     CasaPagoEventual,
-    Comprobante
+    Comprobante,
+    Transferencia,
+    Cuenta
 } = sequelize.models;
 
 //RELACIONES
@@ -131,6 +133,9 @@ ControlVeterinario.belongsToMany(Ganado, { through: ControlGanado });
 
 Sector.hasMany(Cliente, { foreignKey: "id_sector" });
 Cliente.belongsTo(Sector, { foreignKey: "id_sector" });
+
+Sector.hasMany(Proveedor, { foreignKey: "id_sector" });
+Proveedor.belongsTo(Sector, { foreignKey: "id_sector" });
 
 Ganado.hasMany(ControlLechero, { foreignKey: "id_ganado" });
 ControlLechero.belongsTo(Ganado, { foreignKey: "id_ganado" });
@@ -263,6 +268,9 @@ CompromisoDePago.belongsTo(CasaPropietario, { foreignKey: "id_propietario" });
 
 CasaPropietario.hasMany(CasaPagoEventual, { foreignKey: "id_propietario" });
 CasaPagoEventual.belongsTo(CasaPagoEventual, { foreignKey: "id_propietario" });
+
+Cuenta.hasMany(Transferencia, { foreignKey: "id_cuenta" });
+Transferencia.belongsTo(Cuenta, { foreignKey: "id_cuenta" });
 
 
 module.exports = {
