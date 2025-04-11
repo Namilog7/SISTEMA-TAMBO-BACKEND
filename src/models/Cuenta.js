@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4
         },
         nombre_cuenta: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.STRING,
             allowNull: false
         },
         alias_cbu: {
@@ -18,10 +18,6 @@ module.exports = (sequelize) => {
         },
         saldo: {
             type: DataTypes.FLOAT
-        },
-        id_cuenta: {
-            type: DataTypes.UUID,
-            allowNull: true,
         },
         // Crear tabla Cuentas, nombreCuenta, alias-cbu, saldo
 

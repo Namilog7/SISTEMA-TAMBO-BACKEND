@@ -1,4 +1,4 @@
-const { Transferencia } = require("../../../db");
+const { Transferencia, Cuenta } = require("../../../db");
 const registrarSaldoBancario = require("../../../helpers/registrarSaldoBancario");
 
 const postTransferencia = async ({
@@ -9,6 +9,8 @@ const postTransferencia = async ({
     detalle,
     estado,
     tipo,
+    id_cuenta,
+    id_cuenta_destino
 }, transaction) => {
 
     const nuevaTransferencia = await Transferencia.create({
@@ -18,10 +20,12 @@ const postTransferencia = async ({
         importe,
         detalle,
         estado,
-        tipo
+        tipo,
+        id_cuenta,
+        id_cuenta_destino
     }, { transaction })
     let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
-    if (tipo === "CREDITO" || tipo === "DEBITO") {
+    if (tipo === "CREDITO" || tipo === "DEBITO" && estado == "ACEPTADA") {
         registroCaja = await registrarSaldoBancario({ tipo, importe }, transaction)
     }
     return {
