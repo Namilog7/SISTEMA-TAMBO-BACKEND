@@ -29,8 +29,16 @@ module.exports = (sequelize) => {
         importe: {
             type: DataTypes.FLOAT,
             allowNull: false
-        }
+        },
         // id_origen, id_destino: no obligatorios
+        id_cuenta: {
+            type: DataTypes.UUID,
+            allowNull: true
+        },
+        id_cuenta_destino: {
+            type: DataTypes.UUID,
+            allowNull: true
+        }
     })
 };
 // Crear tabla Cuentas, nombreCuenta, alias-cbu, saldo
