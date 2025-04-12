@@ -15,6 +15,9 @@ module.exports = (sequelize) => {
             },
             litros: {
                 type: DataTypes.FLOAT,
+                validate: {
+                    min: 0
+                }
             },
             capacidad: {
                 type: DataTypes.FLOAT,
