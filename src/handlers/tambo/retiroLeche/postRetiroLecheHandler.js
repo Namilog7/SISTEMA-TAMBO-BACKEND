@@ -1,4 +1,4 @@
-const { RetiroLeche, User, CompraLeche } = require("../../../db");
+const { RetiroLeche, User, CompraLeche, conn } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
@@ -6,6 +6,7 @@ const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj")
 
 const postRetiroLecheHandler = async (req, res) => {
     const { id_proveedor } = req.query
+    const transaction = await conn.transaction()
     const {
         cantidad,
         fecha,
@@ -24,7 +25,7 @@ const postRetiroLecheHandler = async (req, res) => {
 
     try {
         const userId = id_empleado.replace(/"/g, "");
-        const empleado = await User.findByPk(userId);
+        const empleado = await User.findByPk(userId, { transaction });
         let response;
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
@@ -44,8 +45,8 @@ const postRetiroLecheHandler = async (req, res) => {
                 estado,
                 id_liquidacion,
                 id_proveedor
-            });
-            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "+" })
+            }, { transaction });
+            await putEquipoFrio({ nombre: "Fabrica", litros: cantidad, operacion: "+" }, transaction)
         } else {
             // Crear el registro en RetiroLeche con el nombre completo del empleado
             response = await postRetiroLeche.create({
@@ -60,8 +61,8 @@ const postRetiroLecheHandler = async (req, res) => {
                 estado,
                 id_cliente,
                 id_liquidacion,
-            });
-            await putEquipoFrio({ nombre: "Tambo", litros: cantidad, operacion: "-" })
+            }, { transaction });
+            await putEquipoFrio({ nombre: "Tambo", litros: cantidad, operacion: "-" }, transaction)
         }
         await postSistemaMovimiento(
             {
