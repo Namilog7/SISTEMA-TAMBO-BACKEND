@@ -1,12 +1,10 @@
-const crudController = require("../../controllers/crudController");
-const { CompromisoDePago } = require("../../db");
+const postCompromiso = require("../../controllers/casa/postCompromiso");
 
 const postCompromisoPagoHandler = async (req, res) => {
-    const { nombre_servicio, monto_pagado, estado_pago, fecha, id_propietario } = req.body
-    const postCompromiso = crudController(CompromisoDePago);
+    const { nombre_servicio, fecha, id_propietario } = req.body
 
     try {
-        const nuevoCompromiso = await postCompromiso.create({ nombre_servicio, monto_pagado, estado_pago, fecha, id_propietario })
+        const nuevoCompromiso = await postCompromiso({ nombre_servicio, fecha, id_propietario })
         res.json(nuevoCompromiso)
     } catch (error) {
         console.log(error)

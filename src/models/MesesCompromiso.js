@@ -13,13 +13,14 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            monto_pagado: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
             estado_pago: {
                 type: DataTypes.ENUM("PENDIENTE", "PAGADO"),
-                allowNull: false
+                allowNull: false,
+                defaultValue: "PENDIENTE"
+            },
+            monto: {
+                type: DataTypes.FLOAT,
+                allowNull: true
             }
 
         },

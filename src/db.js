@@ -5,17 +5,17 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
 const { ssl } = require("pg/lib/defaults");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    /*  dialectOptions: {
+         ssl: {
+             require: true,
+             rejectUnauthorized: false
+         }
+     } */
 });
 
 // Obtención del nombre del archivo actual
@@ -264,11 +264,27 @@ CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_compra" });
 Factura.belongsTo(Venta, { foreignKey: "id_factura" });
 Venta.hasOne(Factura, { foreignKey: "id_factura" });
 
-CasaPropietario.hasMany(CompromisoDePago, { foreignKey: "id_propietario" });
-CompromisoDePago.belongsTo(CasaPropietario, { foreignKey: "id_propietario" });
+CasaPropietario.hasMany(CompromisoDePago, {
+    foreignKey: "id_propietario",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+});
+CompromisoDePago.belongsTo(CasaPropietario, {
+    foreignKey: "id_propietario",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+});
 
-CasaPropietario.hasMany(CasaPagoEventual, { foreignKey: "id_propietario" });
-CasaPagoEventual.belongsTo(CasaPagoEventual, { foreignKey: "id_propietario" });
+CasaPropietario.hasMany(CasaPagoEventual, {
+    foreignKey: "id_propietario",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+});
+CasaPagoEventual.belongsTo(CasaPropietario, {
+    foreignKey: "id_propietario",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+});
 
 Cuenta.hasMany(Transferencia, {
     foreignKey: "id_cuenta",
