@@ -1,11 +1,9 @@
-const crudController = require("../../controllers/crudController");
-const { CasaPagoEventual } = require("../../db");
+const { CompromisoDePago } = require("../../db");
 
 const postPagoEventualHandler = async (req, res) => {
-    const { descripcion, monto_pagado, fecha, id_propietario } = req.body
-    const pagoEventual = crudController(CasaPagoEventual)
+    const { nombre_servicio, fecha, cuotas, id_propietario } = req.body
     try {
-        const nuevoPago = await pagoEventual.create({ descripcion, monto_pagado, fecha, id_propietario })
+        const nuevoPago = await CompromisoDePago.create({ nombre_servicio, cuotas, fecha, id_propietario, eventual: true })
         res.json(nuevoPago)
     } catch (error) {
         console.log(error);

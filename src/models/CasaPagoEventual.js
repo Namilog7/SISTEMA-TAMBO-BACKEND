@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            descripcion: {
+            servicio: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -21,6 +21,13 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: true
             },
+            cuota: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            estado: {
+                type: DataTypes.ENUM("PENDIENTE", "AL DIA")
+            }
 
         },
         { timestamps: false }

@@ -17,13 +17,13 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            monto_pagado: {
-                type: DataTypes.FLOAT,
-                allowNull: false
+            eventual: {
+                type: DataTypes.BOOLEAN,
+                allowNull: true
             },
-            estado_pago: {
-                type: DataTypes.ENUM("PENDIENTE", "PAGADO"),
-                allowNull: false
+            cuotas: {
+                type: DataTypes.INTEGER,
+                allowNull: true
             }
 
         },

@@ -1,12 +1,13 @@
-const { CasaPropietario, CasaPagoEventual, CompromisoDePago } = require("../../db");
+const { CasaPropietario, CompromisoDePago, MesesPago } = require("../../db");
 const resetCompromiso = require("../compromiso/resetCompromiso");
 
-const getCasaPropietario = async () => {
-    const message = await resetCompromiso()
+const getCasaPropietario = async (id) => {
+    const message = await resetCompromiso(id)
     const casas = await CasaPropietario.findAll({
+        where: { id },
         include: [
-            { model: CasaPagoEventual },
-            { model: CompromisoDePago }
+            { model: CompromisoDePago },
+            { model: MesesPago }
         ]
     });
     return {
