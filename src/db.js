@@ -275,16 +275,6 @@ CompromisoDePago.belongsTo(CasaPropietario, {
     onUpdate: "CASCADE"
 });
 
-CasaPropietario.hasMany(CasaPagoEventual, {
-    foreignKey: "id_propietario",
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-});
-CasaPagoEventual.belongsTo(CasaPropietario, {
-    foreignKey: "id_propietario",
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE"
-});
 
 Cuenta.hasMany(Transferencia, {
     foreignKey: "id_cuenta",
