@@ -6,8 +6,12 @@ const getCasaPropietario = async (id) => {
     const casas = await CasaPropietario.findOne({
         where: { id },
         include: [
-            { model: CompromisoDePago },
-            { model: MesesCompromiso }
+            {
+                model: CompromisoDePago,
+                include: [
+                    { model: MesesCompromiso }
+                ]
+            }
         ]
     });
     return {
