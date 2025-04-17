@@ -11,7 +11,7 @@ const putPropietarioHandler = require("../../handlers/casa/putPropietarioHandler
 
 const casaRouter = Router()
 
-casaRouter.get("/:id", getCasaPropietarioHandler);
+casaRouter.get("/", getCasaPropietarioHandler);
 casaRouter.post("/propietario", postPropietarioHandler);
 casaRouter.put("/propietario", putPropietarioHandler)
 casaRouter.delete("/propietario/:id", deletePropietarioHandler)
