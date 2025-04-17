@@ -1,19 +1,19 @@
 const { CasaPropietario, CompromisoDePago, MesesCompromiso } = require("../../db");
-const resetCompromiso = require("../compromiso/resetCompromiso");
+/* const resetCompromiso = require("../compromiso/resetCompromiso"); */
 
-const getCasaPropietario = async (id) => {
-    const message = await resetCompromiso(id)
-    const casas = await CasaPropietario.findOne({
-        where: { id },
+const getCasaPropietario = async () => {
+    /*   const message = await resetCompromiso(id) */
+    const casas = await CasaPropietario.findAll({
         include: [
-            { model: CompromisoDePago },
-            { model: MesesCompromiso }
+            {
+                model: CompromisoDePago,
+                include: [
+                    { model: MesesCompromiso }
+                ]
+            }
         ]
     });
-    return {
-        casas,
-        message
-    }
+    return casas
 }
 
 module.exports = getCasaPropietario;

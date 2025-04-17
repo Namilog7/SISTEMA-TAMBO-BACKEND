@@ -274,25 +274,26 @@ CompromisoDePago.belongsTo(CasaPropietario, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
 });
-
-
-Cuenta.hasMany(Transferencia, {
-    foreignKey: "id_cuenta",
-});
-
-Cuenta.hasMany(Transferencia, {
-    foreignKey: "id_cuenta_destino",
-});
-Transferencia.belongsTo(Cuenta, {
-    foreignKey: "id_cuenta",
-});
-
-Transferencia.belongsTo(Cuenta, {
-    foreignKey: "id_cuenta_destino",
-});
-
 CompromisoDePago.hasMany(MesesCompromiso, { foreignKey: "id_compromiso" });
 MesesCompromiso.belongsTo(CompromisoDePago, { foreignKey: "id_compromiso" })
+
+
+Cuenta.hasMany(Transferencia, {
+    foreignKey: "id_cuenta",
+});
+
+Cuenta.hasMany(Transferencia, {
+    foreignKey: "id_cuenta_destino",
+});
+Transferencia.belongsTo(Cuenta, {
+    foreignKey: "id_cuenta",
+});
+
+Transferencia.belongsTo(Cuenta, {
+    foreignKey: "id_cuenta_destino",
+});
+
+
 
 
 
