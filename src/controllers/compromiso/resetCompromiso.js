@@ -1,38 +1,35 @@
-const { CompromisoDePago, MesesCompromiso } = require("../../db");
+const { CasaPropietario, CompromisoDePago, MesesCompromiso } = require("../../db");
 
-const resetCompromiso = async (id) => {
+const resetCompromiso = async () => {
     const hoy = new Date();
     const diaActual = hoy.getDate();
 
-    const compromisos = await CompromisoDePago.findAll({
-        where: { id_propietario: id },
-        include: [
-            { model: MesesCompromiso }
-        ]
+    const propietarios = await CasaPropietario.findAll({
+        include: {
+            model: CompromisoDePago,
+            include: [MesesCompromiso],
+        },
     });
 
-    for (const compromiso of compromisos) {
-        const diaCompromiso = new Date(compromiso.fecha).getDate();
+    for (const propietario of propietarios) {
+        for (const compromiso of propietario.CompromisoDePagos) {
+            const diaCompromiso = new Date(compromiso.fecha).getDate();
 
-        /*   if (diaCompromiso === diaActual && compromiso.estado_pago === "PAGADO") {
-              compromiso.estado_pago = "PENDIENTE";
-              await compromiso.save();
-          } */
-        if (diaCompromiso >= diaActual && !compromiso.eventual) {
-            const nuevoMes = await MesesCompromiso.create({
-                fecha: new Date(),
-            })
+            if (diaCompromiso === diaActual && !compromiso.eventual) {
+                await MesesCompromiso.create({
+                    fecha: new Date(),
+                    id_compromiso: compromiso.id,
+                });
+            }
         }
-        if (compromiso.cuotas > compromiso.MesesCompromisos.length) {
-            const nuevaCuota = await MesesCompromiso.create({
-                fecha: new Date()
-            })
-        }
-
-
     }
 
-    return { message: "Compromisos actualizados según la fecha." };
+    return "Todos los compromisos fueron procesados.";
 };
 
-module.exports = resetCompromiso
+module.exports = resetCompromiso;
+
+/*   if (diaCompromiso === diaActual && compromiso.estado_pago === "PAGADO") {
+      compromiso.estado_pago = "PENDIENTE";
+      await compromiso.save();
+  } */
