@@ -8,6 +8,7 @@ const getCompromisoPagoHandler = require("../../handlers/casa/getCompromisoPagoH
 const deletePropietarioHandler = require("../../handlers/casa/deletePropietarioHandler");
 const getPagoEventualHandler = require("../../handlers/casa/getPagoEventualHandler");
 const putPropietarioHandler = require("../../handlers/casa/putPropietarioHandler");
+const postMesesCompromisoHandler = require("../../handlers/casa/postMesesCompromisoHandler");
 
 const casaRouter = Router()
 
@@ -20,5 +21,6 @@ casaRouter.post("/eventual", postPagoEventualHandler)
 casaRouter.get("/eventual", getPagoEventualHandler)
 casaRouter.get("/compromiso/pagos", getCompromisoPagoHandler)
 casaRouter.post("/compromiso/pagar", postMesesPagoHandler)
+casaRouter.post("/cronjob-compromiso", postMesesCompromisoHandler)
 
 module.exports = casaRouter
