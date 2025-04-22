@@ -6,7 +6,7 @@ const postMesesPagoHandler = async (req, res) => {
     const postMesesPago = crudController(MesesPago);
     try {
         const nuevoPago = await postMesesPago.create({ id_compromiso, monto_pagado, fecha })
-        req.json(nuevoPago)
+        res.json(nuevoPago)
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message })
