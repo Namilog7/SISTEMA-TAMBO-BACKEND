@@ -24,6 +24,7 @@ const postMovimientoHandler = async (req, res) => {
             terneros_afectados: ternero_contador,
             tipo_movimiento: tipo_movimiento,
         }, { transaction });
+        await transaction.commit()
         return res.json({
             message: "Creado con exito",
             ternero_contador: terneros.ternero_contador,
