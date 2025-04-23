@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require('pg');
-const { ssl } = require("pg/lib/defaults");
 
 const sequelize = new Sequelize(DB_DEPLOY, {
     logging: false,
