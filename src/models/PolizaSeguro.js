@@ -9,12 +9,24 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            fecha: {
+            desde: {
                 type: DataTypes.DATE,
                 allowNull: false,
             },
+            hasta: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
             importe: {
                 type: DataTypes.FLOAT,
+                allowNull: false
+            },
+            estado: {
+                type: DataTypes.ENUM("VIGENTE", "VENCIDO"),
+                defaultValue: "VIGENTE"
+            },
+            cantidad_cuotas: {
+                type: DataTypes.INTEGER,
                 allowNull: false
             },
             foto_factura: {
