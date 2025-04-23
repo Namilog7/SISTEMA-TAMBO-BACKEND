@@ -89,7 +89,8 @@ const {
     Comprobante,
     Transferencia,
     Cuenta,
-    MesesCompromiso
+    MesesCompromiso,
+    Sistema_movimiento
 } = sequelize.models;
 
 //RELACIONES
