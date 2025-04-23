@@ -5,7 +5,10 @@ const postMesesPagoHandler = async (req, res) => {
     const { id_compromiso, monto, fecha } = req.body
     const postMesesPago = crudController(MesesCompromiso);
     try {
-        const nuevoPago = await postMesesPago.create({ id_compromiso, monto, fecha, estado: "PAGADO" })
+        if (!id_compromiso) {
+            return res.json({ message: "necesito un compromiso valido" })
+        }
+        const nuevoPago = await postMesesPago.create({ id_compromiso, monto, fecha, estado_pago: "PAGADO" })
         res.json(nuevoPago)
     } catch (error) {
         console.log(error);
