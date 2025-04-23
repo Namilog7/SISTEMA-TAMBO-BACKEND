@@ -95,7 +95,6 @@ const {
 
 //RELACIONES
 
-
 Sector.hasMany(RetiroLeche, { foreignKey: 'id_sector' });
 RetiroLeche.belongsTo(Sector, { foreignKey: 'id_sector' });
 
