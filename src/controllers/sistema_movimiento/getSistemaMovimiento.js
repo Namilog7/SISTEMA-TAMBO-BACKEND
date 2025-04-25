@@ -5,4 +5,5 @@ const getSistemaMovimiento = async () => {
     if (!movimientos) return { message: "Todavia no hay movimientos" }
     return movimientos
 }
+
 module.exports = getSistemaMovimiento
