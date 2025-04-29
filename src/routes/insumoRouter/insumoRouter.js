@@ -15,7 +15,7 @@ insumoRouter.get("/:id_sector", getInsumoHandler);
 insumoRouter.post("/", modelValidateMid(insumoValidationModel), postInsumoHandler) // cambio en la implementacion
 insumoRouter.put("/", modelValidateMid(insumoValidationModel), putInsumoHandler) //queda modificar el put
 insumoRouter.post("/comprobante", postComprobanteHandler)
-insumoRouter.get("/comprobante", getComprobanteHandler)
+insumoRouter.get("/comprobante/:id_sector", getComprobanteHandler)
 insumoRouter.delete("/", deleteInsumoHandler)
 
 
