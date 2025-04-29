@@ -8,6 +8,7 @@ const deleteInsumoHandler = require("../../handlers/insumo/deleteInsumoHandler")
 const getAllInsumosHandler = require("../../handlers/insumo/returnUuidsInsumoHandler");
 const postComprobanteHandler = require("../../handlers/insumo/postComprobanteHandler");
 const getComprobanteHandler = require("../../handlers/insumo/getComprobanteHandler");
+const deleteComprobanteHandler = require("../../handlers/insumo/deleteComprobateHandler");
 
 const insumoRouter = Router();
 insumoRouter.get("/", getAllInsumosHandler)
@@ -16,6 +17,7 @@ insumoRouter.post("/", modelValidateMid(insumoValidationModel), postInsumoHandle
 insumoRouter.put("/", modelValidateMid(insumoValidationModel), putInsumoHandler) //queda modificar el put
 insumoRouter.post("/comprobante", postComprobanteHandler)
 insumoRouter.get("/comprobante/:id_sector", getComprobanteHandler)
+insumoRouter.delete("comprobante/:id_sector", deleteComprobanteHandler)
 insumoRouter.delete("/", deleteInsumoHandler)
 
 
