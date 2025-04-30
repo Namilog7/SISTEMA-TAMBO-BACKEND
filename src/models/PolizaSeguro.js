@@ -9,6 +9,14 @@ module.exports = (sequelize) => {
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
+            nombre: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            seccion: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
             desde: {
                 type: DataTypes.DATE,
                 allowNull: false,
@@ -30,6 +38,10 @@ module.exports = (sequelize) => {
                 allowNull: false
             },
             foto_factura: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            afectados: {
                 type: DataTypes.STRING,
                 allowNull: false
             }
