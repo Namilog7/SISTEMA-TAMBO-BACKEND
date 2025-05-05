@@ -18,13 +18,8 @@ module.exports = (sequelize) => {
         },
         estado: {
             type: DataTypes.ENUM("ANULADA", "ACEPTADA", "PENDIENTE"),
-            allowNull: false
-        },
-        cuenta_origen: {
-            type: DataTypes.STRING,
-        },
-        cuenta_destino: {
-            type: DataTypes.STRING
+            allowNull: false,
+            defaultValue: "ACEPTADA"
         },
         importe: {
             type: DataTypes.FLOAT,
