@@ -279,19 +279,23 @@ MesesCompromiso.belongsTo(CompromisoDePago, { foreignKey: "id_compromiso" })
 
 Cuenta.hasMany(Transferencia, {
     foreignKey: "id_cuenta",
+    as: "transferenciasOrigen"
 });
 
 Cuenta.hasMany(Transferencia, {
     foreignKey: "id_cuenta_destino",
+    as: "transferenciasDestino"
 });
+
 Transferencia.belongsTo(Cuenta, {
     foreignKey: "id_cuenta",
+    as: "cuentaOrigen"
 });
 
 Transferencia.belongsTo(Cuenta, {
     foreignKey: "id_cuenta_destino",
+    as: "cuentaDestino"
 });
-
 
 
 

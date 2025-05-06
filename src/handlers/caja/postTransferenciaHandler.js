@@ -4,22 +4,18 @@ const postTransferencia = require("../../controllers/caja/transferencia/postTran
 const postTransferenciaHandler = async (req, res) => {
     const {
         fecha,
-        cuenta_origen,
-        cuenta_destino,
+        tipo,
         importe,
         detalle,
-        estado,
         id_cuenta,
         id_cuenta_destino
     } = req.body
     try {
         const nuevaTransferencia = await postTransferencia({
             fecha,
-            cuenta_origen,
-            cuenta_destino,
+            tipo,
             importe,
             detalle,
-            estado,
             id_cuenta,
             id_cuenta_destino
         })
