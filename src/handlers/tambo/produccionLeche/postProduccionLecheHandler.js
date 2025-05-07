@@ -2,15 +2,15 @@ const { ProduccionLeche, User, conn } = require("../../../db");
 const crudController = require("../../../controllers/crudController");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
-const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj")
+const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj");
 
 const postProduccionLecheHandler = async (req, res) => {
     const postProduccionLeche = crudController(ProduccionLeche);
-    const { litros, fecha, hora_recoleccion, hora_carga, id_empleado, cantidad_animales, aclaracion, estado } = req.body;
+    const { litros, fecha, hora_recoleccion, hora_carga, id_empleado, cantidad_animales, aclaracion, estado } =
+        req.body;
 
     try {
-
-        const transaction = await conn.transaction()
+        const transaction = await conn.transaction();
         const userId = id_empleado.replace(/"/g, "");
         const empleado = await User.findByPk(userId, { transaction });
         if (!empleado) {
@@ -25,18 +25,20 @@ const postProduccionLecheHandler = async (req, res) => {
             cantidad_animales,
             aclaracion,
             estado,
-            id_empleado: userId
-        },);
+            id_empleado: userId,
+        });
 
-        await putEquipoFrio({ nombre: "Tambo", litros: litros, operacion: "+" })
+        await putEquipoFrio({ nombre: "Tambo", litros: litros, operacion: "+" });
         await postSistemaMovimiento(
             {
                 user_tipo: empleado.role,
                 nombre_sector: "tambo",
                 movimiento: sistemaMovimientoObj.cargaProduccion,
-                fecha: new Date()
-            }, transaction)
-
+                fecha: new Date(),
+            },
+            transaction
+        );
+        await transaction.commit();
         res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear la producción de leche:", error);
