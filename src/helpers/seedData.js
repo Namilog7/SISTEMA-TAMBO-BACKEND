@@ -1,6 +1,6 @@
 const { Inseminacion, Sector, Tambo, EquipoFrio, Ganado, SaldoCaja, User, CajaBancaria } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
 const seedData = async () => {
@@ -67,49 +67,48 @@ const seedData = async () => {
             await EquipoFrio.create({
                 nombre: "Tambo",
                 litros: 0,
-                capacidad: 13500
-            })
+                capacidad: 13500,
+            });
         }
         const equipoFrioFabrica = await EquipoFrio.findOne({ where: { nombre: "Fabrica" } });
         if (!equipoFrioFabrica) {
             await EquipoFrio.create({
                 nombre: "Fabrica",
                 litros: 0,
-                capacidad: 15000
-            })
+                capacidad: 15000,
+            });
         }
-        const cajaBancaria = await CajaBancaria.findOne({})
+        const cajaBancaria = await CajaBancaria.findOne({});
         if (!cajaBancaria) {
             await CajaBancaria.create({
-                saldo: 0
-            })
+                saldo: 0,
+            });
         }
-        const caja = await SaldoCaja.findOne({})
+        const caja = await SaldoCaja.findOne({});
         if (!caja) {
             await SaldoCaja.create({
-                saldo: 0
-            })
+                saldo: 0,
+            });
         }
         await Sector.create({
             nombre: "Recria",
-            descripcion: "Sector dedicado a la recria"
-        })
+            descripcion: "Sector dedicado a la recria",
+        });
         await Sector.create({
             nombre: "Agricultura",
-            descripcion: "Sector dedicado a la agricultura"
-        })
+            descripcion: "Sector dedicado a la agricultura",
+        });
 
         const tambo = await Sector.create({
             nombre: "Tambos",
             descripcion: "Sector dedicado a los tambos para la recolección de leche",
-
         });
 
-        const fabricaId = uuidv4()
+        const fabricaId = uuidv4();
         const fabrica = await Sector.create({
             nombre: "FabricaQueso",
             descripcion: "Dedicado a la fabricacion de quesos",
-        })
+        });
 
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
@@ -123,7 +122,7 @@ const seedData = async () => {
                 produccionDiaria: tipo === "VACA" ? faker.datatype.number({ min: 10, max: 30 }) : 0,
                 detalles: faker.datatype.boolean() ? faker.lorem.sentence() : null,
                 fecha_ingreso: "2024-02-14",
-                id: uuidv4()
+                id: uuidv4(),
             });
         }
         await Ganado.bulkCreate(ganadoData);
@@ -180,8 +179,9 @@ const seedData = async () => {
             localidad: "Calchin",
             dni: "4051086506",
             contacto: "154222529",
-            cuil_cuit: "146014653165"
+            cuil_cuit: "146014653165",
         };
+        console.log(adminUser);
         await User.create(adminUser);
         /* 
                 await Macho.create({ terneroContador: 0 }) */

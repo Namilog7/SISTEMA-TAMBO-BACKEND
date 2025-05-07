@@ -6,14 +6,16 @@ const deleteProductoHandler = require("../../handlers/fabrica/deleteProductoHand
 const postRetiroLecheHandler = require("../../handlers/tambo/retiroLeche/postRetiroLecheHandler");
 const postVentaProductoHandler = require("../../handlers/fabrica/postVentaProductoHandler");
 const getCompraLecheHandler = require("../../handlers/fabrica/compraLecheHandler");
+const getVentasProductosHandler = require("../../handlers/fabrica/getVentasProductoHandler");
 
-const fabricaRouter = Router()
-fabricaRouter.get("/producto", getProductoHandler)
-fabricaRouter.post("/producto", postProductoHandler)
-fabricaRouter.put("/producto", putProductoHandler)
-fabricaRouter.delete("/producto/:id", deleteProductoHandler)
-fabricaRouter.post("/compraleche", postRetiroLecheHandler)
-fabricaRouter.get("/compraleche", getCompraLecheHandler)
-fabricaRouter.post("/ventaproducto", postVentaProductoHandler)
+const fabricaRouter = Router();
+fabricaRouter.get("/producto", getProductoHandler);
+fabricaRouter.post("/producto", postProductoHandler);
+fabricaRouter.put("/producto", putProductoHandler);
+fabricaRouter.delete("/producto/:id", deleteProductoHandler);
+fabricaRouter.post("/compraleche", postRetiroLecheHandler);
+fabricaRouter.get("/compraleche", getCompraLecheHandler);
+fabricaRouter.post("/ventaproducto", postVentaProductoHandler);
+fabricaRouter.get("/ventaproducto", getVentasProductosHandler);
 
-module.exports = fabricaRouter
+module.exports = fabricaRouter;
