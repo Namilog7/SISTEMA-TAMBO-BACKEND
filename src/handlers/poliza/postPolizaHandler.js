@@ -10,7 +10,7 @@ const postPolizaHandler = async (req, res) => {
         if (factura_base64) {
             foto_factura = await postCloudinary(factura_base64, "poliza_facturas");
         }
-        const poliza = postPoliza.create({ nombre, seccion, desde, hasta, importe, estado, cantidad_cuotas, foto_factura, afectados })
+        const poliza = await postPoliza.create({ nombre, seccion, desde, hasta, importe, estado, cantidad_cuotas, foto_factura, afectados })
         res.json(poliza)
     } catch (error) {
         console.log(error);

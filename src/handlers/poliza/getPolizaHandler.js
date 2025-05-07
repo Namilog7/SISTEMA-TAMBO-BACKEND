@@ -4,7 +4,7 @@ const crudController = require("../../controllers/crudController")
 const getPolizaHandler = async (req, res) => {
     const getPoliza = crudController(PolizaSeguro);
     try {
-        const polizas = getPoliza.readAll();
+        const polizas = await getPoliza.readAll();
         res.json(polizas)
     } catch (error) {
         console.log(error);
