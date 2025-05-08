@@ -13,6 +13,9 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
+            numero_poliza: {
+                type: DataTypes.STRING,
+            },
             seccion: {
                 type: DataTypes.STRING,
                 allowNull: true
