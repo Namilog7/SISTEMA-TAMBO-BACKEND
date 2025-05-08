@@ -12,6 +12,7 @@ async function startServer() {
     console.log("All models were synchronized successfully");
     await seedData();
     console.log("All default data synchronized successfully");
+    console.log(`📢 Escuchando en el puerto: ${PORT}`);
     server.listen(PORT, () => {
       console.log(`Server is active and listening on port ${PORT}`);
     });
