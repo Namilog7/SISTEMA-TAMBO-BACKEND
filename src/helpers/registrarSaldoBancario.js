@@ -1,6 +1,6 @@
 const { CajaBancaria } = require("../db");
 
-const registrarSaldoBancario = async ({ tipo, importe }, transaction) => {
+const registrarSaldoBancario = async ({ estado, importe }, transaction) => {
     try {
         let cajaBancaria = await CajaBancaria.findOne({ transaction });
 
@@ -8,10 +8,10 @@ const registrarSaldoBancario = async ({ tipo, importe }, transaction) => {
             cajaBancaria = await CajaBancaria.create({ saldo: 0 }, { transaction });
         }
 
-        if (tipo === "CREDITO") {
+        if (estado === "COBRADO") {
             cajaBancaria.saldo += Number(importe);
         }
-        if (tipo === "DEBITO") {
+        if (tipo === "PAGADO") {
             cajaBancaria.saldo -= Number(importe);
         }
 

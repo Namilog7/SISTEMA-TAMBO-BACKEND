@@ -1,35 +1,30 @@
 const postCheque = require("../../controllers/caja/cheque/postCheque")
+const { conn } = require("../../db");
 
 const postChequeHandler = async (req, res) => {
     const {
         importe,
         estado,
-        tipo,
         detalle,
-        origen,
         destino,
-        actual_destino,
         banco,
         numero_cheque,
         fecha_emision,
-        fecha_pago,
-        fecha_cobro
+        fecha_pago
     } = req.body
     try {
+        const transaction = await conn.transaction()
         const nuevoCheque = await postCheque({
             importe,
             estado,
-            tipo,
             detalle,
-            origen,
             destino,
-            actual_destino,
             banco,
             numero_cheque,
             fecha_emision,
-            fecha_pago,
-            fecha_cobro
-        })
+            fecha_pago
+        }, transaction)
+        await transaction.commit()
         res.json({
             nuevoCheque
         })

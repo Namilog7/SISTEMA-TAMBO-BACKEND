@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize")
 
 module.exports = (sequelize) => {
     sequelize.define(
-        'Cheque', {
+        'ChequeRecibido', {
         id: {
             type: DataTypes.UUID,
             primaryKey: true,
@@ -13,16 +13,20 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         estado: {
-            type: DataTypes.ENUM('ENTREGADO', 'ANULADO', 'PAGADO'),
+            type: DataTypes.ENUM('PENDIENTE', 'ANULADO', 'COBRADO'),
             allowNull: false
         },
         detalle: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        destino: {
+        origen: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        destino: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         banco: {
             type: DataTypes.STRING,

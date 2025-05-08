@@ -6,6 +6,7 @@ const cloudinary = require("cloudinary").v2;
 const putPolizaHandler = async (req, res) => {
     const {
         id,
+        numero_poliza,
         nombre,
         seccion,
         desde,
@@ -40,6 +41,7 @@ const putPolizaHandler = async (req, res) => {
 
         const update = await putPoliza.update({
             id,
+            numero_poliza,
             nombre,
             seccion,
             desde,

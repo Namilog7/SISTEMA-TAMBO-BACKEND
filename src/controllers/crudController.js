@@ -1,7 +1,7 @@
 const createController = (model) => ({
-    async create(obj) {
+    async create(obj, { transaction }) {
 
-        const data = await model.create(obj);
+        const data = await model.create(obj, { transaction });
         return data;
     },
 

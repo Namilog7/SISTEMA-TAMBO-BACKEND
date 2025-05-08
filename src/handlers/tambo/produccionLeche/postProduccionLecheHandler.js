@@ -26,7 +26,7 @@ const postProduccionLecheHandler = async (req, res) => {
             aclaracion,
             estado,
             id_empleado: userId,
-        });
+        }, { transaction });
 
         await putEquipoFrio({ nombre: "Tambo", litros: litros, operacion: "+" });
         await postSistemaMovimiento(
