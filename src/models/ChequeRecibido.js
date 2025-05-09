@@ -14,7 +14,8 @@ module.exports = (sequelize) => {
         },
         estado: {
             type: DataTypes.ENUM('PENDIENTE', 'ANULADO', 'COBRADO'),
-            allowNull: false
+            allowNull: false,
+            defaultValue: "PENDIENTE"
         },
         detalle: {
             type: DataTypes.STRING,
