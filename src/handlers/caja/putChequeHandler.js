@@ -17,7 +17,7 @@ const putChequeHandler = async (req, res) => {
         await cheque.save();
 
         let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
-        if (estado === "ACREDITADO" || estado === "CONFIRMADA" || estado === "COBRADO") {
+        if (estado === "PAGADO") {
             registroCaja = await registrarSaldoBancario({ estado, importe })
         }
 
