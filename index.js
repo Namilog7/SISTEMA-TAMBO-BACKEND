@@ -13,7 +13,7 @@ async function startServer() {
     await seedData();
     console.log("All default data synchronized successfully");
     console.log(`📢 Escuchando en el puerto: ${PORT}`);
-    server.listen(PORT, () => {
+    server.listen(PORT, '0.0.0.0', () => {
       console.log(`Server is active and listening on port ${PORT}`);
     });
   } catch (error) {
