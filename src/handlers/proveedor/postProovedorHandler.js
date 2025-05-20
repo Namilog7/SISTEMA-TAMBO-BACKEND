@@ -11,22 +11,28 @@ const postProveedorHandler = async (req, res) => {
     try {
         let nuevoProveedor;
         if (isTamboProveedor) {
-            nuevoProveedor = await postProveedorTambo.create({
-                nombre_empresa,
-                contacto_1,
-                contacto_2,
-                localidad,
-                saldo,
-            });
+            nuevoProveedor = await postProveedorTambo.create(
+                {
+                    nombre_empresa,
+                    contacto_1,
+                    contacto_2,
+                    localidad,
+                    saldo,
+                },
+                { transaction }
+            );
         } else {
-            nuevoProveedor = await postProveedor.create({
-                nombre_empresa,
-                contacto_1,
-                contacto_2,
-                localidad,
-                saldo,
-                id_sector,
-            });
+            nuevoProveedor = await postProveedor.create(
+                {
+                    nombre_empresa,
+                    contacto_1,
+                    contacto_2,
+                    localidad,
+                    saldo,
+                    id_sector,
+                },
+                { transaction }
+            );
         }
         await transaction.commit();
         return res.json({
