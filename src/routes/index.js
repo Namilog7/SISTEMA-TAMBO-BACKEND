@@ -15,6 +15,7 @@ const cuentaRouter = require("../routes/cuentaRouter/cuentaRouter")
 const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler");
 const casaRouter = require("./casaRouter/casaRouter");
 const polizaRouter = require("./polizaRouter/polizaRouter");
+const afipRouter = require("./afipRouter/afipRouter");
 
 const router = Router();
 
@@ -32,6 +33,7 @@ router.use("/agricultura", agriculturaRouter)
 router.use("/casa", casaRouter)
 router.use("/cuenta", cuentaRouter)
 router.use("/poliza", polizaRouter)
+router.use("/afip", afipRouter)
 router.get("/sistema-movimiento", getSistemaMovimientoHandler)
 
 
