@@ -4,9 +4,6 @@ require('dotenv').config();
 
 const postFacturaHandler = async (req, res) => {
   // puntoDeVenta, dniDesinatario, fecha, importeTotal, importeNeto, Impuestos, tipoDeFactura
-  console.log('TOKEN:', process.env.TOKEN);
-  console.log('SIGN:', process.env.SIGN);
-  console.log('CUIT:', process.env.CUIT);
 
   try {
     const soapXML = `
@@ -85,12 +82,12 @@ xmlns:ar="http://ar.gov.afip.dif.FEV1/">
       }
     );
 
-    console.log(response)
     const parsedResult = await parseStringPromise(response.data, { explicitArray: false });
-    console.log(response)
 
-    const responseContent = parsedResult['soap:Envelope']?.['soap:Body']?.['ar:FECAESolicitarResponse']
-      || parsedResult['soapenv:Envelope']?.['soapenv:Body'];
+    /*     const responseContent = parsedResult['soap:Envelope']?.['soap:Body']?.['ar:FECAESolicitarResponse']
+          || parsedResult['soapenv:Envelope']?.['soapenv:Body']; */
+
+    const responseContent = parsedResult['soap:Envelope']?.['soap:Body']?.['FECAESolicitarResponse'];
 
     res.status(200).json(responseContent);
   } catch (error) {

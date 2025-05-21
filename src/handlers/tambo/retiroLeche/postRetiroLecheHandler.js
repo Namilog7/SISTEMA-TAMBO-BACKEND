@@ -71,6 +71,7 @@ const postRetiroLecheHandler = async (req, res) => {
                 movimiento: sistemaMovimientoObj.retiroLeche,
                 fecha: new Date()
             }, transaction)
+        await transaction.commit()
         return res.status(201).json(response);
     } catch (error) {
         console.error("Error al crear el retiro de leche:", error);
