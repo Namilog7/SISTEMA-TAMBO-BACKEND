@@ -75,11 +75,11 @@ const postRetiroLecheHandler = async (req, res) => {
                 user_tipo: empleado.role,
                 nombre_sector: "tambo",
                 movimiento: sistemaMovimientoObj.retiroLeche,
+
                 fecha: new Date(),
             },
             transaction
         );
-
         await transaction.commit();
         return res.status(201).json(response);
     } catch (error) {
