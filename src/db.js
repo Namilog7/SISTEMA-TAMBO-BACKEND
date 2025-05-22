@@ -5,7 +5,7 @@ const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
 const sequelize = new Sequelize(DB_DEPLOY, {
-    logging: false,
+    logging: console.log,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
