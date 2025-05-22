@@ -1,4 +1,4 @@
-const sendFacturaAFIP = require('../afip/sendFacturaAFIP');
+const sendFacturaAFIP = require('../../controllers/afip/sendFacturaAfip');
 
 const postFacturaHandler = async (req, res) => {
   const {
