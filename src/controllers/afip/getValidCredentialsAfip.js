@@ -85,7 +85,12 @@ const getValidCredentialsAfip = async () => {
     if (record) {
       await record.update({ token, sign, expiration_time: expiration });
     } else {
-      record = await TokenSignAfip.create({ token, sign, expiration_time: expiration });
+      record = await TokenSignAfip.create({
+        token,
+        sign,
+        expiration_time:
+          expiration
+      });
     }
 
     return { token, sign };
