@@ -11,7 +11,6 @@ server.use(express.json({ limit: "10mb" }));
 server.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 server.use(morgan("dev"));
-server.use(express.json());
 server.use(cors({
     origin: "*",
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
