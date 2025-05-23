@@ -8,11 +8,11 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4,
         },
         token: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         sign: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         fechaExpiracion: {
