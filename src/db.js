@@ -7,14 +7,14 @@ const pg = require("pg");
 const sequelize = new Sequelize(DB_DEPLOY, {
     logging: console.log,
     native: false,
-    dialectModule: pg,
+    // dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
+    // dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false,
+    //     },
+    // },
 });
 
 // Obtención del nombre del archivo actual

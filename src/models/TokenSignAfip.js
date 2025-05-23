@@ -1,23 +1,23 @@
-const { DataTypes } = require("sequelize")
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-    sequelize.define('TokenSignAfip', {
+    sequelize.define("TokenSignAfip", {
         id: {
             type: DataTypes.UUID,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
+            defaultValue: DataTypes.UUIDV4,
         },
         token: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         sign: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         fechaExpiracion: {
             type: DataTypes.DATE,
-            allowNull: false
-        }
-    })
+            allowNull: false,
+        },
+    });
 };
