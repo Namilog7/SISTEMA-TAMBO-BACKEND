@@ -4,8 +4,13 @@ const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
+<<<<<<< HEAD
 const sequelize = new Sequelize(DB_DEV, {
     logging: false,
+=======
+const sequelize = new Sequelize(DB_DEPLOY, {
+    logging: console.log,
+>>>>>>> 6fe1c667a755a117064fb1503cfe17afec1f9a7f
     native: false,
     // dialectModule: pg,
     dialect: "postgres",

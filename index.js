@@ -6,18 +6,25 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
+    console.log("🔌 Autenticando DB...");
     await conn.authenticate();
-    console.log("Connection has been established successfully.");
-    await conn.sync({ force: false, alter: true });
-    console.log("All models were synchronized successfully");
+    console.log("✅ DB autenticada.");
+
+    console.log("🧱 Sincronizando modelos...");
+    await conn.sync({ force: false });
+    console.log("✅ Modelos sincronizados.");
+
+    console.log("🌱 Insertando datos iniciales...");
     await seedData();
-    console.log("All default data synchronized successfully");
-    console.log(`📢 Escuchando en el puerto: ${PORT}`);
+    console.log("✅ Datos iniciales insertados.");
+
+    console.log(`🚀 Iniciando servidor en puerto ${PORT}`);
     server.listen(PORT, '0.0.0.0', () => {
-      console.log(`Server is active and listening on port ${PORT}`);
+      console.log(`✅ Servidor corriendo en puerto ${PORT}`);
     });
+
   } catch (error) {
-    console.error("Unable to connect:", error.message);
+    console.error("🔥 Error en el arranque:", error.message);
   }
 }
 
