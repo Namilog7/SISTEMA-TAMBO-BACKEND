@@ -4,7 +4,7 @@ const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: console.log,
     native: false,
     // dialectModule: pg,
