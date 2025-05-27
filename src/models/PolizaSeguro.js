@@ -11,14 +11,14 @@ module.exports = (sequelize) => {
             },
             nombre: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             numero_poliza: {
                 type: DataTypes.STRING,
             },
             seccion: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             desde: {
                 type: DataTypes.DATE,
@@ -26,28 +26,28 @@ module.exports = (sequelize) => {
             },
             hasta: {
                 type: DataTypes.DATE,
-                allowNull: false
+                allowNull: false,
             },
             importe: {
                 type: DataTypes.FLOAT,
-                allowNull: false
+                allowNull: false,
             },
             estado: {
-                type: DataTypes.ENUM("VIGENTE", "VENCIDO"),
-                defaultValue: "VIGENTE"
+                type: DataTypes.ENUM("VIGENTE", "VENCIDA"),
+                defaultValue: "VIGENTE",
             },
             cantidad_cuotas: {
                 type: DataTypes.INTEGER,
-                allowNull: false
+                allowNull: false,
             },
             foto_factura: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             afectados: {
                 type: DataTypes.STRING,
-                allowNull: false
-            }
+                allowNull: false,
+            },
         },
         { timestamps: false }
     );

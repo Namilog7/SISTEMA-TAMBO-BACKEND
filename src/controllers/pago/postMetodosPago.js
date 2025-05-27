@@ -14,6 +14,7 @@ const postGastoIngreso = require("../caja/postGastoIngreso");
  * @param {string} params.fecha - Fecha del pago.
  * @param {string} params.id_cliente - ID del cliente que realiza el pago (opcional).
  * @param {string} params.id_proveedor - ID del proveedor que recibe el pago (opcional).
+ * @param {string} params.id_empleado - ID del proveedor que recibe el pago (opcional).
  * @param {string} [params.detalle=""] - Detalles adicionales del pago.
  * @param {string} params.model - Puede ser "CLIENTE" o "PROVEEDOR".
  * @param {Object} transaction - Transacción de Sequelize para garantizar atomicidad.
@@ -36,10 +37,13 @@ const postGastoIngreso = require("../caja/postGastoIngreso");
  * - Registra un resumen de la transacción en la base de datos.
  */
 
-const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detalle = "", model, id_sector }, transaction) => {
+const postMetodosPago = async (
+    { metodos, fecha, id_cliente, id_proveedor, id_empleado, detalle = "", model, id_sector },
+    transaction
+) => {
     if (metodos.length === 0) throw new Error("No se enviaron métodos de pago.");
 
-    const nuevoPago = await postPago({ detalle, fecha, id_cliente, id_proveedor }, transaction);
+    const nuevoPago = await postPago({ detalle, fecha, id_cliente, id_proveedor, id_empleado }, transaction);
 
     let totalMetodos = [];
     let resultado = {};
@@ -54,6 +58,7 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
                 fecha: metodo.fecha,
                 id_cliente: metodo.id_cliente,
                 id_proveedor: metodo.id_proveedor,
+                id_empleado: metodo.id_empleado,
                 importe: metodo.importe,
                 metodo: metodo.metodo,
             },
@@ -68,9 +73,9 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
             {
                 detalle,
                 estado: "ACEPTADO",
-                tipo: "INGRESO",
+                tipo: id_cliente ? "INGRESO" : "EGRESO",
                 fecha,
-                id_sector
+                id_sector,
             },
             transaction
         );
@@ -92,7 +97,7 @@ const postMetodosPago = async ({ metodos, fecha, id_cliente, id_proveedor, detal
         }
     }
 
-    const id_afectado = id_cliente ? id_cliente : id_proveedor;
+    const id_afectado = id_cliente ? id_cliente : id_proveedor ? id_proveedor : id_empleado;
     const pago = pagosUsados.join(", ");
 
     const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe }, transaction);

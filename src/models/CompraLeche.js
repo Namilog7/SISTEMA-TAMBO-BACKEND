@@ -15,37 +15,37 @@ module.exports = (sequelize) => {
             },
             fecha: {
                 type: DataTypes.DATE,
-                allowNull: false
+                allowNull: false,
             },
             liquidado: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
-                defaultValue: false
+                defaultValue: false,
             },
             estado: {
                 type: DataTypes.ENUM("ACTIVO", "CANCELADO"),
                 allowNull: false,
-                defaultValue: "ACTIVO"
+                defaultValue: "ACTIVO",
             },
             hora_carga: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             encargado_retiro: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             hora_retiro: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             aclaracion: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             id_empleado: {
-                type: DataTypes.STRING
-            }
+                type: DataTypes.STRING,
+            },
         },
         { timestamps: true }
     );

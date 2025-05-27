@@ -42,11 +42,11 @@ const { conn } = require("../../db");
 
 const postNotaHandler = async (req, res) => {
     const { descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado } = req.body;
-    const transaction = await conn.transaction()
+    const transaction = await conn.transaction();
 
     try {
-        if (!["PROVEEDOR", "CLIENTE"].includes(tipo_destinatario)) {
-            return res.status(400).json({ error: "El destinatario debe ser CLIENTE o PROVEEDOR." });
+        if (!["PROVEEDOR", "CLIENTE", "EMPLEADO"].includes(tipo_destinatario)) {
+            return res.status(400).json({ error: "El destinatario debe ser CLIENTE, EMPLEADO o PROVEEDOR." });
         }
 
         if (!["DEBITO", "CREDITO"].includes(tipo)) {
@@ -58,19 +58,22 @@ const postNotaHandler = async (req, res) => {
         }
 
         // Llamar al controlador con los datos corregidos
-        console.log(descripcion)
-        const result = await postNota({
-            descripcion,
-            tipo,
-            importe,
-            fecha_emision,
-            id_afectado,
-            tipo_destinatario
-        }, transaction);
-        await transaction.commit()
+        console.log(descripcion);
+        const result = await postNota(
+            {
+                descripcion,
+                tipo,
+                importe,
+                fecha_emision,
+                id_afectado,
+                tipo_destinatario,
+            },
+            transaction
+        );
+        await transaction.commit();
         return res.status(201).json(result);
     } catch (error) {
-        await transaction.rollback()
+        await transaction.rollback();
         console.error("Error en postNotaHandler:", error);
         res.status(500).json({ error: `Error en el servidor: ${error.message}` });
     }
