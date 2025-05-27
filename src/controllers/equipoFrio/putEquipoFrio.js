@@ -9,14 +9,14 @@ const putEquipoFrio = async ({ nombre, litros, capacidad, operacion }, transacti
     }
 
     if (operacion === "+") {
-        equipo.litros += litros;
+        equipo.litros += Number(litros);
     } else if (operacion === "-") {
         if (equipo.litros < litros) {
             throw new Error(
                 `No se puede restar ${litros} litros, el equipo solo tiene ${equipo.litros} litros disponibles.`
             );
         }
-        equipo.litros -= litros;
+        equipo.litros -= Number(litros);
     } else {
         throw new Error("Operación inválida. Use '+' o '-'.");
     }

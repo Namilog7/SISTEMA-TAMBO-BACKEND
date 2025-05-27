@@ -2,7 +2,13 @@ const { CompraLeche, TamboProveedor } = require("../../db");
 
 const getCompraLecheHandler = async (req, res) => {
     try {
-        const compraLeche = await CompraLeche.findAll();
+        const compraLeche = await CompraLeche.findAll({
+            include: [
+                {
+                    model: TamboProveedor,
+                },
+            ],
+        });
 
         console.log(compraLeche);
 
