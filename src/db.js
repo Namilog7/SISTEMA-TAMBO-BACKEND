@@ -9,12 +9,12 @@ const sequelize = new Sequelize(DB_DEV, {
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    // dialectOptions: {
-    //     ssl: {
-    //         require: true,
-    //         rejectUnauthorized: false,
-    //     },
-    // },
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+        },
+    },
 });
 
 
@@ -86,6 +86,7 @@ const {
     Cuenta,
     MesesCompromiso,
     Sistema_movimiento,
+    Empleado,
 } = sequelize.models;
 
 //RELACIONES
@@ -167,12 +168,22 @@ Nota.belongsTo(Proveedor, {
     constraints: false,
 });
 
+Nota.belongsTo(Empleado, {
+    foreignKey: "id_afectado",
+    constraints: false,
+});
+
 Cliente.hasMany(Nota, {
     foreignKey: "id_afectado",
     constraints: false,
 });
 
 Proveedor.hasMany(Nota, {
+    foreignKey: "id_afectado",
+    constraints: false,
+});
+
+Empleado.hasMany(Nota, {
     foreignKey: "id_afectado",
     constraints: false,
 });
@@ -220,11 +231,28 @@ ResumenCuenta.belongsTo(Proveedor, {
     },
 });
 
+Empleado.hasMany(ResumenCuenta, {
+    foreignKey: {
+        name: "id_empleado",
+        allowNull: true,
+    },
+});
+
+ResumenCuenta.belongsTo(Empleado, {
+    foreignKey: {
+        name: "id_empleado",
+        allowNull: true,
+    },
+});
+
 Pago.belongsTo(Cliente, { foreignKey: "id_cliente", allowNull: true });
 Cliente.hasMany(Pago, { foreignKey: "id_cliente" });
 
 Pago.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true });
 Proveedor.hasMany(Pago, { foreignKey: "id_proveedor" });
+
+Pago.belongsTo(Empleado, { foreignKey: "id_empleado", allowNull: true });
+Empleado.hasMany(Pago, { foreignKey: "id_empleado" });
 
 Pago.hasMany(MetodoPago, { foreignKey: "id_pago" });
 MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
@@ -247,8 +275,9 @@ Venta.belongsTo(Cliente, {
     onUpdate: "CASCADE",
 });
 
-TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_compra" });
-CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_compra" });
+// id_compra
+TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_tambo_proveedor" });
+CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_tambo_proveedor" });
 
 Factura.belongsTo(Venta, { foreignKey: "id_factura" });
 Venta.hasOne(Factura, { foreignKey: "id_factura" });

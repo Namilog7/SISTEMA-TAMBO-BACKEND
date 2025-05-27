@@ -13,22 +13,14 @@ module.exports = (sequelize) => {
                 type: DataTypes.DATE,
                 allowNull: false,
             },
-            monto_blanco: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
-            monto_negro: {
-                type: DataTypes.FLOAT,
-                allowNull: false
-            },
             datalle: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             monto_total: {
                 type: DataTypes.FLOAT,
-                allowNull: false
-            }
+                allowNull: false,
+            },
         },
         { timestamps: false }
     );

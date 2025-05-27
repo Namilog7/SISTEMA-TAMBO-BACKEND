@@ -45,7 +45,7 @@ const postRetiroLecheHandler = async (req, res) => {
                     id_empleado,
                     estado,
                     id_liquidacion,
-                    id_proveedor,
+                    id_tambo_proveedor: id_proveedor,
                 },
                 { transaction }
             );
