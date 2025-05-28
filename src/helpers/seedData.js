@@ -171,15 +171,9 @@ const seedData = async () => {
         const hashedPassword = await bcrypt.hash("admin123", 10); // Encripta la contraseña
         const adminUser = {
             id: uuidv4(),
-            nombre: "Admin",
-            apellido: "Tambo",
             email: "admin@example.com",
             password: hashedPassword,
             role: "ADMIN", // Asigna el rol de administrador
-            localidad: "Calchin",
-            dni: "4051086506",
-            contacto: "154222529",
-            cuil_cuit: "146014653165",
         };
         console.log(adminUser);
         await User.create(adminUser);

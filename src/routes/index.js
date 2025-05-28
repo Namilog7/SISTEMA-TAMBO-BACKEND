@@ -4,13 +4,14 @@ const insumoRouter = require("../routes/insumoRouter/insumoRouter");
 const proveedorRouter = require("./proveedorRouter/proveedorRouter");
 const clienteRouter = require("./clienteRouter/clienteRouter");
 const cajaRouter = require("./cajaRouter/cajaRouter");
-const notaRouter = require("../routes/notaRouter/notaRouter")
+const notaRouter = require("../routes/notaRouter/notaRouter");
 const sectorRouter = require("../routes/sectorRouter/sectorRouter");
 const recriaRouter = require("./recriaRouter/recriaRouter");
 const userRouter = require("./userRouter/userRouter");
 const fabricaRouter = require("./fabricaRouter/fabricaRouter");
 const agriculturaRouter = require("./agriculturaRouter/agriculturaRouter");
-const cuentaRouter = require("../routes/cuentaRouter/cuentaRouter")
+const cuentaRouter = require("../routes/cuentaRouter/cuentaRouter");
+const empleadoRouter = require("./empleadoRouter/empleadoRouter");
 
 const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler");
 const casaRouter = require("./casaRouter/casaRouter");
@@ -19,22 +20,22 @@ const afipRouter = require("./afipRouter/afipRouter");
 
 const router = Router();
 
-router.use("/sector", sectorRouter)
+router.use("/sector", sectorRouter);
 router.use("/tambo", tamboRouter);
 router.use("/insumo", insumoRouter);
 router.use("/proveedor", proveedorRouter);
 router.use("/cliente", clienteRouter);
-router.use("/caja", cajaRouter)
-router.use("/nota", notaRouter)
-router.use("/recria", recriaRouter)
-router.use("/user", userRouter)
-router.use("/fabrica", fabricaRouter)
-router.use("/agricultura", agriculturaRouter)
-router.use("/casa", casaRouter)
-router.use("/cuenta", cuentaRouter)
-router.use("/poliza", polizaRouter)
-router.use("/afip", afipRouter)
-router.get("/sistema-movimiento", getSistemaMovimientoHandler)
+router.use("/empleado", empleadoRouter);
+router.use("/caja", cajaRouter);
+router.use("/nota", notaRouter);
+router.use("/recria", recriaRouter);
+router.use("/user", userRouter);
+router.use("/fabrica", fabricaRouter);
+router.use("/agricultura", agriculturaRouter);
+router.use("/casa", casaRouter);
+router.use("/cuenta", cuentaRouter);
+router.use("/poliza", polizaRouter);
+router.use("/afip", afipRouter);
+router.get("/sistema-movimiento", getSistemaMovimientoHandler);
 
-
-module.exports = router
+module.exports = router;

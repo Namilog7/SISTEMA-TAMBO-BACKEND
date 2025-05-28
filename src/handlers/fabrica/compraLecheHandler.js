@@ -3,10 +3,14 @@ const { CompraLeche, TamboProveedor } = require("../../db");
 const getCompraLecheHandler = async (req, res) => {
     try {
         const compraLeche = await CompraLeche.findAll({
-            include: {
-                model: TamboProveedor,
-            }
+            include: [
+                {
+                    model: TamboProveedor,
+                },
+            ],
         });
+
+        console.log(compraLeche);
 
         res.json(compraLeche);
     } catch (error) {

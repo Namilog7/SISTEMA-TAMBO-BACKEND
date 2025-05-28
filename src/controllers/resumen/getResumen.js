@@ -1,22 +1,29 @@
 const { ResumenCuenta } = require("../../db");
 
 const getResumen = async ({ id, tipo }) => {
-    let resumen
+    let resumen;
     if (tipo === "CLIENTE") {
         resumen = await ResumenCuenta.findAll({
             where: {
-                id_cliente: id
-            }
-        })
+                id_cliente: id,
+            },
+        });
     }
     if (tipo === "PROVEEDOR") {
         resumen = await ResumenCuenta.findAll({
             where: {
-                id_proveedor: id
-            }
-        })
+                id_proveedor: id,
+            },
+        });
     }
-    return resumen
-}
+    if (tipo === "EMPLEADO") {
+        resumen = await ResumenCuenta.findAll({
+            where: {
+                id_empleado: id,
+            },
+        });
+    }
+    return resumen;
+};
 
-module.exports = getResumen
+module.exports = getResumen;
