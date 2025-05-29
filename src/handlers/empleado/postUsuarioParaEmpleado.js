@@ -20,6 +20,7 @@ const postUsuarioParaEmpleado = async (req, res) => {
             email,
             role: "EMPLEADO",
             password: passwordHasheada,
+            id_empleado
         });
 
         return res.json({ datosUsuario: { email, pass }, usuarioCreado });

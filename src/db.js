@@ -7,7 +7,7 @@ const pg = require("pg");
 const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
-    dialectModule: pg,
+    // dialectModule: pg,
     dialect: "postgres",
     // dialectOptions: {
     //     ssl: {
@@ -90,6 +90,21 @@ const {
 } = sequelize.models;
 
 //RELACIONES
+
+Empleado.hasOne(User, {
+    foreignKey: {
+        name: "id_empleado",
+        allowNull: true,
+    },
+    onDelete: "CASCADE",
+});
+
+User.belongsTo(Empleado, {
+    foreignKey: {
+        name: "id_empleado",
+        allowNull: true,
+    },
+});
 
 Sector.hasMany(RetiroLeche, { foreignKey: "id_sector" });
 RetiroLeche.belongsTo(Sector, { foreignKey: "id_sector" });
