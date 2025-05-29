@@ -6,9 +6,11 @@ const postEmpleadoHandler = require("../../handlers/empleado/postEmpleadoHandler
 const getEmpleadoHandler = require("../../handlers/empleado/getEmpleadoHandler");
 const postUsuarioParaEmpleado = require("../../handlers/empleado/postUsuarioParaEmpleado");
 const putEmpeladoHandler = require("../../handlers/empleado/putEmpeladoHandler");
+const deleteEmpleadoHandler = require("../../handlers/empleado/deleteEmpleadoHandler");
 
 const empleadoRouter = Router();
 empleadoRouter.post("/", postEmpleadoHandler);
+empleadoRouter.delete("/:id", deleteEmpleadoHandler);
 empleadoRouter.put("/", putEmpeladoHandler);
 empleadoRouter.post("/usuario", postUsuarioParaEmpleado);
 empleadoRouter.get("/", getEmpleadoHandler);
