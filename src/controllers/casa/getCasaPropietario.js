@@ -1,7 +1,10 @@
 const { CasaPropietario, CompromisoDePago, MesesCompromiso } = require("../../db");
+const { Op } = require("sequelize");
 
 const getCasaPropietario = async (isCaja = false) => {
-    const whereClause = isCaja ? {} : { nombre: { [require("sequelize").Op.ne]: "Caja" } };
+    const whereClause = isCaja
+        ? { nombre: "Caja" }
+        : { nombre: { [Op.ne]: "Caja" } };
 
     const casas = await CasaPropietario.findAll({
         where: whereClause,
