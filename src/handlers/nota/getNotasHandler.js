@@ -2,7 +2,7 @@ const { Nota } = require("../../db");
 
 const getNotasHandler = async (req, res) => {
     try {
-        const allNotas = await Nota.findAll({})
+        const allNotas = await Nota.findAll()
         res.json(allNotas)
     } catch (error) {
         console.log(error);
