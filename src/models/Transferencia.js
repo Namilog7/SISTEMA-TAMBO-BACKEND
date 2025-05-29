@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
         estado: {
             type: DataTypes.ENUM("ANULADA", "ACEPTADA", "PENDIENTE"),
             allowNull: false,
-            defaultValue: "ACEPTADA"
+            defaultValue: "PENDIENTE"
         },
         importe: {
             type: DataTypes.FLOAT,
