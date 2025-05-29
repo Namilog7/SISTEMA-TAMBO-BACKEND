@@ -2,9 +2,9 @@ const getCasaPropietario = require("../../controllers/casa/getCasaPropietario");
 
 
 const getCasaPropietarioHandler = async (req, res) => {
-
+    const { isCaja } = req.query
     try {
-        const casas = await getCasaPropietario()
+        const casas = await getCasaPropietario(isCaja)
         res.json(casas)
     } catch (error) {
         console.log(error);

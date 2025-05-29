@@ -1,4 +1,4 @@
-const { Inseminacion, Sector, Tambo, EquipoFrio, Ganado, SaldoCaja, User, CajaBancaria } = require("./../db"); // Asegúrate de importar el modelo User
+const { Inseminacion, Sector, Tambo, EquipoFrio, Ganado, SaldoCaja, User, CajaBancaria, CasaPropietario } = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
@@ -109,6 +109,10 @@ const seedData = async () => {
             nombre: "FabricaQueso",
             descripcion: "Dedicado a la fabricacion de quesos",
         });
+
+        await CasaPropietario.create({
+            nombre: "Caja"
+        })
 
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
