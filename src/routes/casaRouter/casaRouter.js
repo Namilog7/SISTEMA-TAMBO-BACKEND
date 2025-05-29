@@ -9,18 +9,22 @@ const deletePropietarioHandler = require("../../handlers/casa/deletePropietarioH
 const getPagoEventualHandler = require("../../handlers/casa/getPagoEventualHandler");
 const putPropietarioHandler = require("../../handlers/casa/putPropietarioHandler");
 const postMesesCompromisoHandler = require("../../handlers/casa/postMesesCompromisoHandler");
+const deleteComromisoHandler = require("../../handlers/casa/deleteCompromisoHandler");
+const putCompromisoHandler = require("../../handlers/casa/putCompromisoHandler");
 
-const casaRouter = Router()
+const casaRouter = Router();
 
 casaRouter.get("/", getCasaPropietarioHandler);
 casaRouter.post("/propietario", postPropietarioHandler);
-casaRouter.put("/propietario", putPropietarioHandler)
-casaRouter.delete("/propietario/:id", deletePropietarioHandler)
-casaRouter.post("/compromiso", postCompromisoPagoHandler)
-casaRouter.post("/eventual", postPagoEventualHandler)
-casaRouter.get("/eventual", getPagoEventualHandler)
-casaRouter.get("/compromiso/pagos", getCompromisoPagoHandler)
-casaRouter.post("/compromiso/pagar", postMesesPagoHandler)
-casaRouter.post("/cronjob-compromiso", postMesesCompromisoHandler)
+casaRouter.put("/propietario", putPropietarioHandler);
+casaRouter.delete("/propietario/:id", deletePropietarioHandler);
+casaRouter.post("/compromiso", postCompromisoPagoHandler);
+casaRouter.put("/compromiso", putCompromisoHandler);
+casaRouter.delete("/compromiso/:id", deleteComromisoHandler);
+casaRouter.post("/eventual", postPagoEventualHandler);
+casaRouter.get("/eventual", getPagoEventualHandler);
+casaRouter.get("/compromiso/pagos", getCompromisoPagoHandler);
+casaRouter.post("/compromiso/pagar", postMesesPagoHandler);
+casaRouter.post("/cronjob-compromiso", postMesesCompromisoHandler);
 
-module.exports = casaRouter
+module.exports = casaRouter;
