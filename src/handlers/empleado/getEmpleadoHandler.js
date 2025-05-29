@@ -1,4 +1,4 @@
-const { Empleado } = require("../../db");
+const { Empleado, User } = require("../../db");
 
 const getEmpleadoHandler = async (req, res) => {
     const { id_empleado } = req.query;
@@ -8,6 +8,10 @@ const getEmpleadoHandler = async (req, res) => {
         if (id_empleado) {
             empelados = await Empleado.findOne({
                 where: { id: id_empleado },
+                include: {
+                    model: User,
+                    attributes: { exclude: ["password"] },
+                },
             });
         } else {
             empelados = await Empleado.findAll();
