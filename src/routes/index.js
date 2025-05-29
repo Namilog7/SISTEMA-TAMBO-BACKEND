@@ -12,6 +12,7 @@ const fabricaRouter = require("./fabricaRouter/fabricaRouter");
 const agriculturaRouter = require("./agriculturaRouter/agriculturaRouter");
 const cuentaRouter = require("../routes/cuentaRouter/cuentaRouter");
 const empleadoRouter = require("./empleadoRouter/empleadoRouter");
+const bancoRouter = require("./bancoRouter/bancoRouter");
 
 const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getSistemaMovimientoHandler");
 const casaRouter = require("./casaRouter/casaRouter");
@@ -27,6 +28,7 @@ router.use("/proveedor", proveedorRouter);
 router.use("/cliente", clienteRouter);
 router.use("/empleado", empleadoRouter);
 router.use("/caja", cajaRouter);
+router.use("/banco", bancoRouter);
 router.use("/nota", notaRouter);
 router.use("/recria", recriaRouter);
 router.use("/user", userRouter);
