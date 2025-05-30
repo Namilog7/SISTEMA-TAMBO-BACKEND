@@ -1,4 +1,14 @@
-const { Inseminacion, Sector, Tambo, EquipoFrio, Ganado, SaldoCaja, User, CajaBancaria, CasaPropietario } = require("./../db"); // Asegúrate de importar el modelo User
+const {
+    Inseminacion,
+    Sector,
+    Tambo,
+    EquipoFrio,
+    Ganado,
+    SaldoCaja,
+    User,
+    CajaBancaria,
+    CasaPropietario,
+} = require("./../db"); // Asegúrate de importar el modelo User
 const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
@@ -111,8 +121,8 @@ const seedData = async () => {
         });
 
         await CasaPropietario.create({
-            nombre: "Caja"
-        })
+            nombre: "Caja",
+        });
 
         const ganadoData = [];
         for (let i = 0; i < 20; i++) {
@@ -172,17 +182,37 @@ const seedData = async () => {
                 await ProduccionLeche.bulkCreate(produccionLecheData); */
 
         // Insertar Usuario Admin
-        const hashedPassword = await bcrypt.hash("admin123", 10); // Encripta la contraseña
+        const hashedPasswordAdmin = await bcrypt.hash("admin123", 10); // Encripta la contraseña
         const adminUser = {
             id: uuidv4(),
-            email: "admin@example.com",
-            password: hashedPassword,
-            role: "ADMIN", // Asigna el rol de administrador
+            email: "admin@administracion.com",
+            password: hashedPasswordAdmin,
+            role: "ADMIN",
         };
-        console.log(adminUser);
         await User.create(adminUser);
-        /* 
-                await Macho.create({ terneroContador: 0 }) */
+        console.log("Usuario administrador creado con éxito.");
+
+        // Insertar Usuario Tambo
+        const hashedPasswordTambo = await bcrypt.hash("admin123", 10); // Encripta la contraseña
+        const tamboUser = {
+            id: uuidv4(),
+            email: "admin@tambo.com",
+            password: hashedPasswordTambo,
+            role: "EMPLEADO",
+        };
+        await User.create(tamboUser);
+        console.log("Usuario tambo creado con éxito.");
+
+        // Insertar Usuario Fabrica
+        const hashedPasswordFabrica = await bcrypt.hash("admin123", 10); // Encripta la contraseña
+        const fabricaUser = {
+            id: uuidv4(),
+            email: "admin@fabrica.com",
+            password: hashedPasswordFabrica,
+            role: "EMPLEADO",
+        };
+        await User.create(fabricaUser);
+        console.log("Usuario fabrica creado con éxito.");
 
         console.log("Datos semilla insertados correctamente.");
     } catch (error) {
