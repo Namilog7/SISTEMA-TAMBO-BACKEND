@@ -31,7 +31,9 @@ const loginUser = async (req, res) => {
 
         res.status(200).json({
             token,
-            userId: user.id
+            userId: user.id,
+            role: user.role,
+            email: email,
         });
     } catch (error) {
         console.error("Error al iniciar sesión:", error.message);
