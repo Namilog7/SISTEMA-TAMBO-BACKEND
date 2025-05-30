@@ -6,7 +6,7 @@ const putPropietarioHandler = async (req, res) => {
     const updateCompromiso = crudController(CompromisoDePago);
 
     try {
-        const update = await updateCompromiso.update({ nombre, cuotas, id });
+        const update = await updateCompromiso.update({ nombre_servicio: nombre, cuotas, id });
         res.json(update);
     } catch (error) {
         console.log(error);
