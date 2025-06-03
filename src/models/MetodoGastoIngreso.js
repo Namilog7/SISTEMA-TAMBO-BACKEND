@@ -9,8 +9,13 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4
         },
         monto: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.FLOAT,
+            allowNull: false,
+            defaultValue: 0
+        },
+        estado: {
+            type: DataTypes.ENUM("ACEPTADO", "ANULADO"),
+            defaultValue: "ACEPTADO"
         },
         metodo: {
             type: DataTypes.ENUM("EFECTIVO", "CHEQUE", "TRANSFERENCIA", "OTROS"),

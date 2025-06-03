@@ -1,4 +1,4 @@
-const { Cheque } = require("../../../db");
+const { ChequeRecibido } = require("../../../db");
 const registrarSaldoBancario = require("../../../helpers/registrarSaldoBancario")
 
 const postCheque = async ({
@@ -7,24 +7,26 @@ const postCheque = async ({
     detalle,
     destino,
     banco,
+    origen,
     numero_cheque,
     fecha_emision,
     fecha_pago
 }, transaction) => {
 
-    const nuevoCheque = await Cheque.create({
+    const nuevoCheque = await ChequeRecibido.create({
         importe,
         estado,
         detalle,
         destino,
         banco,
+        origen,
         numero_cheque,
         fecha_emision,
         fecha_pago
     }, { transaction })
 
     let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
-    if (estado === "PAGADO") {
+    if (estado === "PAGADO" || estado === "COBRADO") {
         registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
     }
     return {
