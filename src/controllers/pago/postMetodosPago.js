@@ -73,7 +73,7 @@ const postMetodosPago = async (
             {
                 detalle,
                 estado: "ACEPTADO",
-                tipo: id_cliente ? "INGRESO" : "EGRESO",
+                tipo: id_cliente || id_empleado || id_proveedor ? "INGRESO" : "EGRESO",
                 fecha,
                 id_sector,
             },

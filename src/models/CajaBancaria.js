@@ -11,7 +11,12 @@ module.exports = (sequelize) => {
         saldo: {
             type: DataTypes.FLOAT,
             allowNull: false,
-            defaultValue: 0
+            validate: {
+                isFloat: true,
+                notNull: {
+                    msg: "El monto es obligatorio"
+                }
+            }
         }
     })
 };
