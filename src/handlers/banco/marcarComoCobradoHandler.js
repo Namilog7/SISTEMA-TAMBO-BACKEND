@@ -38,6 +38,7 @@ const marcarComoCobrado = async (req, res) => {
             );
         }
 
+        await cheque.save({ transaction })
         await transaction.commit();
 
         res.status(200).json({
