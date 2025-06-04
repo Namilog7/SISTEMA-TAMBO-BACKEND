@@ -1,4 +1,4 @@
-const { ChequeRecibido } = require("../../../db");
+const { Cheque } = require("../../../db");
 const registrarSaldoBancario = require("../../../helpers/registrarSaldoBancario")
 
 const postCheque = async ({
@@ -13,7 +13,7 @@ const postCheque = async ({
     fecha_pago
 }, transaction) => {
 
-    const nuevoCheque = await ChequeRecibido.create({
+    const nuevoCheque = await Cheque.create({
         importe,
         estado,
         detalle,
