@@ -18,6 +18,7 @@ const getSistemaMovimientoHandler = require("../handlers/sistema-movimiento/getS
 const casaRouter = require("./casaRouter/casaRouter");
 const polizaRouter = require("./polizaRouter/polizaRouter");
 const afipRouter = require("./afipRouter/afipRouter");
+const gastoIngresoRouter = require("./gastoIngresoRouter/gastoIngresoRouter");
 
 const router = Router();
 
@@ -38,6 +39,7 @@ router.use("/casa", casaRouter);
 router.use("/cuenta", cuentaRouter);
 router.use("/poliza", polizaRouter);
 router.use("/afip", afipRouter);
+router.use("/gasto-ingreso", gastoIngresoRouter)
 router.get("/sistema-movimiento", getSistemaMovimientoHandler);
 
 module.exports = router;
