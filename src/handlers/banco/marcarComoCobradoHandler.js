@@ -38,7 +38,7 @@ const marcarComoCobrado = async (req, res) => {
             );
         }
 
-        cheque.estado = "COBRADO"; //!AGREGAR ESTO
+        cheque.estado = "COBRADO"
         await cheque.save({ transaction })
         await transaction.commit();
 
