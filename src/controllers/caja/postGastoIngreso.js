@@ -2,7 +2,7 @@ const { GastoIngreso } = require("../../db");
 
 const postGastoIngreso = async ({ detalle, estado, tipo, fecha, id_sector }, transaction) => {
 
-    const nuevoGastoIngreso = await GastoIngreso.create({
+    const newGastoIngreso = await GastoIngreso.create({
         detalle,
         estado,
         tipo,
@@ -10,7 +10,7 @@ const postGastoIngreso = async ({ detalle, estado, tipo, fecha, id_sector }, tra
         id_sector,
     }, { transaction });
 
-    return { nuevoGastoIngreso };
+    return { newGastoIngreso };
 };
 
 module.exports = postGastoIngreso;
