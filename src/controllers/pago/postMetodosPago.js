@@ -69,20 +69,22 @@ const postMetodosPago = async (
         totalMetodos.push(metodoRegistrado);
         pagosUsados.push(metodo.metodo);
 
-        const { nuevoGastoIngreso } = await postGastoIngreso(
+        const { newGastoIngreso } = await postGastoIngreso(
             {
                 detalle,
                 estado: "ACEPTADO",
-                tipo: id_cliente || id_empleado || id_proveedor ? "INGRESO" : "EGRESO",
+                tipo: id_cliente ? "INGRESO" : "EGRESO",
                 fecha,
                 id_sector,
             },
             transaction
         );
 
+        console.log(newGastoIngreso);
+        
         await postMetodoGastoIngreso(
             {
-                id_gasto_ingreso: nuevoGastoIngreso.id,
+                id_gasto_ingreso: newGastoIngreso.id,
                 metodo: metodo.metodo,
                 monto: metodo.importe,
             },
