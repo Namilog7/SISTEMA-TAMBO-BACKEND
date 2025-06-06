@@ -21,7 +21,7 @@ const postTransferenciaHandler = async (req, res) => {
             detalle,
             id_cuenta,
             id_cuenta_destino
-        })
+        },transaction)
         await transaction.commit()
         res.json({
             nuevaTransferencia

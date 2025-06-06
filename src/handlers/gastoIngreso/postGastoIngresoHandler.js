@@ -10,6 +10,7 @@ const postGastoIngresoHandler = async (req, res) => {
         const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
         const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
 
+        await transaction.commit();
         res.status(201).json({
             message: "Gasto/Ingreso registrado y saldo actualizado",
             gastoIngreso: newGastoIngreso,

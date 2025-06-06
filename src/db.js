@@ -17,6 +17,7 @@ const sequelize = new Sequelize(DB_DEPLOY, {
     },
 });
 
+
 // Obtención del nombre del archivo actual
 const basename = path.basename(__filename);
 
