@@ -36,6 +36,7 @@ const liquidacionHandler = async (req, res) => {
             metodosPago,
             transaction
         });
+        await transaction.commit()
         return res.json({
             liquidacion
         })

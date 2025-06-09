@@ -8,7 +8,7 @@ const {
     User,
     CajaBancaria,
     CasaPropietario,
-} = require("./../db"); // Asegúrate de importar el modelo User
+} = require("./../db");
 const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
@@ -72,6 +72,12 @@ const seedData = async () => {
                 */
         // Insertar Ganado
         // Insertar Sector
+        const sectoresExtra = ["Maquinaria", "Otros", "Empleados", "GastoPersonal"];
+
+        await Promise.all(
+            sectoresExtra.map(nombre => Sector.create({ nombre }))
+        );
+
         const equipoFrioTambo = await EquipoFrio.findOne({ where: { nombre: "Tambo" } });
         if (!equipoFrioTambo) {
             await EquipoFrio.create({
