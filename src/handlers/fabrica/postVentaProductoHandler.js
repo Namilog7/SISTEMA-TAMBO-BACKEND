@@ -19,8 +19,10 @@ const postVentaProductoHandler = async (req, res) => {
         tipo = "INGRESO",
         model,
         datosFacturacion,
-    } = req.body; //model Remito o Factura
+    } = req.body; // model: Remito o Factura
+
     const transaction = await conn.transaction();
+
     try {
         if (!fecha || !arrayObjsVenta?.length) {
             throw new Error("Proporcione todos los datos");
@@ -30,26 +32,29 @@ const postVentaProductoHandler = async (req, res) => {
 
         const bulkVenta = crearBulkTablaIntermedia(arrayObjsVenta, venta.id, "id_venta");
 
-        await VentaProducto.bulkCreate(bulkVenta);
+        await VentaProducto.bulkCreate(bulkVenta, { transaction });
 
         await actualizarStock(arrayObjsVenta, transaction);
 
         const montoMetodos = calcularMontoMetodos({ metodosPago });
 
-        if (model === "REMITO")
+        if (model === "REMITO") {
             await postCargarComprobante(
                 { ...datosFacturacion, id_cliente, id_venta: venta.id },
                 montoMetodos,
                 Remito,
                 transaction
             );
-        if (model === "FACTURA")
+        }
+
+        if (model === "FACTURA") {
             await postCargarComprobante(
                 { ...datosFacturacion, id_cliente, id_venta: venta.id },
                 montoMetodos,
                 Factura,
                 transaction
             );
+        }
 
         const { newGastoIngreso } = await postGastoIngreso(
             {
@@ -67,13 +72,15 @@ const postVentaProductoHandler = async (req, res) => {
             {
                 id_afectado: id_cliente,
                 fecha,
-                detalle,
+                detalle: `Venta ID :${venta.id}`,
                 factura: datosFacturacion.numero,
                 model: "CLIENTE",
                 importe: monto,
             },
             transaction
         );
+
+        await transaction.commit();
 
         res.json({
             message: "Venta registrada exitosamente",
@@ -83,6 +90,7 @@ const postVentaProductoHandler = async (req, res) => {
             metodosPago: metodos,
         });
     } catch (error) {
+        await transaction.rollback();
         console.log(error);
         res.status(500).json({ error: error.message });
     }

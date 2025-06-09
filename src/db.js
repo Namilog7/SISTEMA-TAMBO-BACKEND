@@ -293,8 +293,8 @@ Venta.belongsTo(Cliente, {
 TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_tambo_proveedor" });
 CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_tambo_proveedor" });
 
-Factura.belongsTo(Venta, { foreignKey: "id_factura" });
-Venta.hasOne(Factura, { foreignKey: "id_factura" });
+Factura.belongsTo(Venta, { foreignKey: "id_venta" });
+Venta.hasOne(Factura, { foreignKey: "id_venta" });
 
 CasaPropietario.hasMany(CompromisoDePago, {
     foreignKey: "id_propietario",
@@ -324,10 +324,6 @@ Transferencia.belongsTo(Cuenta, {
     as: "cuentaOrigen",
 });
 
-Transferencia.belongsTo(Cuenta, {
-    foreignKey: "id_cuenta_destino",
-    as: "cuentaDestino",
-});
 
 module.exports = {
     ...sequelize.models,
