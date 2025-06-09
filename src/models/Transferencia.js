@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         id_cuenta_destino: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             allowNull: true
         }
     })
