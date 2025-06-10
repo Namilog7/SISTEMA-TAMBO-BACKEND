@@ -315,11 +315,6 @@ Cuenta.hasMany(Transferencia, {
     as: "transferenciasOrigen",
 });
 
-Cuenta.hasMany(Transferencia, {
-    foreignKey: "id_cuenta_destino",
-    as: "transferenciasDestino",
-});
-
 Transferencia.belongsTo(Cuenta, {
     foreignKey: "id_cuenta",
     as: "cuentaOrigen",
