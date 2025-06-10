@@ -61,17 +61,15 @@ const postLiquidacion = async ({
         url_image
     }, { transaction });
 
-    const idLiquidacion = nuevaLiquidacion.id;
-
     await RetiroLeche.update(
         {
-            id_liquidacion: idLiquidacion,
+            id_liquidacion: nuevaLiquidacion.id,
             liquidado: true,
         },
         {
             where: { id: arrayIdRetiros },
-        },
-        { transaction }
+            transaction
+        }
     );
 
     const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);

@@ -15,7 +15,7 @@ const liquidacionHandler = async (req, res) => {
         detalle = "",
         id_sector,
         tipo = "INGRESO",
-        estado = "ACTIVO",
+        estado = "ACEPTADO",
         metodosPago,
     } = req.body
     const transaction = await conn.transaction()
