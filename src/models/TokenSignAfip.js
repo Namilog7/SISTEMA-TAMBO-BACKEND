@@ -19,5 +19,10 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             allowNull: false,
         },
+        service: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            defaultValue: "wsfe", // Default service is wsfe
+        },
     });
 };
