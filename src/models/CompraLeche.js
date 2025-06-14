@@ -46,6 +46,16 @@ module.exports = (sequelize) => {
             id_empleado: {
                 type: DataTypes.STRING,
             },
+            id_liquidacion: {
+                type: DataTypes.UUID,
+                allowNull: true, // <-- Esto la hace opcional
+                references: {
+                    model: "Liquidacions", // o el nombre correcto de tu tabla
+                    key: "id",
+                },
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE",
+            }
         },
         { timestamps: true }
     );

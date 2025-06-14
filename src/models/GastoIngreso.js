@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
             fecha: {
                 type: DataTypes.DATE,
                 allowNull: false
+            },
+            motivo: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         },
         { timestamps: true }
