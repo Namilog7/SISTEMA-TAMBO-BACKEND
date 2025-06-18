@@ -1,11 +1,16 @@
-const { MetodoGastoIngreso } = require("../../db");
+const { MetodoGastoIngreso, GastoIngreso } = require("../../db");
 
 const getIngresoEfectivo = async (req, res) => {
     try {
         const ingresosEfectivo = await MetodoGastoIngreso.findAll({
             where: {
                 metodo: "EFECTIVO"
-            }
+            },
+            include: [
+                {
+                    model: GastoIngreso
+                }
+            ]
         });
 
         res.status(200).json(ingresosEfectivo);
