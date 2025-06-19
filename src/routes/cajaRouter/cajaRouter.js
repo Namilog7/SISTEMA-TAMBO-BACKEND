@@ -10,6 +10,7 @@ const postCargarComprobanteHandler = require("../../handlers/caja/postCargarComp
 const getArqueoHandler = require("../../handlers/caja/getArqueoHandler");
 const getIngresoEfectivo = require("../../handlers/caja/getIngresoEfectivo");
 const anularMetodoEfectivo = require("../../handlers/caja/anularMetodoEfectivo");
+const getChequeHandler = require("../../handlers/caja/getChequeHandler");
 
 const cajaRouter = Router();
 
@@ -19,6 +20,7 @@ cajaRouter.put("/anular-efectivo", anularMetodoEfectivo)
 cajaRouter.post("/resumen", verifyToken("ADMIN"), postResumenHandler)
 cajaRouter.post("/transferencia", verifyToken("ADMIN"), postTransferenciaHandler)
 cajaRouter.put("/transferencia/:id", verifyToken("ADMIN"), putTransferenciaHandler)
+cajaRouter.get("/cheque", getChequeHandler)
 cajaRouter.post("/cheque", verifyToken("ADMIN"), postChequeHandler)
 cajaRouter.put("/cheque/:id", verifyToken("ADMIN"), putChequeHandler)
 cajaRouter.post("/cargar-comprobante", postCargarComprobanteHandler)
