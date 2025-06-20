@@ -5,6 +5,7 @@ const registrarSaldoBancario = require("../../helpers/registrarSaldoBancario");
 
 const anularGastoIngresoHandler = async (req, res) => {
     const { id } = req.query;
+    const { motivo } = req.body;
 
     const transaction = await conn.transaction();
     try {
@@ -33,6 +34,8 @@ const anularGastoIngresoHandler = async (req, res) => {
         }
 
         gastoIngreso.estado = "ANULADO";
+        if (motivo !== undefined) gastoIngreso.motivo = motivo;
+        
         await gastoIngreso.save({ transaction });
 
         await transaction.commit();

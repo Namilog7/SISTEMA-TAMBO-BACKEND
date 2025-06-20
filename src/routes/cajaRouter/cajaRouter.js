@@ -18,7 +18,7 @@ const cajaRouter = Router();
 cajaRouter.get("/", verifyToken("ADMIN"), getCajaHandler)
 cajaRouter.get("/efectivo", getIngresoEfectivo)
 cajaRouter.put("/anular-efectivo", anularMetodoEfectivo)
-cajaRouter.get("transferencia", getTransferenciaHandler)
+cajaRouter.get("/transferencia", getTransferenciaHandler)
 cajaRouter.post("/resumen", verifyToken("ADMIN"), postResumenHandler)
 cajaRouter.post("/transferencia", verifyToken("ADMIN"), postTransferenciaHandler)
 cajaRouter.put("/transferencia/:id", verifyToken("ADMIN"), putTransferenciaHandler)
