@@ -1,9 +1,9 @@
-const putSaldoCaja = require("../../controllers/caja/putSaldoCaja");
-const postTransferencia = require("../../controllers/caja/transferencia/postTransferencia");
-const { ChequeRecibido, conn } = require("../../db");
+const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
+const { ChequeRecibido, conn, Cuenta } = require("../../db");
+const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const marcarComoCobrado = async (req, res) => {
-    const { id, efectivo, id_cuenta } = req.body;
+    const { id, tipo_cobro, id_cuenta } = req.body;
 
     const transaction = await conn.transaction();
     try {
@@ -14,38 +14,48 @@ const marcarComoCobrado = async (req, res) => {
             return res.status(404).json({ error: "Cheque no encontrado" });
         }
 
-        if (efectivo) {
-            await putSaldoCaja(
-                {
-                    metodo: "EFECTIVO",
-                    gastoIngreso: "INGRESO",
-                    importe: cheque.importe,
-                },
-                transaction
-            );
-        }
-
-        let transferencia = null;
-        if (id_cuenta) {
-            transferencia = await postTransferencia(
-                {
-                    fecha: new Date(),
-                    importe: cheque.importe,
-                    tipo: "INTERNO",
-                    id_cuenta_destino: id_cuenta,
-                },
-                transaction
-            );
-        }
-
         cheque.estado = "COBRADO"
         await cheque.save({ transaction })
+
+        if (tipo_cobro == "EFECTIVO") {
+            let metodosPago = {
+                metodo: "EFECTIVO",
+                monto: cheque.importe
+            }
+            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha: new Date(), id_sector }, transaction);
+            await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+        }
+
+        if (tipo_cobro == "DEPOSITO") {
+            const cuenta = await Cuenta.findOne({ where: { id: id_cuenta }, transaction })
+            cuenta.saldo += cheque.importe
+            cuenta.save({ transaction })
+
+            let metodosPago = {
+                metodo: "CHEQUE",
+                datosCheque: {
+                    importe: cheque.importe,
+                    estado: cheque.estado,
+                    tipo: cheque.tipo,
+                    detalle: cheque.detalle,
+                    origen: cheque.origen,
+                    destino: cheque.destino,
+                    actual_destino: cheque.actual_destino,
+                    banco: cheque.banco,
+                    numero_cheque: cheque.numero_cheque,
+                    fecha_emision: cheque.fecha_emision,
+                    fecha_pago: cheque.fecha_pago
+                }
+
+            }
+            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha: new Date(), id_sector }, transaction);
+            await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+        }
         await transaction.commit();
 
         res.status(200).json({
             message: "Cheque marcado como cobrado exitosamente",
-            cheque,
-            ...(transferencia && { transferencia }),
+            cheque
         });
     } catch (error) {
         await transaction.rollback();
