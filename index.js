@@ -11,7 +11,7 @@ async function startServer() {
     console.log("✅ DB autenticada.");
 
     console.log("🧱 Sincronizando modelos...");
-    await conn.sync({ force: false, alter: true });
+    await conn.sync({ force: false, alter: false });
     console.log("✅ Modelos sincronizados.");
 
     console.log("🌱 Insertando datos iniciales...");
