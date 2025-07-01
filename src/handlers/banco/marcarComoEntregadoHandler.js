@@ -1,25 +1,35 @@
-const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
-const { conn, ChequeRecibido, Proveedor } = require("../../db");
-const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
+const postResumen = require("../../controllers/resumen/postResumen");
+const { conn, ChequeRecibido, Proveedor, Cheque } = require("../../db");
+
 
 const marcarComoEntregadoHandler = async (req, res) => {
-    const { id_cheque, tipo, id_prov, destino, detalle, estado, id_sector } = req.body; //tipo = "PROVEEDOR" o "CASUAL" id_prov = id del proveedor o null, destino = nombre destinatario
-    const transaction = await conn.transaction();
+    const { id_cheque, tipo, id_prov, destino, detalle, id_sector } = req.body //tipo = "PROVEEDOR" o "CASUAL" id_prov = id del proveedor o null, destino = nombre destinatario
+    const transaction = await conn.transaction()
     try {
-        const cheque = await ChequeRecibido.findOne({
-            where: { id: id_cheque },
-            transaction
-        });
+        let cheque
+        cheque = await ChequeRecibido.findOne({
+            where: {
+                id: id_cheque
+            }, transaction
+        })
+        if (!cheque) {
+            cheque = await Cheque.finOne({
+                where: {
+                    id: id_cheque
+                }, transaction
+            })
+        }
 
         if (!cheque) throw new Error("No se encontro ese cheque");
         cheque.estado = "ENTREGADO";
         if (tipo == "PROVEEDOR") {
-            const proveedor = await Proveedor.findOne({ where: { id: id_prov }, transaction });
-            if (!proveedor) throw new Error("No se encontro el proveedor");
+            const proveedor = await Proveedor.findOne({ where: { id: id_prov }, transaction })
+            let metodosPago
+            if (!proveedor) throw new Error("No se encontro el proveedor")
             proveedor.saldo -= cheque.importe;
             cheque.destino = proveedor.nombre;
-            await cheque.save({ transaction });
-            let metodosPago = {
+            await cheque.save({ transaction })
+            metodosPago = {
                 metodo: "CHEQUE",
                 datosCheque: {
                     importe: cheque.importe,
@@ -34,14 +44,17 @@ const marcarComoEntregadoHandler = async (req, res) => {
                     fecha_emision: cheque.fecha_emision,
                     fecha_pago: cheque.fecha_pago
                 }
-            };
-            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector }, transaction);
-            await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction);
+            }
+            await postResumen({ id_afectado: id_prov, nota_tipo, fecha: new Date(), detalle, pago: true, factura, model: "PROVEEDOR", importe: cheque.importe }, transaction)
+            if (cheque instanceof Cheque) {
+                const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector }, transaction);
+                await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+            }
         }
         if (tipo == "CASUAL") {
-            cheque.destino = destino;
-            await cheque.save({ transaction });
-            let metodosPago = {
+            cheque.destino = destino
+            await cheque.save({ transaction })
+            metodosPago = {
                 metodo: "CHEQUE",
                 datosCheque: {
                     importe: cheque.importe,
@@ -56,16 +69,11 @@ const marcarComoEntregadoHandler = async (req, res) => {
                     fecha_emision: cheque.fecha_emision,
                     fecha_pago: cheque.fecha_pago
                 }
-            };
-            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector }, transaction);
-            await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction);
-        }
-        await transaction.commit();
+            }
 
-        res.status(200).json({
-            message: "Cheque entregado correctamente",
-            cheque
-        });
+        }
+        res.json(metodosPago)
+        await transaction.commit()
     } catch (error) {
         await transaction.rollback();
         console.error("Error al entregar cheque:", error);
