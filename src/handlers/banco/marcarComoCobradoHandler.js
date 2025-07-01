@@ -3,7 +3,7 @@ const { ChequeRecibido, conn, Cuenta } = require("../../db");
 const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const marcarComoCobrado = async (req, res) => {
-    const { id, tipo_cobro, id_cuenta } = req.body;
+    const { id, tipo_cobro, id_cuenta, detalle, estado, id_sector } = req.body;
 
     const transaction = await conn.transaction();
     try {
