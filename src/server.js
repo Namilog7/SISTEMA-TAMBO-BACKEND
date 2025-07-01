@@ -15,6 +15,7 @@ server.use(cors({
     origin: [
         "https://test-tambo-sdf3.vercel.app",
         "http://localhost:3000", // Usen este puerto ee
+        "http://localhost:5173",
     ],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
