@@ -20,8 +20,8 @@ const marcarComoEntregadoHandler = async (req, res) => {
             })
         }
 
-        if (!cheque) throw new Error("No se encontro ese cheque")
-        cheque.estado = "ENTREGADO"
+        if (!cheque) throw new Error("No se encontro ese cheque");
+        cheque.estado = "ENTREGADO";
         if (tipo == "PROVEEDOR") {
             const proveedor = await Proveedor.findOne({ where: { id: id_prov }, transaction })
             let metodosPago
@@ -75,10 +75,10 @@ const marcarComoEntregadoHandler = async (req, res) => {
         res.json(metodosPago)
         await transaction.commit()
     } catch (error) {
-        await transaction.rollback()
-        console.log(error)
-        res.status(500).json({ error: error.message })
+        await transaction.rollback();
+        console.error("Error al entregar cheque:", error);
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
-module.exports = marcarComoEntregadoHandler
+module.exports = marcarComoEntregadoHandler;
