@@ -16,9 +16,9 @@ const postProducto = async ({ id_sector, nombre, stock, ultimo_ingreso, precio_r
             ultima_venta,
             masa_sin_elaborar
         }, { transaction })
-        if (stock > 0) {
-            await restarLitrosTanque({ litro_variedad, cantidad: stock }, transaction)
-        }
+        // if (stock > 0) {
+        //     await restarLitrosTanque({ litro_variedad, cantidad: stock }, transaction)
+        // }
         return producto
     }
     return {

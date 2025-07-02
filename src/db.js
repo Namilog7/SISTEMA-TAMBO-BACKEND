@@ -4,17 +4,17 @@ const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
-    dialectModule: pg,
+    // dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
+    // dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false,
+    //     },
+    // },
 });
 
 
@@ -87,9 +87,53 @@ const {
     MesesCompromiso,
     Sistema_movimiento,
     Empleado,
+    FacturaArca,
+    TributosFacturaArca,
+    ProductoFacturaArca,
 } = sequelize.models;
 
 //RELACIONES
+
+Cliente.hasMany(FacturaArca, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    },
+});
+FacturaArca.belongsTo(Cliente, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    },
+});
+
+FacturaArca.hasMany(ProductoFacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+    onDelete: "CASCADE",
+});
+ProductoFacturaArca.belongsTo(FacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+});
+
+FacturaArca.hasMany(TributosFacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+    onDelete: "CASCADE",
+});
+TributosFacturaArca.belongsTo(FacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+});
 
 Empleado.hasOne(User, {
     foreignKey: {

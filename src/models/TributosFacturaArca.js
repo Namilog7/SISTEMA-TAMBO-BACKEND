@@ -1,28 +1,27 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-    sequelize.define("TokenSignAfip", {
+    sequelize.define("TributosFacturaArca", {
         id: {
             type: DataTypes.UUID,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
         },
-        token: {
-            type: DataTypes.TEXT,
+        codigo: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
-        sign: {
-            type: DataTypes.TEXT,
+        descripcion: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
-        fechaExpiracion: {
-            type: DataTypes.DATE,
+        alicuota: {
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
-        service: {
-            type: DataTypes.TEXT,
+        importe: {
+            type: DataTypes.FLOAT,
             allowNull: false,
-            defaultValue: "wsfe", // Default service is wsfe
         },
     });
 };

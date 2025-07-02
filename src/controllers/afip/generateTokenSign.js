@@ -1,12 +1,12 @@
-const forge = require('node-forge');
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
-const { parseStringPromise } = require('xml2js');
-const { TokenSignAfip } = require('../../db'); // Ajustá el path según tu estructura
+const forge = require("node-forge");
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
+const { parseStringPromise } = require("xml2js");
+const { TokenSignAfip } = require("../../db");
 
-const CERT_PATH = path.join(__dirname, '../../certs/certificado.crt');
-const KEY_PATH = path.join(__dirname, '../../certs/miClavePrivada.key');
+const CERT_PATH = path.join(__dirname, "../../certs/certificado.crt");
+const KEY_PATH = path.join(__dirname, "../../certs/miClavePrivada.key");
 
 const generateLoginTicketRequestXML = (service) => {
     const uniqueId = Math.floor(Date.now() / 1000);
@@ -14,28 +14,28 @@ const generateLoginTicketRequestXML = (service) => {
     const expirationTime = new Date(Date.now() + 600000).toISOString();
 
     return `
-  <loginTicketRequest version="1.0">
-    <header>
-      <uniqueId>${uniqueId}</uniqueId>
-      <generationTime>${generationTime}</generationTime>
-      <expirationTime>${expirationTime}</expirationTime>
-    </header>
-    <service>${service}</service>
-  </loginTicketRequest>
-  `.trim();
+<loginTicketRequest version="1.0">
+  <header>
+    <uniqueId>${uniqueId}</uniqueId>
+    <generationTime>${generationTime}</generationTime>
+    <expirationTime>${expirationTime}</expirationTime>
+  </header>
+  <service>${service}</service>
+</loginTicketRequest>
+`.trim();
 };
 
-const generateTokenSign = async () => {
+const generateTokenSign = async (service = "wsmtxca") => {
     try {
-        const xml = generateLoginTicketRequestXML('wsfe');
+        const xml = generateLoginTicketRequestXML(service);
 
         // Leer certificados
-        const privateKeyPem = fs.readFileSync(KEY_PATH, 'utf8');
-        const certificatePem = fs.readFileSync(CERT_PATH, 'utf8');
+        const privateKeyPem = fs.readFileSync(KEY_PATH, "utf8");
+        const certificatePem = fs.readFileSync(CERT_PATH, "utf8");
 
         // Crear PKCS#7 (CMS) firmado
         const p7 = forge.pkcs7.createSignedData();
-        p7.content = forge.util.createBuffer(xml, 'utf8');
+        p7.content = forge.util.createBuffer(xml, "utf8");
         p7.addCertificate(certificatePem);
         p7.addSigner({
             key: forge.pki.privateKeyFromPem(privateKeyPem),
@@ -44,7 +44,7 @@ const generateTokenSign = async () => {
             authenticatedAttributes: [
                 { type: forge.pki.oids.contentType, value: forge.pki.oids.data },
                 { type: forge.pki.oids.messageDigest },
-                { type: forge.pki.oids.signingTime, value: new Date() }
+                { type: forge.pki.oids.signingTime, value: new Date() },
             ],
         });
 
@@ -55,7 +55,7 @@ const generateTokenSign = async () => {
 
         // Enviar a AFIP
         const { data } = await axios.post(
-            'https://wsaahomo.afip.gov.ar/ws/services/LoginCms',
+            "https://wsaahomo.afip.gov.ar/ws/services/LoginCms",
             `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
         <soapenv:Header/>
         <soapenv:Body>
@@ -66,32 +66,61 @@ const generateTokenSign = async () => {
       </soapenv:Envelope>`,
             {
                 headers: {
-                    'Content-Type': 'text/xml; charset=utf-8',
-                    'SOAPAction': ''
-                }
+                    "Content-Type": "text/xml; charset=utf-8",
+                    SOAPAction: "",
+                },
+                timeout: 30000, // Timeout de 10 segundos
             }
         );
 
         const parsed = await parseStringPromise(data, { explicitArray: false });
-        const loginResponse = parsed['soapenv:Envelope']['soapenv:Body']['loginCmsResponse']['loginCmsReturn'];
+        const loginResponse = parsed["soapenv:Envelope"]["soapenv:Body"]["loginCmsResponse"]["loginCmsReturn"];
 
         const loginParsed = await parseStringPromise(loginResponse, { explicitArray: false });
+        const credentials = loginParsed.loginTicketResponse.credentials;
+        const header = loginParsed.loginTicketResponse.header;
 
-        const token = loginParsed.loginTicketResponse.credentials.token;
-        const sign = loginParsed.loginTicketResponse.credentials.sign;
-        const expiration = loginParsed.loginTicketResponse.header.expirationTime;
+        if (!credentials || !header) {
+            throw new Error("Respuesta inválida de AFIP: estructura de token incorrecta");
+        }
 
-        // Guardar o actualizar en DB
+        const token = credentials.token;
+        const sign = credentials.sign;
+        const expiration = header.expirationTime;
+
+        // Guardar o actualizar en DB con el servicio
         await TokenSignAfip.upsert({
             token,
             sign,
-            fechaExpiracion: new Date(expiration)
+            fechaExpiracion: new Date(expiration),
+            service, // Guardar el servicio asociado
         });
 
         return { token, sign, fechaExpiracion: expiration };
     } catch (err) {
-        console.error('Error generando token y sign:', err);
-        throw err;
+        // Manejo específico de error por token existente
+        if (err.response?.data?.includes?.("coe.alreadyAuthenticated")) {
+            console.warn("AFIP: Ya existe un TA válido. Recuperando de BD...");
+            const existingToken = await TokenSignAfip.findOne({
+                where: { service },
+                order: [["fechaExpiracion", "DESC"]],
+            });
+
+            if (existingToken) {
+                return {
+                    token: existingToken.token,
+                    sign: existingToken.sign,
+                    fechaExpiracion: existingToken.fechaExpiracion,
+                };
+            }
+            throw new Error("YA_EXISTE_TA_VIGENTE");
+        }
+
+        console.error("Error generando token y sign:", {
+            message: err.message,
+            response: err.response?.data || "Sin respuesta",
+        });
+        throw new Error("ERROR_GENERANDO_TOKEN");
     }
 };
 
