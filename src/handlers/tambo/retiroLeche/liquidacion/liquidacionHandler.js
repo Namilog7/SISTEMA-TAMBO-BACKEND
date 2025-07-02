@@ -12,11 +12,12 @@ const liquidacionHandler = async (req, res) => {
         importe_blanco,
         importe_negro,
         imagenBase64,
-        detalle = "",
+        detalle,
         id_sector,
-        tipo = "INGRESO",
-        estado = "ACTIVO",
+        tipo,
+        estado = "ACEPTADO",
         metodosPago,
+        modelo
     } = req.body
     const transaction = await conn.transaction()
     try {
@@ -34,8 +35,10 @@ const liquidacionHandler = async (req, res) => {
             tipo,
             estado,
             metodosPago,
+            modelo,
             transaction
         });
+        await transaction.commit()
         return res.json({
             liquidacion
         })

@@ -17,6 +17,7 @@ const sequelize = new Sequelize(DB_DEV, {
     // },
 });
 
+
 // Obtención del nombre del archivo actual
 const basename = path.basename(__filename);
 
@@ -337,8 +338,8 @@ Venta.belongsTo(Cliente, {
 TamboProveedor.hasMany(CompraLeche, { foreignKey: "id_tambo_proveedor" });
 CompraLeche.belongsTo(TamboProveedor, { foreignKey: "id_tambo_proveedor" });
 
-Factura.belongsTo(Venta, { foreignKey: "id_factura" });
-Venta.hasOne(Factura, { foreignKey: "id_factura" });
+Factura.belongsTo(Venta, { foreignKey: "id_venta" });
+Venta.hasOne(Factura, { foreignKey: "id_venta" });
 
 CasaPropietario.hasMany(CompromisoDePago, {
     foreignKey: "id_propietario",
@@ -358,20 +359,11 @@ Cuenta.hasMany(Transferencia, {
     as: "transferenciasOrigen",
 });
 
-Cuenta.hasMany(Transferencia, {
-    foreignKey: "id_cuenta_destino",
-    as: "transferenciasDestino",
-});
-
 Transferencia.belongsTo(Cuenta, {
     foreignKey: "id_cuenta",
     as: "cuentaOrigen",
 });
 
-Transferencia.belongsTo(Cuenta, {
-    foreignKey: "id_cuenta_destino",
-    as: "cuentaDestino",
-});
 
 module.exports = {
     ...sequelize.models,

@@ -7,6 +7,7 @@ const postCheque = async ({
     detalle,
     destino,
     banco,
+    origen,
     numero_cheque,
     fecha_emision,
     fecha_pago
@@ -18,13 +19,14 @@ const postCheque = async ({
         detalle,
         destino,
         banco,
+        origen,
         numero_cheque,
         fecha_emision,
         fecha_pago
     }, { transaction })
 
     let registroCaja = { message: `Se agrego la transferencia con el estado ${estado}` }
-    if (estado === "PAGADO") {
+    if (estado === "PAGADO" || estado === "COBRADO") {
         registroCaja = await registrarSaldoBancario({ estado, importe }, transaction)
     }
     return {

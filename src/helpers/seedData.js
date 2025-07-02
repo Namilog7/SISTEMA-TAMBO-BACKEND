@@ -9,6 +9,7 @@ const {
     CajaBancaria,
     CasaPropietario,
     Cliente,
+
 } = require("./../db");
 const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
@@ -16,7 +17,71 @@ const bcrypt = require("bcrypt");
 
 const seedData = async () => {
     try {
-        // EquipoFrio
+
+        /*         // Eliminar datos existentes
+                await conn.query('TRUNCATE "Users" CASCADE'); // Asegúrate de truncar la tabla de usuarios si es necesario
+                await conn.query('TRUNCATE "Ganados" CASCADE');
+                await conn.query('TRUNCATE "ControlLecheros" CASCADE');
+                await conn.query('TRUNCATE "InformeLecheros" CASCADE');
+                await conn.query('TRUNCATE "Lotes" CASCADE');
+                await conn.query('TRUNCATE "ControlGanados" CASCADE');
+                await conn.query('TRUNCATE "InseminacionGanados" CASCADE');
+                await conn.query('TRUNCATE "Inseminacions" CASCADE');
+                await conn.query('TRUNCATE "ControlVeterinarios" CASCADE');
+                await conn.query('TRUNCATE "ProduccionLeches" CASCADE');
+                await conn.query('TRUNCATE "Liquidacions" CASCADE');
+                await conn.query('TRUNCATE "RetiroLeches" CASCADE');
+                await conn.query('TRUNCATE "Clientes" CASCADE');
+                await conn.query('TRUNCATE "ProveedorInsumos" CASCADE');
+                await conn.query('TRUNCATE "Proveedors" CASCADE');
+                await conn.query('TRUNCATE "Insumos" CASCADE');
+                await conn.query('TRUNCATE "Tambos" CASCADE');
+                await conn.query('TRUNCATE "Sectors" CASCADE');
+        
+                console.log("Datos existentes eliminados.");
+        
+                const sectorId = uuidv4();
+                console.log({ sectorIdTambo: sectorId });
+        
+                // Insertar Sector
+                const sector = await Sector.create({
+                    nombre: "Tambos",
+                    descripcion: "Sector dedicado a los tambos para la recolección de leche",
+                    id: sectorId
+                });
+        
+                const fabricaId = uuidv4()
+                const fabrica = await Sector.create({
+                    nombre: "FabricaQueso",
+                    descripcion: "Dedicado a la fabricacion de quesos",
+                })
+                await Caja.create({
+                    nombre_caja: "Fabrica_Queso",
+                    saldo: 0.0,
+                    descripcion: "Caja de Fabrica de Quesos",
+                    id_sector: fabrica.id
+                })
+        
+                // Insertar Tambo
+                const tambo = {
+                    id: uuidv4(),
+                    id_sector: sector.id, // FK a Sector
+                    dueño: faker.name.findName(),
+                    localidad: faker.address.city(),
+                    contacto: faker.phone.phoneNumber(),
+                };
+                await Tambo.create(tambo);
+                q
+                */
+        // Insertar Ganado
+        // Insertar Sector
+        const sectoresExtra = ["Maquinaria", "Otros", "Empleados", "GastoPersonal"];
+
+        await Promise.all(
+            sectoresExtra.map(nombre => Sector.create({ nombre }))
+        );
+
+
         const equipoFrioTambo = await EquipoFrio.findOne({ where: { nombre: "Tambo" } });
         if (!equipoFrioTambo) {
             await EquipoFrio.create({

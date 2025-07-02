@@ -8,10 +8,10 @@ const registrarSaldoBancario = async ({ estado, importe }, transaction) => {
             cajaBancaria = await CajaBancaria.create({ saldo: 0 }, { transaction });
         }
 
-        if (estado === "COBRADO") {
+        if (estado === "COBRADO" || estado === "ACEPTADA") {
             cajaBancaria.saldo += Number(importe);
         }
-        if (tipo === "PAGADO") {
+        if (estado === "PAGADO" || estado === "ANULADO") {
             cajaBancaria.saldo -= Number(importe);
         }
 

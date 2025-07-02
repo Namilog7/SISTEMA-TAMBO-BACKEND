@@ -1,4 +1,4 @@
-const { Liquidacion, RetiroLeche } = require("../../../../db");
+const { Liquidacion, RetiroLeche, CompraLeche } = require("../../../../db");
 const postCloudinary = require("../../../postCloudinary");
 const postGastoIngreso = require("../../../caja/postGastoIngreso");
 const registrarMetodosPago = require("../../../../helpers/registrarMetodosPago")
@@ -17,6 +17,7 @@ const postLiquidacion = async ({
     tipo,
     estado,
     metodosPago,
+    modelo,
     transaction
 }) => {
 
@@ -25,9 +26,17 @@ const postLiquidacion = async ({
     }
 
     // Verificar que todos los IDs de `arrayIdRetiros` existan
-    const retiros = await RetiroLeche.findAll({
-        where: { id: arrayIdRetiros },
-    }, { transaction });
+    let retiros
+    if (modelo == "RetiroLeche") {
+        retiros = await RetiroLeche.findAll({
+            where: { id: arrayIdRetiros },
+        }, { transaction });
+    }
+    else {
+        retiros = await CompraLeche.findAll({
+            where: { id: arrayIdRetiros },
+        }, { transaction });
+    }
 
     if (retiros.length !== arrayIdRetiros.length) {
         throw new Error("Uno o más IDs de RetiroLeche no existen.");
@@ -61,20 +70,32 @@ const postLiquidacion = async ({
         url_image
     }, { transaction });
 
-    const idLiquidacion = nuevaLiquidacion.id;
-
-    await RetiroLeche.update(
-        {
-            id_liquidacion: idLiquidacion,
-            liquidado: true,
-        },
-        {
-            where: { id: arrayIdRetiros },
-        },
-        { transaction }
-    );
-
-    const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo, fecha, id_sector }, transaction);
+    if (modelo == "RetiroLeche") {
+        await RetiroLeche.update(
+            {
+                id_liquidacion: nuevaLiquidacion.id,
+                liquidado: true,
+            },
+            {
+                where: { id: arrayIdRetiros },
+                transaction
+            }
+        );
+    }
+    else {
+        await CompraLeche.update(
+            {
+                id_liquidacion: nuevaLiquidacion.id,
+                liquidado: true,
+            },
+            {
+                where: { id: arrayIdRetiros },
+                transaction
+            }
+        );
+    }
+    console.log(tipo)
+    const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha, id_sector }, transaction);
     const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
 
     return {

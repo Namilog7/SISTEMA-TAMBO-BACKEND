@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         estado: {
-            type: DataTypes.ENUM('PENDIENTE', 'ANULADO', 'COBRADO'),
+            type: DataTypes.ENUM('PENDIENTE', 'ANULADO', 'COBRADO', 'ENTREGADO'),
             allowNull: false,
             defaultValue: "PENDIENTE"
         },
