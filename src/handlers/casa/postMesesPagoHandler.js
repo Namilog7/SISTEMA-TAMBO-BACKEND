@@ -9,8 +9,9 @@ const postMesesPagoHandler = async (req, res) => {
         if (!id_compromiso) {
             return res.json({ message: "necesito un compromiso valido" });
         }
+        const id = id_compromiso.replace(/"/g, "");
         const nuevoPago = await postMesesPago.create(
-            { id_compromiso, monto, fecha, estado_pago: "PAGADO" },
+            { id_compromiso : id, monto, fecha, estado_pago: "PAGADO" },
             { transaction }
         );
         await transaction.commit();
