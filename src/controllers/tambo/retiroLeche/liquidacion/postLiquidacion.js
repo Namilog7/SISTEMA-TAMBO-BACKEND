@@ -95,7 +95,7 @@ const postLiquidacion = async ({
         );
     }
     console.log(tipo)
-    const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo:"INGRESO", fecha, id_sector }, transaction);
+    const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha, id_sector }, transaction);
     const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
 
     return {

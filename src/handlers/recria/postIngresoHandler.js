@@ -26,7 +26,7 @@ const postIngresoHandler = async (req, res) => {
         }
         let allMetodos
         if (tipo_ingreso === "COMPRA") {
-            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha:new Date(), id_sector }, transaction);
+            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector }, transaction);
             allMetodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
         }
 
