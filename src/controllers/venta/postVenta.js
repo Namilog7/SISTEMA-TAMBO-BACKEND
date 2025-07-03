@@ -1,6 +1,6 @@
 const { Venta } = require("../../db");
 
-const postVenta = async ({ id_cliente, monto, fecha, numero, nombre_cliente }, transaction) => {
+const postVenta = async ({ id_cliente, monto, fecha, numero, nombre_cliente, detalle }, transaction) => {
     const venta = await Venta.create(
         {
             id_cliente,
@@ -8,6 +8,7 @@ const postVenta = async ({ id_cliente, monto, fecha, numero, nombre_cliente }, t
             fecha,
             numero_factura: numero || null,
             nombre_cliente,
+            detalle,
         },
         { transaction }
     );
