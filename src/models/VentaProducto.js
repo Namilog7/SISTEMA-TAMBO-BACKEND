@@ -1,16 +1,23 @@
-const { DataTypes } = require("sequelize")
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-    sequelize.define(
-        'VentaProducto', {
+    sequelize.define("VentaProducto", {
         id: {
             type: DataTypes.UUID,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
+            defaultValue: DataTypes.UUIDV4,
         },
         cantidad: {
             type: DataTypes.INTEGER,
-            defaultValue: 1
-        }
-    })
+            defaultValue: 1,
+        },
+        precio_unidad: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        },
+        importe_total: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        },
+    });
 };

@@ -17,7 +17,6 @@ const sequelize = new Sequelize(DB_DEV, {
     // },
 });
 
-
 // Obtención del nombre del archivo actual
 const basename = path.basename(__filename);
 
@@ -87,9 +86,53 @@ const {
     MesesCompromiso,
     Sistema_movimiento,
     Empleado,
+    FacturaArca,
+    TributosFacturaArca,
+    ProductoFacturaArca,
 } = sequelize.models;
 
 //RELACIONES
+
+Cliente.hasMany(FacturaArca, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    },
+});
+FacturaArca.belongsTo(Cliente, {
+    foreignKey: {
+        name: "id_cliente",
+        allowNull: true,
+    },
+});
+
+FacturaArca.hasMany(ProductoFacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+    onDelete: "CASCADE",
+});
+ProductoFacturaArca.belongsTo(FacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+});
+
+FacturaArca.hasMany(TributosFacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+    onDelete: "CASCADE",
+});
+TributosFacturaArca.belongsTo(FacturaArca, {
+    foreignKey: {
+        name: "id_factura_arca",
+        allowNull: false,
+    },
+});
 
 Empleado.hasOne(User, {
     foreignKey: {
@@ -275,8 +318,8 @@ MetodoPago.belongsTo(Pago, { foreignKey: "id_pago" });
 Ingreso_recria.hasMany(Recria, { foreignKey: "id_ingreso" });
 Recria.belongsTo(Ingreso_recria, { foreignKey: "id_ingreso" });
 
-Producto.belongsToMany(Venta, { through: VentaProducto });
-Venta.belongsToMany(Producto, { through: VentaProducto });
+Producto.belongsToMany(Venta, { through: VentaProducto, foreignKey: "id_producto" });
+Venta.belongsToMany(Producto, { through: VentaProducto, foreignKey: "id_venta" });
 
 Cliente.hasMany(Venta, {
     foreignKey: "id_cliente",
@@ -319,7 +362,6 @@ Transferencia.belongsTo(Cuenta, {
     foreignKey: "id_cuenta",
     as: "cuentaOrigen",
 });
-
 
 module.exports = {
     ...sequelize.models,
