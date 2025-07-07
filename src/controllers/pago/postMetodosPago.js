@@ -81,7 +81,7 @@ const postMetodosPago = async (
     totalMetodos.push(metodoRegistrado);
     pagosUsados.push(metodo.metodo);
 
-    const { newGastoIngreso } = await postGastoIngreso(
+    const { nuevoGastoIngreso } = await postGastoIngreso(
       {
         detalle,
         estado: "ACEPTADO",
@@ -92,11 +92,11 @@ const postMetodosPago = async (
       transaction
     );
 
-    console.log(newGastoIngreso);
+    console.log(nuevoGastoIngreso);
 
     await postMetodoGastoIngreso(
       {
-        id_gasto_ingreso: newGastoIngreso.id,
+        id_gasto_ingreso: nuevoGastoIngreso.id,
         metodo: metodo.metodo,
         monto: metodo.importe,
       },
