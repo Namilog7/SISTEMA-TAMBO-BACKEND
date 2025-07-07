@@ -6,23 +6,25 @@ const getRecriaHandler = async (req, res) => {
             include: [
                 {
                     model: Recria,
-                }
-            ]
+                },
+            ],
         });
 
-        if (!recriaIngresos.length) {
-            return res.status(404).json({ message: "No se encontraron ingresos de recría." });
-        }
+        // if (!recriaIngresos.length) {
+        //     return res.status(404).json({ message: "No se encontraron ingresos de recría." });
+        // }
+
+        console.log(recriaIngresos);
 
         const formattedResponse = recriaIngresos
-            .map(ingreso =>
-                ingreso.Recria.map(recria => ({
+            .map((ingreso) =>
+                ingreso.Recria.map((recria) => ({
                     origen: recria.origen,
                     caravana: recria.caravana,
                     genero: recria.genero,
                     tipo_ingreso: ingreso.tipo_ingreso,
                     importe: ingreso.importe,
-                    fecha_ingreso: recria.fecha_ingreso
+                    fecha_ingreso: recria.fecha_ingreso,
                 }))
             )
             .flat();

@@ -6,15 +6,15 @@ const getControlVeterinarioConGanados = async (req, res) => {
         const controlVeterinario = await ControlVeterinario.findAll({
             include: {
                 model: Ganado,
-                attributes: ['caravana'], // Solo incluir el atributo 'caravana' de Ganado
+                attributes: ["caravana"], // Solo incluir el atributo 'caravana' de Ganado
                 through: { attributes: [] },
             },
         });
 
         // Si no hay registros, devolver un error
-        if (controlVeterinario.length === 0) {
-            return res.status(404).json({ message: "No se encontró el control veterinario." });
-        }
+        // if (controlVeterinario.length === 0) {
+        //     return res.status(404).json({ message: "No se encontró el control veterinario." });
+        // }
 
         // Responder con el control y los ganados asociados
         return res.json(controlVeterinario);

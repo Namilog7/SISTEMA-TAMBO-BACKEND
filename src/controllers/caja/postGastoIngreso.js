@@ -12,7 +12,7 @@ const postGastoIngreso = async ({ detalle, estado, tipo, fecha, id_sector }, tra
         { transaction }
     );
 
-    return { newGastoIngreso };
+    return { nuevoGastoIngreso };
 };
 
 module.exports = postGastoIngreso;
