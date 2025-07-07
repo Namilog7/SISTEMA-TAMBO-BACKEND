@@ -4,10 +4,23 @@ const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 const resetInseminacion = require("../../helpers/resetInseminacion");
 
 const postIngresoHandler = async (req, res) => {
-    const { importe, arrayIngresos, aclaracion, usuario_carga, fecha_carga, hora_carga, tipo_ingreso, id_sector, fecha, tipo = "EGRESO", estado = "ACEPTADO", metodosPago, detalle = "" } = req.body;
-    const transaction = await conn.transaction()
+    const {
+        importe,
+        arrayIngresos,
+        aclaracion,
+        usuario_carga,
+        fecha_carga,
+        hora_carga,
+        tipo_ingreso,
+        id_sector,
+        fecha,
+        tipo = "EGRESO",
+        estado = "ACEPTADO",
+        metodosPago,
+        detalle = "",
+    } = req.body;
+    const transaction = await conn.transaction();
     try {
-
         if (
             !tipo_ingreso ||
             !arrayIngresos ||
@@ -24,38 +37,46 @@ const postIngresoHandler = async (req, res) => {
         if (!["COMPRA", "ENTREGA", "PARTO"].includes(tipo_ingreso)) {
             return res.status(400).json({ message: "El tipo de operación debe ser COMPRA, ENTREGA o PARTO." });
         }
-        let allMetodos
+        let allMetodos;
         if (tipo_ingreso === "COMPRA") {
-            const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector }, transaction);
-            allMetodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+            //! ver
+            const { nuevoGastoIngreso } = await postGastoIngreso(
+                { detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector },
+                transaction
+            );
+            allMetodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction);
         }
 
         if (tipo_ingreso === "PARTO") {
-            await resetInseminacion({ arrayIngresos }, transaction)
+            await resetInseminacion({ arrayIngresos }, transaction);
         }
         // Crear el registro en Ingreso_recria
-        const ingreso = await Ingreso_recria.create({
-            fecha_carga,
-            hora_carga,
-            aclaraciones: aclaracion,
-            usuario_carga,
-            importe,
-            tipo_ingreso,
-        }, { transaction });
+        const ingreso = await Ingreso_recria.create(
+            {
+                fecha_carga,
+                hora_carga,
+                aclaraciones: aclaracion,
+                usuario_carga,
+                importe,
+                tipo_ingreso,
+            },
+            { transaction }
+        );
         // Crear registros en Recria y asociarlos con el Ingreso_recria
 
-        const recriaRecords = arrayIngresos.map((ingreso) => ({
-            origen: ingreso.origen,
-            caravana: ingreso.caravana,
-            genero: ingreso.genero,
-            peso: ingreso.peso || null,
-            fecha_ingreso: ingreso.fecha_ingreso || null,
-            origen: ingreso.origen || null,
-            id_ingreso: ingreso.id
+        const recriaRecords = arrayIngresos.map((i) => ({
+            origen: i.origen,
+            caravana: i.caravana,
+            genero: i.genero,
+            peso: i.peso || null,
+            fecha_ingreso: i.fecha_ingreso || null,
+            origen: i.origen || null,
+            id_ingreso: ingreso.id,
         }));
+        console.log(arrayIngresos);
 
-        await Recria.bulkCreate(recriaRecords, { transaction });
-
+        const test = await Recria.bulkCreate(recriaRecords, { transaction });
+        // console.log(recriaRecords);
         // Procesar hembras en la tabla Ganado
         const ganadoRecords = arrayIngresos
             .filter((ingreso) => ingreso.genero === "HEMBRA")
@@ -107,14 +128,17 @@ const postIngresoHandler = async (req, res) => {
                     stringText = "Tipo de ingreso no reconocido";
                     break;
             }
-            await Movimiento_anotacion.create({
-                fecha: new Date(),
-                texto: stringText,
-                terneros_afectados: cantidadMachos.length,
-                tipo_movimiento: "INGRESO",
-            }, { transaction });
+            await Movimiento_anotacion.create(
+                {
+                    fecha: new Date(),
+                    texto: stringText,
+                    terneros_afectados: cantidadMachos.length,
+                    tipo_movimiento: "INGRESO",
+                },
+                { transaction }
+            );
         }
-        await transaction.commit()
+        await transaction.commit();
 
         res.status(201).json({
             message: "Ingreso y recría creados con éxito. Ganado y contador de machos actualizados.",
@@ -125,10 +149,10 @@ const postIngresoHandler = async (req, res) => {
                 cantidadMachos.length > 0
                     ? `Se sumaron ${cantidadMachos.length} machos al contador.`
                     : "No se registraron machos.",
-            allMetodos
+            allMetodos,
         });
     } catch (error) {
-        await transaction.rollback()
+        await transaction.rollback();
         console.error("Error en postIngresoHandler:", error);
         res.status(500).json({ error: error.message });
     }

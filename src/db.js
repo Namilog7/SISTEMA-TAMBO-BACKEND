@@ -7,8 +7,8 @@ const pg = require("pg");
 const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
-    dialectModule: pg,
-    // dialect: "postgres",
+    // dialectModule: pg,
+    dialect: "postgres",
     // dialectOptions: {
     //     ssl: {
     //         require: true,
