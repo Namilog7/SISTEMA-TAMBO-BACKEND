@@ -1,4 +1,4 @@
-const { Cliente, Proveedor, Nota, Empleado } = require("../../db");
+const { Cliente, Proveedor, Nota, Empleado, TamboProveedor } = require("../../db");
 const postResumen = require("../resumen/postResumen");
 
 const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_emision, id_afectado }, transaction) => {
@@ -9,6 +9,8 @@ const postNota = async ({ descripcion, tipo, tipo_destinatario, importe, fecha_e
         afectado = await Cliente.findByPk(id_afectado, { transaction });
     } else if (tipo_destinatario === "PROVEEDOR") {
         afectado = await Proveedor.findByPk(id_afectado, { transaction });
+    } else if (tipo_destinatario === "TAMBO_PROVEEDOR") {
+        afectado = await TamboProveedor.findByPk(id_afectado, { transaction });
     } else if (tipo_destinatario === "EMPLEADO") {
         afectado = await Empleado.findByPk(id_afectado, { transaction });
     }

@@ -2,11 +2,12 @@ const postMetodosPago = require("../../controllers/pago/postMetodosPago");
 const { conn } = require("../../db");
 
 const postPagoHandler = async (req, res) => {
-    const { detalle, fecha, id_cliente, id_proveedor, id_empleado, metodos, model, id_sector } = req.body;
+    const { detalle, fecha, id_cliente, id_proveedor, id_tambo_proveedor, id_empleado, metodos, model, id_sector } =
+        req.body;
     const transaction = await conn.transaction();
     try {
         const nuevoPago = await postMetodosPago(
-            { metodos, fecha, id_cliente, id_proveedor, id_empleado, detalle, model, id_sector },
+            { metodos, fecha, id_cliente, id_proveedor, id_tambo_proveedor, id_empleado, detalle, model, id_sector },
             transaction
         );
         await transaction.commit();

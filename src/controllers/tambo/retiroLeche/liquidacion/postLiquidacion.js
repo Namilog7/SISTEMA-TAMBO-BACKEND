@@ -1,7 +1,7 @@
 const { Liquidacion, RetiroLeche, CompraLeche } = require("../../../../db");
 const postCloudinary = require("../../../postCloudinary");
-const postGastoIngreso = require("../../../caja/postGastoIngreso");
-const registrarMetodosPago = require("../../../../helpers/registrarMetodosPago")
+// const postGastoIngreso = require("../../../caja/postGastoIngreso");
+// const registrarMetodosPago = require("../../../../helpers/registrarMetodosPago");
 
 const postLiquidacion = async ({
     arrayIdRetiros,
@@ -12,30 +12,34 @@ const postLiquidacion = async ({
     importe_blanco,
     importe_negro,
     imagenBase64,
-    detalle,
-    id_sector,
-    tipo,
-    estado,
-    metodosPago,
+    // detalle,
+    // id_sector,
+    // tipo,
+    // estado,
+    // metodosPago,
     modelo,
-    transaction
+    transaction,
 }) => {
-
     if (!arrayIdRetiros || arrayIdRetiros.length === 0) {
         throw new Error("El array de retiros no puede estar vacío.");
     }
 
     // Verificar que todos los IDs de `arrayIdRetiros` existan
-    let retiros
+    let retiros;
     if (modelo == "RetiroLeche") {
-        retiros = await RetiroLeche.findAll({
-            where: { id: arrayIdRetiros },
-        }, { transaction });
-    }
-    else {
-        retiros = await CompraLeche.findAll({
-            where: { id: arrayIdRetiros },
-        }, { transaction });
+        retiros = await RetiroLeche.findAll(
+            {
+                where: { id: arrayIdRetiros },
+            },
+            { transaction }
+        );
+    } else {
+        retiros = await CompraLeche.findAll(
+            {
+                where: { id: arrayIdRetiros },
+            },
+            { transaction }
+        );
     }
 
     if (retiros.length !== arrayIdRetiros.length) {
@@ -43,32 +47,33 @@ const postLiquidacion = async ({
     }
 
     // Validar que ningún retiro ya esté liquidado
-    const retirosYaLiquidados = retiros.filter(retiro => retiro.liquidado);
+    const retirosYaLiquidados = retiros.filter((retiro) => retiro.liquidado);
     if (retirosYaLiquidados.length > 0) {
         throw new Error(
-            `Los siguientes retiros ya fueron liquidados: ${retirosYaLiquidados
-                .map(retiro => retiro.id)
-                .join(", ")}.`
+            `Los siguientes retiros ya fueron liquidados: ${retirosYaLiquidados.map((retiro) => retiro.id).join(", ")}.`
         );
     }
 
     // Calcular la cantidad total como la suma de los campos `cantidad` de los retiros
     const cantidadTotal = retiros.reduce((total, retiro) => total + retiro.cantidad, 0);
-    let url_image
+    let url_image;
     if (imagenBase64) {
-        url_image = await postCloudinary(imagenBase64, "liquidacionLeche")
+        url_image = await postCloudinary(imagenBase64, "liquidacionLeche");
     }
     // Crear la liquidación con los valores calculados
-    const nuevaLiquidacion = await Liquidacion.create({
-        cantidad: cantidadTotal,
-        precio_litro,
-        fecha,
-        litros,
-        importe_total,
-        importe_blanco,
-        importe_negro,
-        url_image
-    }, { transaction });
+    const nuevaLiquidacion = await Liquidacion.create(
+        {
+            cantidad: cantidadTotal,
+            precio_litro,
+            fecha,
+            litros,
+            importe_total,
+            importe_blanco,
+            importe_negro,
+            url_image,
+        },
+        { transaction }
+    );
 
     if (modelo == "RetiroLeche") {
         await RetiroLeche.update(
@@ -78,11 +83,10 @@ const postLiquidacion = async ({
             },
             {
                 where: { id: arrayIdRetiros },
-                transaction
+                transaction,
             }
         );
-    }
-    else {
+    } else {
         await CompraLeche.update(
             {
                 id_liquidacion: nuevaLiquidacion.id,
@@ -90,19 +94,19 @@ const postLiquidacion = async ({
             },
             {
                 where: { id: arrayIdRetiros },
-                transaction
+                transaction,
             }
         );
     }
-    console.log(tipo)
-    const { newGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha, id_sector }, transaction);
-    const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction)
+    // console.log(tipo);
+    // const { nuevoGastoIngreso } = await postGastoIngreso({ detalle, estado, tipo: "INGRESO", fecha, id_sector }, transaction);
+    // const metodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction)
 
     return {
         message: "Liquidación creada y retiros actualizados correctamente.",
         liquidacion: nuevaLiquidacion,
-        newGastoIngreso,
-        metodos
+        // nuevoGastoIngreso,
+        // metodos
     };
 };
 

@@ -77,7 +77,7 @@ const postVentaProductoHandler = async (req, res) => {
         //      );
         //  }
 
-        //  const { newGastoIngreso } = await postGastoIngreso(
+        //  const { nuevoGastoIngreso } = await postGastoIngreso(
         //     {
         //        detalle: `Venta ID :${venta.id}`,
         //          tipo,
@@ -87,7 +87,7 @@ const postVentaProductoHandler = async (req, res) => {
         //     transaction
         // );
 
-        // const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction);
+        // const metodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction);
 
         // await postResumen(
         //    {
