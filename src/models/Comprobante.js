@@ -47,7 +47,12 @@ module.exports = (sequelize) => {
             cuit: {
                 type: DataTypes.STRING,
                 allowNull: true
-            }
+            },
+            razon_social: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+
         },
         { timestamps: true }
     );
