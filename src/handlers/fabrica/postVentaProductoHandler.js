@@ -5,8 +5,8 @@ const postResumen = require("../../controllers/resumen/postResumen");
 const postVenta = require("../../controllers/venta/postVenta");
 
 const postVentaProductoHandler = async (req, res) => {
-
-    const { monto, fecha, arrayObjsVenta, id_cliente, datosFacturacion, isConsumidorFinal, nombre_cliente } = req.body; //model Remito o Factura
+    const { monto, fecha, arrayObjsVenta, id_cliente, datosFacturacion, isConsumidorFinal, nombre_cliente, detalle } =
+        req.body; //model Remito o Factura
 
     const transaction = await conn.transaction();
 
@@ -17,17 +17,30 @@ const postVentaProductoHandler = async (req, res) => {
 
         //! CARGA LA VENTA Y LOS RESPECTIVOS PRODUCTOS
         const venta = await postVenta(
-            { fecha, monto, id_cliente, numero: datosFacturacion.numero, nombre_cliente },
+            { fecha, monto, id_cliente, numero: datosFacturacion.numero, nombre_cliente, detalle },
             transaction
         );
 
-        const bulkVenta = crearBulkTablaIntermedia(arrayObjsVenta, venta.id, "id_venta");
+        // const bulkVenta = crearBulkTablaIntermedia(arrayObjsVenta, venta.id, "id_venta");
 
-        await VentaProducto.bulkCreate(bulkVenta, { transaction });
+        // await VentaProducto.bulkCreate(bulkVenta, { transaction });
+
+        for (const obj of arrayObjsVenta) {
+            const { id_producto, cantidad, precio } = obj;
+            await VentaProducto.create(
+                {
+                    id_venta: venta.id,
+                    id_producto,
+                    cantidad,
+                    precio_unidad: precio,
+                    importe_total: cantidad * precio,
+                },
+                { transaction }
+            );
+        }
 
         //! ACTUALIZA EL STOCK DE LOS PRODUCTOS
         await actualizarStock(arrayObjsVenta, transaction);
-
 
         if (!isConsumidorFinal) {
             await postResumen(
@@ -43,7 +56,7 @@ const postVentaProductoHandler = async (req, res) => {
                 transaction
             );
         }
-      
+
         // const montoMetodos = calcularMontoMetodos({ metodosPago });
 
         // if (model === "REMITO") {
@@ -61,33 +74,32 @@ const postVentaProductoHandler = async (req, res) => {
         //         montoMetodos,
         //         Factura,
         //         transaction
-       //      );
-       //  }
+        //      );
+        //  }
 
-       //  const { newGastoIngreso } = await postGastoIngreso(
+        //  const { nuevoGastoIngreso } = await postGastoIngreso(
         //     {
-         //        detalle: `Venta ID :${venta.id}`,
-       //          tipo,
+        //        detalle: `Venta ID :${venta.id}`,
+        //          tipo,
         //         fecha,
         //         id_sector,
-       //      },
+        //      },
         //     transaction
         // );
 
-        // const metodos = await registrarMetodosPago(newGastoIngreso.id, metodosPago, transaction);
+        // const metodos = await registrarMetodosPago(nuevoGastoIngreso.id, metodosPago, transaction);
 
         // await postResumen(
-         //    {
-         //        id_afectado: id_cliente,
-         //        fecha,
-          //       detalle: `Venta ID :${venta.id}`,
-          //       factura: datosFacturacion.numero,
-         //        model: "CLIENTE",
-         //        importe: monto,
+        //    {
+        //        id_afectado: id_cliente,
+        //        fecha,
+        //       detalle: `Venta ID :${venta.id}`,
+        //       factura: datosFacturacion.numero,
+        //        model: "CLIENTE",
+        //        importe: monto,
         //     },
-       //      transaction
-       //  );
-
+        //      transaction
+        //  );
 
         await transaction.commit();
 
@@ -95,10 +107,11 @@ const postVentaProductoHandler = async (req, res) => {
             message: "Venta registrada exitosamente",
             success: true,
             venta,
-            productosVendidos: bulkVenta,
         });
     } catch (error) {
-        await transaction.rollback();
+        if (!transaction.finished) {
+            await transaction.rollback();
+        }
         console.log(error);
         res.status(500).json({ error: error.message });
     }

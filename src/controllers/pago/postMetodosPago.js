@@ -38,99 +38,88 @@ const postGastoIngreso = require("../caja/postGastoIngreso");
  */
 
 const postMetodosPago = async (
-  {
-    metodos,
-    fecha,
-    id_cliente,
-    id_proveedor,
-    id_empleado,
-    detalle = "",
-    model,
-    id_sector,
-  },
-  transaction
+    { metodos, fecha, id_cliente, id_proveedor, id_tambo_proveedor, id_empleado, detalle = "", model, id_sector },
+    transaction
 ) => {
-  if (metodos.length === 0) throw new Error("No se enviaron métodos de pago.");
+    if (metodos.length === 0) throw new Error("No se enviaron métodos de pago.");
 
-  const nuevoPago = await postPago(
-    { detalle, fecha, id_cliente, id_proveedor, id_empleado },
-    transaction
-  );
-
-  let totalMetodos = [];
-  let resultado = {};
-  let pagosUsados = [];
-  let importe = 0;
-
-  for (const metodo of metodos) {
-    let metodoRegistrado = await MetodoPago.create(
-      {
-        id_pago: nuevoPago.id,
-        detalle: metodo.detalle,
-        fecha: metodo.fecha,
-        id_cliente: metodo.id_cliente,
-        id_proveedor: metodo.id_proveedor,
-        id_empleado: metodo.id_empleado,
-        importe: metodo.importe,
-        metodo: metodo.metodo,
-      },
-      { transaction }
-    );
-
-    importe += Number(metodo.importe);
-    totalMetodos.push(metodoRegistrado);
-    pagosUsados.push(metodo.metodo);
-
-    const { newGastoIngreso } = await postGastoIngreso(
-      {
-        detalle,
-        estado: "ACEPTADO",
-        tipo: id_cliente ? "INGRESO" : "EGRESO",
-        fecha,
-        id_sector,
-      },
-      transaction
-    );
-
-    console.log(newGastoIngreso);
-
-    await postMetodoGastoIngreso(
-      {
-        id_gasto_ingreso: newGastoIngreso.id,
-        metodo: metodo.metodo,
-        monto: metodo.importe,
-      },
-      transaction
-    );
-
-    if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
-      resultado.transferencia = await postTransferencia(
-        metodo.datosTransferencia,
+    const nuevoPago = await postPago(
+        { detalle, fecha, id_cliente, id_proveedor, id_tambo_proveedor, id_empleado },
         transaction
-      );
+    );
+
+    let totalMetodos = [];
+    let resultado = {};
+    let pagosUsados = [];
+    let importe = 0;
+
+    for (const metodo of metodos) {
+        let metodoRegistrado = await MetodoPago.create(
+            {
+                id_pago: nuevoPago.id,
+                detalle: metodo.detalle,
+                fecha: metodo.fecha,
+                id_cliente: metodo.id_cliente,
+                id_proveedor: metodo.id_proveedor,
+                id_empleado: metodo.id_empleado,
+                importe: metodo.importe,
+                metodo: metodo.metodo,
+            },
+            { transaction }
+        );
+
+        importe += Number(metodo.importe);
+        totalMetodos.push(metodoRegistrado);
+        pagosUsados.push(metodo.metodo);
+
+
+        const { nuevoGastoIngreso } = await postGastoIngreso(
+            {
+                detalle,
+                estado: "ACEPTADO",
+                tipo: id_cliente ? "INGRESO" : "EGRESO",
+                fecha,
+                id_sector,
+            },
+            transaction
+        );
+
+        console.log(nuevoGastoIngreso);
+
+        await postMetodoGastoIngreso(
+            {
+                id_gasto_ingreso: nuevoGastoIngreso.id,
+                metodo: metodo.metodo,
+                monto: metodo.importe,
+            },
+            transaction
+        );
+
+
+        if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
+            resultado.transferencia = await postTransferencia(metodo.datosTransferencia, transaction);
+        }
+        if (metodo.metodo === "CHEQUE" && metodo.datosCheque) {
+            resultado.cheque = await postCheque(metodo.datosCheque, transaction);
+        }
     }
-    if (metodo.metodo === "CHEQUE" && metodo.datosCheque) {
-      resultado.cheque = await postCheque(metodo.datosCheque, transaction);
-    }
-  }
 
-  const id_afectado = id_cliente
-    ? id_cliente
-    : id_proveedor
-    ? id_proveedor
-    : id_empleado;
-  const pago = pagosUsados.join(", ");
+    const id_afectado = id_cliente
+        ? id_cliente
+        : id_proveedor
+        ? id_proveedor
+        : id_tambo_proveedor
+        ? id_tambo_proveedor
+        : id_empleado;
+    const pago = pagosUsados.join(", ");
 
-  const nuevoResumen = await postResumen(
-    { id_afectado, fecha, detalle, pago, model, importe },
-    transaction
-  );
+    const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe }, transaction);
 
-  return {
-    totalMetodos,
-    resultado,
-    nuevoResumen,
-  };
+    return {
+        totalMetodos,
+        resultado,
+        nuevoResumen,
+    };
 };
 
 module.exports = postMetodosPago;

@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         tipo_destinatario: {
-            type: DataTypes.ENUM("CLIENTE", "PROVEEDOR", "EMPLEADO"),
+            type: DataTypes.ENUM("CLIENTE", "PROVEEDOR", "EMPLEADO", "TAMBO_PROVEEDOR"),
             allowNull: false,
         },
     });

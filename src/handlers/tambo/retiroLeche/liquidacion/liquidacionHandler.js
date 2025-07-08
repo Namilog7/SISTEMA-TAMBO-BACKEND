@@ -1,7 +1,6 @@
 const postLiquidacion = require("../../../../controllers/tambo/retiroLeche/liquidacion/postLiquidacion");
 const { conn } = require("../../../../db");
 
-
 const liquidacionHandler = async (req, res) => {
     const {
         arrayIdRetiros,
@@ -12,14 +11,14 @@ const liquidacionHandler = async (req, res) => {
         importe_blanco,
         importe_negro,
         imagenBase64,
-        detalle,
-        id_sector,
-        tipo,
-        estado = "ACEPTADO",
-        metodosPago,
-        modelo
-    } = req.body
-    const transaction = await conn.transaction()
+        // detalle,
+        // id_sector,
+        // tipo,
+        // estado = "ACEPTADO",
+        // metodosPago,
+        modelo,
+    } = req.body;
+    const transaction = await conn.transaction();
     try {
         const liquidacion = await postLiquidacion({
             arrayIdRetiros,
@@ -30,22 +29,22 @@ const liquidacionHandler = async (req, res) => {
             importe_blanco,
             importe_negro,
             imagenBase64,
-            detalle,
-            id_sector,
-            tipo,
-            estado,
-            metodosPago,
+            // detalle,
+            // id_sector,
+            // tipo,
+            // estado,
+            // metodosPago,
             modelo,
-            transaction
+            transaction,
         });
-        await transaction.commit()
+        await transaction.commit();
         return res.json({
-            liquidacion
-        })
+            liquidacion,
+        });
     } catch (error) {
-        await transaction.rollback()
+        await transaction.rollback();
         console.log(error);
-        res.status(500).json({ error: `Hubo un problema en el servidor: ${error.message}` })
+        res.status(500).json({ error: `Hubo un problema en el servidor: ${error.message}` });
     }
-}
-module.exports = liquidacionHandler
+};
+module.exports = liquidacionHandler;

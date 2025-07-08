@@ -18,6 +18,14 @@ const createResumen = async ({ model, id_afectado, ...obj }, transaction) => {
             },
             { transaction }
         );
+    } else if (model === "TAMBO_PROVEEDOR") {
+        resumen = await ResumenCuenta.create(
+            {
+                ...obj,
+                id_tambo_proveedor: id_afectado,
+            },
+            { transaction }
+        );
     } else if (model === "EMPLEADO") {
         resumen = await ResumenCuenta.create(
             {
