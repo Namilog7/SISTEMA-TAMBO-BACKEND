@@ -1,19 +1,60 @@
-//const { Remito, Factura } = require("../../db");
+const actualizarInsumo = require("./transferencia/actualizarInsumos");
+const { Comprobante, ComprobanteInsumo } = require("../../db");
 
-const putClienteProveedor = require("../cliente/putClienteProveedor")
-const actualizarStock = require("../fabrica/actualizarStock")
+const postCargarComprobante = async (
+    {
+        id_sector_imputado,
+        subarea,
+        tipo_comprobante,
+        numero_factura,
+        fecha_emision,
+        razon_social,
+        cuit,
+        otros_datos,
+        productos, // { id_producto, descripcion, cantidad, unidad, precio, iva, total }
+        total_general,
+        total_productos,
+        total_tributos,
+    },
+    transaction
+) => {
+    const comprobante = await Comprobante.create(
+        {
+            tipo_comprobante,
+            numero_factura,
+            fecha: fecha_emision,
+            razon_social,
+            cuit,
+            otros_datos,
+            total_general,
+            total_productos,
+            total_tributos,
+            id_sector_imputado,
+        },
+        { transaction }
+    );
 
-const postCargarComprobante = async ({ datosFacturacion, arrayProductos, montoMetodos, cliente_proveedor, remito_factura }, transaction) => {
-    // datosCliente,remitoNumero,detalle,fecha,Arrayproductos:nombre,cantidad,precio,id
-    const { total, id_cliente } = datosFacturacion
-    if (total > montoMetodos) {
-        let diferencial = total - montoMetodos
-        await putClienteProveedor({ id: id_cliente, importe: diferencial, model: cliente_proveedor, operacion: "+" }, transaction)
+    if (subarea === "compra de insumos") {
+        const insumosProcesados = await actualizarInsumo(
+            { productos, razon_social, id_sector_imputado },
+            transaction
+        );
+
+        for (const item of insumosProcesados) {
+            await ComprobanteInsumo.create(
+                {
+                    id_comprobante: comprobante.id,
+                    id_insumo: item.insumo.id,
+                    cantidad: item.cantidad,
+                    unidad: item.unidad,
+                    precio: item.precio,
+                    iva: item.iva,
+                    total: item.total,
+                },
+                { transaction }
+            );
+        }
     }
-    await actualizarStock(arrayProductos, transaction)
-    const nuevoRemitoFactura = await remito_factura.create({
-        ...datosFacturacion
-    }, { transaction })
-    return nuevoRemitoFactura
-}
-module.exports = postCargarComprobante
+};
+
+module.exports = postCargarComprobante;

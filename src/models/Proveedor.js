@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
             },
             nombre_empresa: {
                 type: DataTypes.STRING,
+                unique: true,
                 allowNull: false,
             },
             contacto_1: {
