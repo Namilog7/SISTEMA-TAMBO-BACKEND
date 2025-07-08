@@ -16,7 +16,8 @@ module.exports = (sequelize) => {
             },
             tipo: {
                 type: DataTypes.ENUM(["MEDICAMENTO", "ALIMENTO", "FABRICA", "SEMILLA", "COMBUSTIBLE", "OTROS"]),
-                allowNull: false
+                allowNull: false,
+                defaultValue: "OTROS"
             }
         },
         { timestamps: false }
