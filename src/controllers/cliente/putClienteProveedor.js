@@ -1,4 +1,4 @@
-const { Cliente, Proveedor, Empleado } = require("../../db");
+const { Cliente, Proveedor, Empleado, TamboProveedor } = require("../../db");
 
 const putClienteProveedor = async ({ id, importe, model, operacion }, transaction) => {
     if (!["+", "-"].includes(operacion)) {
@@ -10,10 +10,12 @@ const putClienteProveedor = async ({ id, importe, model, operacion }, transactio
         entidad = Cliente;
     } else if (model === "PROVEEDOR") {
         entidad = Proveedor;
+    } else if (model === "TAMBO_PROVEEDOR") {
+        entidad = TamboProveedor;
     } else if (model === "EMPLEADO") {
         entidad = Empleado;
     } else {
-        throw new Error("Modelo no válido. Usa 'CLIENTE', 'EMPLEADO' o 'PROVEEDOR'.");
+        throw new Error("Modelo no válido. Usa 'CLIENTE', 'EMPLEADO', 'TABO_PROVEEDOR' o 'PROVEEDOR'.");
     }
 
     const registro = await entidad.findOne({ where: { id } }, { transaction });

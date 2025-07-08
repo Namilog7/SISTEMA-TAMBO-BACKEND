@@ -289,6 +289,20 @@ ResumenCuenta.belongsTo(Proveedor, {
     },
 });
 
+TamboProveedor.hasMany(ResumenCuenta, {
+    foreignKey: {
+        name: "id_tambo_proveedor",
+        allowNull: true,
+    },
+});
+
+ResumenCuenta.belongsTo(TamboProveedor, {
+    foreignKey: {
+        name: "id_tambo_proveedor",
+        allowNull: true,
+    },
+});
+
 Empleado.hasMany(ResumenCuenta, {
     foreignKey: {
         name: "id_empleado",
@@ -308,6 +322,9 @@ Cliente.hasMany(Pago, { foreignKey: "id_cliente" });
 
 Pago.belongsTo(Proveedor, { foreignKey: "id_proveedor", allowNull: true });
 Proveedor.hasMany(Pago, { foreignKey: "id_proveedor" });
+
+Pago.belongsTo(TamboProveedor, { foreignKey: "id_tambo_proveedor", allowNull: true });
+TamboProveedor.hasMany(Pago, { foreignKey: "id_tambo_proveedor" });
 
 Pago.belongsTo(Empleado, { foreignKey: "id_empleado", allowNull: true });
 Empleado.hasMany(Pago, { foreignKey: "id_empleado" });

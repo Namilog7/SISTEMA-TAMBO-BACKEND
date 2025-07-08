@@ -45,8 +45,10 @@ const postNotaHandler = async (req, res) => {
     const transaction = await conn.transaction();
 
     try {
-        if (!["PROVEEDOR", "CLIENTE", "EMPLEADO"].includes(tipo_destinatario)) {
-            return res.status(400).json({ error: "El destinatario debe ser CLIENTE, EMPLEADO o PROVEEDOR." });
+        if (!["PROVEEDOR", "CLIENTE", "EMPLEADO", "TAMBO_PROVEEDOR"].includes(tipo_destinatario)) {
+            return res
+                .status(400)
+                .json({ error: "El destinatario debe ser CLIENTE, EMPLEADO, TAMBO_PROVEEDOR o PROVEEDOR." });
         }
 
         if (!["DEBITO", "CREDITO"].includes(tipo)) {

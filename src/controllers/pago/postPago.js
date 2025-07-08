@@ -1,12 +1,13 @@
 const { Pago } = require("../../db");
 
-const postPago = async ({ detalle, fecha, id_cliente, id_proveedor, id_empleado }, transaction) => {
+const postPago = async ({ detalle, fecha, id_cliente, id_proveedor, id_tambo_proveedor, id_empleado }, transaction) => {
     const nuevoPago = await Pago.create(
         {
             detalle,
             fecha,
             id_cliente,
             id_proveedor,
+            id_tambo_proveedor,
             id_empleado,
         },
         { transaction }

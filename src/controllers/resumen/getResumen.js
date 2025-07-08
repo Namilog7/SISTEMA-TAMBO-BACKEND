@@ -16,6 +16,13 @@ const getResumen = async ({ id, tipo }) => {
             },
         });
     }
+    if (tipo === "TAMBO_PROVEEDOR") {
+        resumen = await ResumenCuenta.findAll({
+            where: {
+                id_tambo_proveedor: id,
+            },
+        });
+    }
     if (tipo === "EMPLEADO") {
         resumen = await ResumenCuenta.findAll({
             where: {
