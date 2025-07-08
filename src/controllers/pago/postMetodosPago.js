@@ -72,6 +72,7 @@ const postMetodosPago = async (
         totalMetodos.push(metodoRegistrado);
         pagosUsados.push(metodo.metodo);
 
+
         const { nuevoGastoIngreso } = await postGastoIngreso(
             {
                 detalle,
@@ -93,6 +94,7 @@ const postMetodosPago = async (
             },
             transaction
         );
+
 
         if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
             resultado.transferencia = await postTransferencia(metodo.datosTransferencia, transaction);
