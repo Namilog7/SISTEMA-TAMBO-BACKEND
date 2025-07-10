@@ -25,7 +25,7 @@ const getInsumoHandler = async (req, res) => {
         const response = await paginate(data, page, limit);
 
         // Responder con los datos paginados
-        res.status(200).json(response);
+        res.status(200).json({ data });
     } catch (error) {
         console.error("Error en getInsumoHandler:", error);
         res.status(500).json({ error: "Ocurrió un error en el servidor" });

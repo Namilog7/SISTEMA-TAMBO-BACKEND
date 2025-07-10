@@ -15,6 +15,7 @@ const postCargarComprobante = async (
         total_general,
         total_productos,
         total_tributos,
+        id_proveedor,
     },
     transaction
 ) => {
@@ -30,13 +31,14 @@ const postCargarComprobante = async (
             total_productos,
             total_tributos,
             id_sector_imputado,
+            subarea,
         },
         { transaction }
     );
 
-    if (subarea === "compra de insumos") {
+    if (subarea === "Compra de insumos") {
         const insumosProcesados = await actualizarInsumo(
-            { productos, razon_social, id_sector_imputado },
+            { productos, razon_social, id_proveedor, id_sector_imputado, fecha: fecha_emision },
             transaction
         );
 
