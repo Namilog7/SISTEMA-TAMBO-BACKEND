@@ -4,17 +4,17 @@ const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     // dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
+    // dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false,
+    //     },
+    // },
 });
 
 // Obtención del nombre del archivo actual
@@ -89,6 +89,7 @@ const {
     FacturaArca,
     TributosFacturaArca,
     ProductoFacturaArca,
+    ComprobanteInsumo,
 } = sequelize.models;
 
 //RELACIONES
@@ -380,15 +381,15 @@ Transferencia.belongsTo(Cuenta, {
     as: "cuentaOrigen",
 });
 
-Comprobante.belongsTo(Sector, { foreignKey: 'id_sector_imputado' });
+Comprobante.belongsTo(Sector, { foreignKey: "id_sector_imputado" });
 
 Comprobante.belongsToMany(Insumo, {
-    through: 'ComprobanteInsumo',
-    foreignKey: 'id_comprobante',
+    through: "ComprobanteInsumo",
+    foreignKey: "id_comprobante",
 });
 Insumo.belongsToMany(Comprobante, {
-    through: 'ComprobanteInsumo',
-    foreignKey: 'id_insumo',
+    through: "ComprobanteInsumo",
+    foreignKey: "id_insumo",
 });
 
 module.exports = {

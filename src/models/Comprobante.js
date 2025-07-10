@@ -11,48 +11,47 @@ module.exports = (sequelize) => {
             },
             detalle: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             fecha: {
                 type: DataTypes.STRING,
             },
             subarea: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             tipo_comprobante: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             numero_factura: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             total_productos: {
-                type: DataTypes.INTEGER,
-                default: false
+                type: DataTypes.FLOAT,
+                default: false,
             },
             total_general: {
                 type: DataTypes.FLOAT,
-                allowNull: false
+                allowNull: false,
             },
             total_tributos: {
                 type: DataTypes.FLOAT,
-                allowNull: false
+                allowNull: false,
             },
             otros_datos: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
             cuit: {
                 type: DataTypes.STRING,
-                allowNull: true
+                allowNull: true,
             },
             razon_social: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
             },
-
         },
         { timestamps: true }
     );

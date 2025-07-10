@@ -1,14 +1,19 @@
 const { ProveedorInsumo, Proveedor, Insumo } = require("../../../db");
 
-const actualizarInsumo = async ({ productos, id_sector_imputado, razon_social }, transaction) => {
-    const proveedor = await Proveedor.findOne({
-        where: { nombre_empresa: razon_social },
-        transaction,
-    });
-
-    if (!proveedor) {
-        throw new Error(`Proveedor con razón social "${razon_social}" no encontrado`);
+const actualizarInsumo = async ({ productos, id_sector_imputado, id_proveedor, razon_social, fecha }, transaction) => {
+    let proveedorExistente;
+    if (id_proveedor) {
+        const proveedor = await Proveedor.findOne({
+            where: { nombre_empresa: id_proveedor },
+            transaction,
+        });
+        proveedorExistente = proveedor;
     }
+
+    if (!proveedorExistente) {
+        console.log("No se selecciono un proveedor proveedorExistente, se creara uno nuevo");
+    }
+    console.log("sector inputado: ", id_sector_imputado);
 
     const insumosProcesados = [];
 
@@ -21,7 +26,6 @@ const actualizarInsumo = async ({ productos, id_sector_imputado, razon_social },
             insumo = await Insumo.findByPk(id_producto, { transaction });
         }
 
-
         if (!insumo) {
             insumo = await Insumo.create(
                 {
@@ -32,28 +36,58 @@ const actualizarInsumo = async ({ productos, id_sector_imputado, razon_social },
             );
         }
 
-        let proveedorInsumo = await ProveedorInsumo.findOne({
-            where: {
-                id_insumo: insumo.id,
-                id_proveedor: proveedor.id,
-            },
-            transaction,
-        });
+        let proveedorInsumo;
+        if (proveedorExistente) {
+            const prov = await ProveedorInsumo.findOne({
+                where: {
+                    id_insumo: insumo.id,
+                    id_proveedor: proveedorExistente.id,
+                },
+                transaction,
+            });
+            proveedorInsumo = prov;
+        }
 
         if (proveedorInsumo) {
             proveedorInsumo.stock += cantidad;
             proveedorInsumo.precio = precio;
             await proveedorInsumo.save({ transaction });
         } else {
-            proveedorInsumo = await ProveedorInsumo.create(
-                {
-                    id_insumo: insumo.id,
-                    id_proveedor: proveedor.id,
-                    stock: cantidad,
-                    precio: precio,
-                },
-                { transaction }
-            );
+            if (proveedorExistente) {
+                proveedorInsumo = await ProveedorInsumo.create(
+                    {
+                        id_insumo: insumo.id,
+                        id_proveedor: proveedorExistente.id,
+                        stock: cantidad,
+                        precio: precio,
+                        ultimo_ingreso: fecha,
+                    },
+                    { transaction }
+                );
+            } else {
+                const nuevoProv = await Proveedor.create(
+                    {
+                        nombre_empresa: razon_social,
+                        contacto_1: "-",
+                        contacto_2: "-",
+                        localidad: "-",
+                        saldo: 0,
+                        id_sector: id_sector_imputado,
+                    },
+                    { transaction }
+                );
+
+                proveedorInsumo = await ProveedorInsumo.create(
+                    {
+                        id_insumo: insumo.id,
+                        id_proveedor: nuevoProv.id,
+                        stock: cantidad,
+                        precio: precio,
+                        ultimo_ingreso: fecha,
+                    },
+                    { transaction }
+                );
+            }
         }
 
         insumosProcesados.push({
