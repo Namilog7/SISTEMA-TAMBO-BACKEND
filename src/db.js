@@ -89,6 +89,7 @@ const {
     FacturaArca,
     TributosFacturaArca,
     ProductoFacturaArca,
+    ComprobanteInsumo,
 } = sequelize.models;
 
 //RELACIONES
@@ -380,15 +381,15 @@ Transferencia.belongsTo(Cuenta, {
     as: "cuentaOrigen",
 });
 
-Comprobante.belongsTo(Sector, { foreignKey: 'id_sector_imputado' });
+Comprobante.belongsTo(Sector, { foreignKey: "id_sector_imputado" });
 
 Comprobante.belongsToMany(Insumo, {
-    through: 'ComprobanteInsumo',
-    foreignKey: 'id_comprobante',
+    through: "ComprobanteInsumo",
+    foreignKey: "id_comprobante",
 });
 Insumo.belongsToMany(Comprobante, {
-    through: 'ComprobanteInsumo',
-    foreignKey: 'id_insumo',
+    through: "ComprobanteInsumo",
+    foreignKey: "id_insumo",
 });
 
 module.exports = {
