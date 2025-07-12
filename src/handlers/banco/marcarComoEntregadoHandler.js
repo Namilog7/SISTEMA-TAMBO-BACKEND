@@ -28,7 +28,7 @@ const marcarComoEntregadoHandler = async (req, res) => {
             let metodosPago;
             if (!proveedor) throw new Error("No se encontro el proveedor");
             proveedor.saldo -= cheque.importe;
-            cheque.destino = proveedor.nombre;
+            cheque.destino = proveedor.nombre_empresa;
             await cheque.save({ transaction });
             metodosPago = {
                 metodo: "CHEQUE",
