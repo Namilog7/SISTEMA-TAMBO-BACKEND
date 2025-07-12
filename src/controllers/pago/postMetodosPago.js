@@ -1,4 +1,4 @@
-const { MetodoPago } = require("../../db");
+const { MetodoPago, ChequeRecibido, Cliente, Proveedor, TamboProveedor, Empleado, Cheque } = require("../../db");
 const postPago = require("../../controllers/pago/postPago");
 const postTransferencia = require("../../controllers/caja/transferencia/postTransferencia");
 const postCheque = require("../../controllers/caja/cheque/postCheque");
@@ -48,6 +48,12 @@ const postMetodosPago = async (
         transaction
     );
 
+    const cliente = await Cliente.findByPk(id_cliente);
+    const tambo_proveedor = await TamboProveedor.findByPk(id_tambo_proveedor);
+    const proveedor = await Proveedor.findByPk(id_proveedor);
+    const empleado = await Empleado.findByPk(id_empleado);
+    // console.log("cliente:", cliente);
+
     let totalMetodos = [];
     let resultado = {};
     let pagosUsados = [];
@@ -72,7 +78,6 @@ const postMetodosPago = async (
         totalMetodos.push(metodoRegistrado);
         pagosUsados.push(metodo.metodo);
 
-
         const { nuevoGastoIngreso } = await postGastoIngreso(
             {
                 detalle,
@@ -84,7 +89,7 @@ const postMetodosPago = async (
             transaction
         );
 
-        console.log(nuevoGastoIngreso);
+        // console.log(nuevoGastoIngreso);
 
         await postMetodoGastoIngreso(
             {
@@ -95,12 +100,59 @@ const postMetodosPago = async (
             transaction
         );
 
-
         if (metodo.metodo === "TRANSFERENCIA" && metodo.datosTransferencia) {
             resultado.transferencia = await postTransferencia(metodo.datosTransferencia, transaction);
         }
         if (metodo.metodo === "CHEQUE" && metodo.datosCheque) {
-            resultado.cheque = await postCheque(metodo.datosCheque, transaction);
+            if (id_cliente) {
+                const nuevoCheque = await ChequeRecibido.create(
+                    {
+                        ...metodo.datosCheque,
+                        origen: cliente.dataValues.nombre_empresa,
+                    },
+                    transaction
+                );
+                console.log(nuevoCheque);
+            } else {
+                if (metodo.tipo_cheque === "CARTERA") {
+                    let cheque = await ChequeRecibido.findOne({
+                        where: {
+                            id: metodo.datosCheque.id_cheque,
+                        },
+                        transaction,
+                    });
+                    cheque.estado = "ENTREGADO";
+                    cheque.destino = id_tambo_proveedor
+                        ? tambo_proveedor.nombre_empresa
+                        : id_empleado
+                        ? empleado.nombre
+                        : id_proveedor
+                        ? proveedor.nombre_empresa
+                        : "-";
+                    await cheque.save({ transaction });
+                } else if (metodo.tipo_cheque === "CHEQUERA") {
+                    await Cheque.create(
+                        {
+                            importe: metodo.datosCheque.importe,
+                            estado: "ENTREGADO",
+                            detalle: metodo.datosCheque.detalle || "",
+                            destino: id_tambo_proveedor
+                                ? tambo_proveedor.nombre_empresa
+                                : id_empleado
+                                ? empleado.nombre
+                                : id_proveedor
+                                ? proveedor.nombre_empresa
+                                : "-",
+                            banco: metodo.datosCheque.banco,
+                            origen: "CAJA",
+                            numero_cheque: metodo.datosCheque.numero_cheque,
+                            fecha_emision: metodo.datosCheque.fecha_emision,
+                            fecha_pago: metodo.datosCheque.fecha_pago,
+                        },
+                        { transaction }
+                    );
+                }
+            }
         }
     }
 

@@ -2,9 +2,10 @@ const { ProveedorInsumo, Proveedor, Insumo } = require("../../../db");
 
 const actualizarInsumo = async ({ productos, id_sector_imputado, id_proveedor, razon_social, fecha }, transaction) => {
     let proveedorExistente;
+    console.log("id prov", id_proveedor);
     if (id_proveedor) {
         const proveedor = await Proveedor.findOne({
-            where: { nombre_empresa: id_proveedor },
+            where: { id: id_proveedor },
             transaction,
         });
         proveedorExistente = proveedor;
@@ -41,17 +42,20 @@ const actualizarInsumo = async ({ productos, id_sector_imputado, id_proveedor, r
             const prov = await ProveedorInsumo.findOne({
                 where: {
                     id_insumo: insumo.id,
-                    id_proveedor: proveedorExistente.id,
+                    id_proveedor: id_proveedor,
                 },
                 transaction,
             });
             proveedorInsumo = prov;
         }
 
+        console.log("Proveedor Insumo encontrado:", proveedorInsumo);
+
         if (proveedorInsumo) {
-            proveedorInsumo.stock += cantidad;
+            proveedorInsumo.stock += Number(cantidad);
             proveedorInsumo.precio = precio;
             await proveedorInsumo.save({ transaction });
+            console.log("Proveedor Insumo EDITADO:", proveedorInsumo);
         } else {
             if (proveedorExistente) {
                 proveedorInsumo = await ProveedorInsumo.create(
