@@ -1,5 +1,7 @@
+const postGastoIngreso = require("../../controllers/caja/postGastoIngreso");
 const postResumen = require("../../controllers/resumen/postResumen");
 const { conn, ChequeRecibido, Proveedor, Cheque } = require("../../db");
+const registrarMetodosPago = require("../../helpers/registrarMetodosPago");
 
 const marcarComoEntregadoHandler = async (req, res) => {
     const { id_cheque, tipo, id_prov, destino, detalle, id_sector } = req.body; //tipo = "PROVEEDOR" o "CASUAL" id_prov = id del proveedor o null, destino = nombre destinatario
@@ -13,7 +15,7 @@ const marcarComoEntregadoHandler = async (req, res) => {
             transaction,
         });
         if (!cheque) {
-            cheque = await Cheque.finOne({
+            cheque = await Cheque.findOne({
                 where: {
                     id: id_cheque,
                 },
@@ -59,7 +61,7 @@ const marcarComoEntregadoHandler = async (req, res) => {
                 },
                 transaction
             );
-            if (cheque instanceof Cheque) {
+            if (cheque instanceof Cheque || cheque instanceof ChequeRecibido) {
                 const { nuevoGastoIngreso } = await postGastoIngreso(
                     { detalle, estado, tipo: "EGRESO", fecha: new Date(), id_sector },
                     transaction
