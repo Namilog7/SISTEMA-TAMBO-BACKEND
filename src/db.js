@@ -383,12 +383,32 @@ Transferencia.belongsTo(Cuenta, {
 
 Comprobante.belongsTo(Sector, { foreignKey: "id_sector_imputado" });
 
-Comprobante.belongsToMany(Insumo, {
-    through: "ComprobanteInsumo",
+// Comprobante.belongsToMany(Insumo, {
+//     through: "ComprobanteInsumo",
+//     foreignKey: "id_comprobante",
+// });
+// Insumo.belongsToMany(Comprobante, {
+//     through: "ComprobanteInsumo",
+//     foreignKey: "id_insumo",
+// });
+// Comprobante tiene muchos ComprobanteInsumo
+Comprobante.hasMany(ComprobanteInsumo, {
+    foreignKey: "id_comprobante",
+    as: "comprobanteInsumos", // alias si querés
+});
+
+// ComprobanteInsumo pertenece a Comprobante
+ComprobanteInsumo.belongsTo(Comprobante, {
     foreignKey: "id_comprobante",
 });
-Insumo.belongsToMany(Comprobante, {
-    through: "ComprobanteInsumo",
+
+// Insumo tiene muchos ComprobanteInsumo
+Insumo.hasMany(ComprobanteInsumo, {
+    foreignKey: "id_insumo",
+});
+
+// ComprobanteInsumo pertenece a Insumo
+ComprobanteInsumo.belongsTo(Insumo, {
     foreignKey: "id_insumo",
 });
 
