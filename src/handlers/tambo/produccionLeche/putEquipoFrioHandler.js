@@ -10,13 +10,12 @@ const putEquipoFrioHandler = async (req, res) => {
             return res.status(404).json({ error: "Equipo frío no encontrado" });
         }
 
-        equipoFrio.litros += Number(litros);
-        if (capacidad) equipoFrio.capacidad = Number(capacidad)
+        equipoFrio.litros = Number(litros);
+        if (capacidad) equipoFrio.capacidad = Number(capacidad);
 
         await equipoFrio.save();
 
         res.json({ message: "Equipo frío actualizado", equipoFrio });
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message });
