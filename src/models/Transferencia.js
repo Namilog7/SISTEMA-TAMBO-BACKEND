@@ -25,12 +25,12 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         // id_origen, id_destino: no obligatorios
-        id_origen: {
-            type: DataTypes.UUID,
+         id_origen: {
+            type: DataTypes.STRING, // cambio aquí: UUID -> STRING
             allowNull: true,
         },
         id_destino: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING, // también cambiar si querés lo mismo para destino
             allowNull: true,
         },
 

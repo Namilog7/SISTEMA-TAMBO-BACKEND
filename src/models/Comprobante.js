@@ -18,15 +18,15 @@ module.exports = (sequelize) => {
             },
             subarea: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             tipo_comprobante: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             numero_factura: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             total_productos: {
                 type: DataTypes.FLOAT,
@@ -34,15 +34,15 @@ module.exports = (sequelize) => {
             },
             total_general: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
             },
             total_tributos: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
             },
             otros_datos: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             cuit: {
                 type: DataTypes.STRING,
@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
             },
             razon_social: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
         },
         { timestamps: true }
