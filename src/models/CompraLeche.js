@@ -43,6 +43,10 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            acta_url: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             id_empleado: {
                 type: DataTypes.STRING,
             },
@@ -55,7 +59,7 @@ module.exports = (sequelize) => {
                 },
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE",
-            }
+            },
         },
         { timestamps: true }
     );
