@@ -90,6 +90,7 @@ const {
     TributosFacturaArca,
     ProductoFacturaArca,
     ComprobanteInsumo,
+    DocumentoInsumos,
 } = sequelize.models;
 
 //RELACIONES
@@ -392,6 +393,7 @@ Comprobante.belongsTo(Sector, { foreignKey: "id_sector_imputado" });
 //     foreignKey: "id_insumo",
 // });
 // Comprobante tiene muchos ComprobanteInsumo
+
 Comprobante.hasMany(ComprobanteInsumo, {
     foreignKey: "id_comprobante",
     as: "comprobanteInsumos", // alias si querés
@@ -411,6 +413,9 @@ Insumo.hasMany(ComprobanteInsumo, {
 ComprobanteInsumo.belongsTo(Insumo, {
     foreignKey: "id_insumo",
 });
+
+Sector.hasMany(DocumentoInsumos, { foreignKey: "id_sector" });
+DocumentoInsumos.belongsTo(Sector, { foreignKey: "id_sector" });
 
 module.exports = {
     ...sequelize.models,

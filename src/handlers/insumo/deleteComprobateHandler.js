@@ -1,18 +1,18 @@
 const crudController = require("../../controllers/crudController");
-const { Comprobante } = require("../../db")
+const { DocumentoInsumos } = require("../../db");
 
 const deleteComprobanteHandler = async (req, res) => {
-    const { id_comprobante } = req.params
-    const deleteComprobante = crudController(Comprobante);
+    const { id_comprobante } = req.params;
+    const deleteComprobante = crudController(DocumentoInsumos);
     try {
         const comprobanteDelete = await deleteComprobante.delete(id_comprobante);
         res.json({
-            comprobanteDelete
-        })
+            comprobanteDelete,
+        });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
-module.exports = deleteComprobanteHandler
+module.exports = deleteComprobanteHandler;

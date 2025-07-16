@@ -3,6 +3,7 @@ const crudController = require("../../../controllers/crudController");
 const postSistemaMovimiento = require("../../../controllers/sistema_movimiento/postSistemaMovimiento");
 const putEquipoFrio = require("../../../controllers/equipoFrio/putEquipoFrio");
 const sistemaMovimientoObj = require("../../../helpers/SistemaMovimientoObj");
+const postCloudinary = require("../../../controllers/postCloudinary");
 
 const postRetiroLecheHandler = async (req, res) => {
     const { id_proveedor } = req.query;
@@ -19,7 +20,10 @@ const postRetiroLecheHandler = async (req, res) => {
         estado,
         id_cliente,
         id_liquidacion,
+        actaBase64,
     } = req.body;
+
+    console.log(aclaracion);
 
     const postRetiroLeche = crudController(RetiroLeche);
 
@@ -30,9 +34,15 @@ const postRetiroLecheHandler = async (req, res) => {
         if (!empleado) {
             return res.status(404).json({ message: "Empleado no encontrado" });
         }
+
         // Construir el nombre completo del empleado
         const usuario_carga = empleado.nombre;
         if (id_proveedor) {
+            let actaUrl;
+            if (actaBase64) {
+                actaUrl = await postCloudinary(actaBase64, "compra_leche");
+            }
+
             response = await CompraLeche.create(
                 {
                     cantidad,
@@ -46,6 +56,7 @@ const postRetiroLecheHandler = async (req, res) => {
                     estado,
                     id_liquidacion,
                     id_tambo_proveedor: id_proveedor,
+                    acta_url: actaUrl,
                 },
                 { transaction }
             );
