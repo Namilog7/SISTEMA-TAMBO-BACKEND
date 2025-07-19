@@ -4,17 +4,17 @@ const path = require("path");
 const { DB_DEPLOY, DB_DEV } = process.env;
 const pg = require("pg");
 
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEV, {
     logging: false,
     native: false,
     dialectModule: pg,
     dialect: "postgres",
-    dialectOptions: {
+    /* dialectOptions: {
         ssl: {
             require: true,
             rejectUnauthorized: false,
         },
-    },
+    }, */
 });
 
 // Obtención del nombre del archivo actual
