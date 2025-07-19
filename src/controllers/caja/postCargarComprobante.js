@@ -47,7 +47,7 @@ const postCargarComprobante = async (
         );
 
     }
-    for (const item of insumosProcesados) {
+    for (const item of productos) {
         console.log(comprobante.id)
         await ComprobanteInsumo.create(
             {

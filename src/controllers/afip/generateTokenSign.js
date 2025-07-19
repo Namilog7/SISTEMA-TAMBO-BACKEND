@@ -5,8 +5,12 @@ const axios = require("axios");
 const { parseStringPromise } = require("xml2js");
 const { TokenSignAfip } = require("../../db");
 
-const CERT_PATH = path.join(__dirname, "../../certs/certificado.crt");
-const KEY_PATH = path.join(__dirname, "../../certs/miClavePrivada.key");
+const CERT_PATH = path.resolve(process.env.AFIP_CERT_PATH);
+const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH);
+
+if (!fs.existsSync(CERT_PATH) || !fs.existsSync(KEY_PATH)) {
+    throw new Error("¡Certificado o clave privada no encontrados!");
+}
 
 const generateLoginTicketRequestXML = (service) => {
     const uniqueId = Math.floor(Date.now() / 1000);
