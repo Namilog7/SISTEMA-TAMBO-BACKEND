@@ -125,10 +125,10 @@ const postMetodosPago = async (
                     cheque.destino = id_tambo_proveedor
                         ? tambo_proveedor.nombre_empresa
                         : id_empleado
-                        ? empleado.nombre
-                        : id_proveedor
-                        ? proveedor.nombre_empresa
-                        : "-";
+                            ? empleado.nombre
+                            : id_proveedor
+                                ? proveedor.nombre_empresa
+                                : "-";
                     await cheque.save({ transaction });
                 } else if (metodo.tipo_cheque === "CHEQUERA") {
                     await Cheque.create(
@@ -139,10 +139,10 @@ const postMetodosPago = async (
                             destino: id_tambo_proveedor
                                 ? tambo_proveedor.nombre_empresa
                                 : id_empleado
-                                ? empleado.nombre
-                                : id_proveedor
-                                ? proveedor.nombre_empresa
-                                : "-",
+                                    ? empleado.nombre
+                                    : id_proveedor
+                                        ? proveedor.nombre_empresa
+                                        : "-",
                             banco: metodo.datosCheque.banco,
                             origen: "CAJA",
                             numero_cheque: metodo.datosCheque.numero_cheque,
@@ -159,10 +159,10 @@ const postMetodosPago = async (
     const id_afectado = id_cliente
         ? id_cliente
         : id_proveedor
-        ? id_proveedor
-        : id_tambo_proveedor
-        ? id_tambo_proveedor
-        : id_empleado;
+            ? id_proveedor
+            : id_tambo_proveedor
+                ? id_tambo_proveedor
+                : id_empleado;
     const pago = pagosUsados.join(", ");
 
     const nuevoResumen = await postResumen({ id_afectado, fecha, detalle, pago, model, importe }, transaction);

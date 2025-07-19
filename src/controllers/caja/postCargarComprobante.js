@@ -16,6 +16,7 @@ const postCargarComprobante = async (
         total_productos,
         total_tributos,
         id_proveedor,
+        producto_servicio
     },
     transaction
 ) => {
@@ -32,30 +33,34 @@ const postCargarComprobante = async (
             total_tributos,
             id_sector_imputado,
             subarea,
+            producto_servicio
         },
         { transaction }
     );
 
+    let insumosProcesados
+
     if (subarea === "Compra de insumos") {
-        const insumosProcesados = await actualizarInsumo(
+        insumosProcesados = await actualizarInsumo(
             { productos, razon_social, id_proveedor, id_sector_imputado, fecha: fecha_emision },
             transaction
         );
 
-        for (const item of insumosProcesados) {
-            await ComprobanteInsumo.create(
-                {
-                    id_comprobante: comprobante.id,
-                    id_insumo: item.insumo.id,
-                    cantidad: item.cantidad,
-                    unidad: item.unidad,
-                    precio: item.precio,
-                    iva: item.iva,
-                    total: item.total,
-                },
-                { transaction }
-            );
-        }
+    }
+    for (const item of insumosProcesados) {
+        console.log(comprobante.id)
+        await ComprobanteInsumo.create(
+            {
+                producto_servicio,
+                id_comprobante: comprobante.id,
+                cantidad: item.cantidad,
+                unidad: item.unidad,
+                precio: item.precio,
+                iva: item.iva,
+                total: item.total,
+            },
+            { transaction }
+        );
     }
 };
 
