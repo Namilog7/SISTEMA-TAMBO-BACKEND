@@ -16,6 +16,7 @@ const postCargarComprobanteHandler = async (req, res) => {
         total_productos,
         total_tributos,
         id_proveedor,
+        producto_servicio
         /* datosFacturacion,
     arrayProductos,
     montoMetodos,
@@ -39,6 +40,7 @@ const postCargarComprobanteHandler = async (req, res) => {
                 total_productos,
                 total_tributos,
                 id_proveedor,
+                producto_servicio
             },
             transaction
         );

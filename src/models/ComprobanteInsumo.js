@@ -7,6 +7,11 @@ module.exports = (sequelize) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
         },
+        producto_servicio: {
+            type: DataTypes.ENUM("PRODUCTO", "INSUMO"),
+            allowNull: false,
+            defaultValue: "PRODUCTO"
+        },
         cantidad: {
             type: DataTypes.FLOAT,
             allowNull: false,
