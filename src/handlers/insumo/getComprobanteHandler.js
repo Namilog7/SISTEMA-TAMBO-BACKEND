@@ -1,9 +1,9 @@
-const { Comprobante } = require("../../db");
+const { DocumentoInsumos } = require("../../db");
 
 const getComprobanteHandler = async (req, res) => {
     const { id_sector } = req.params;
     try {
-        const comprobantes = await Comprobante.findAll({
+        const comprobantes = await DocumentoInsumos.findAll({
             where: { id_sector },
         });
         res.json(comprobantes);
