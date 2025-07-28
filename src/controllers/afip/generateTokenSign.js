@@ -4,9 +4,22 @@ const path = require("path");
 const axios = require("axios");
 const { parseStringPromise } = require("xml2js");
 const { TokenSignAfip } = require("../../db");
-
+/* 
 const CERT_PATH = path.resolve(process.env.AFIP_CERT_PATH);
-const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH);
+const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH); */7
+
+// Decodificar Base64 a archivos temporales (Render usa /tmp/)
+const certBase64 = process.env.AFIP_CERT_BASE64;
+const keyBase64 = process.env.AFIP_KEY_BASE64;
+
+const certPath = path.join('/tmp', 'certificado.crt');
+const keyPath = path.join('/tmp', 'clave_privada.key');
+
+fs.writeFileSync(certPath, Buffer.from(certBase64, 'base64'));
+fs.writeFileSync(keyPath, Buffer.from(keyBase64, 'base64'));
+
+const CERT_PATH = certPath;
+const KEY_PATH = keyPath;
 
 if (!fs.existsSync(CERT_PATH) || !fs.existsSync(KEY_PATH)) {
     throw new Error("¡Certificado o clave privada no encontrados!");
