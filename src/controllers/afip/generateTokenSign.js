@@ -21,10 +21,12 @@ fs.writeFileSync(keyPath, Buffer.from(keyBase64, 'base64'));
 const CERT_PATH = certPath;
 const KEY_PATH = keyPath;
 
-if (!fs.existsSync(CERT_PATH) || !fs.existsSync(KEY_PATH)) {
-    throw new Error("¡Certificado o clave privada no encontrados!");
+try {
+    fs.writeFileSync(certPath, Buffer.from(certBase64, 'base64'));
+    fs.writeFileSync(keyPath, Buffer.from(keyBase64, 'base64'));
+} catch (error) {
+    throw new Error(`❌ Error al decodificar los certificados: ${error.message}`);
 }
-
 const generateLoginTicketRequestXML = (service) => {
     const uniqueId = Math.floor(Date.now() / 1000);
     const generationTime = new Date(Date.now() - 600000).toISOString();
