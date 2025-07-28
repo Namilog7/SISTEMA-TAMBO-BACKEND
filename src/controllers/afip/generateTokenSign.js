@@ -9,23 +9,30 @@ const CERT_PATH = path.resolve(process.env.AFIP_CERT_PATH);
 const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH); */7
 
 // Decodificar Base64 a archivos temporales (Render usa /tmp/)
-const certBase64 = process.env.AFIP_CERT_BASE64;
-const keyBase64 = process.env.AFIP_KEY_BASE64;
+console.log("[DEBUG] Variables AFIP:", {
+    cert: !!process.env.AFIP_CERT_BASE64,
+    key: !!process.env.AFIP_KEY_BASE64
+});
 
+// Validar variables
+if (!process.env.AFIP_CERT_BASE64 || !process.env.AFIP_KEY_BASE64) {
+    throw new Error("❌ Configura AFIP_CERT_BASE64 y AFIP_KEY_BASE64 en Render Secrets.");
+}
+
+// Limpiar y decodificar Base64
+const certBase64 = process.env.AFIP_CERT_BASE64.replace(/\n/g, '');
+const keyBase64 = process.env.AFIP_KEY_BASE64.replace(/\n/g, '');
+
+// Escribir archivos temporales
 const certPath = path.join('/tmp', 'certificado.crt');
 const keyPath = path.join('/tmp', 'clave_privada.key');
-
-fs.writeFileSync(certPath, Buffer.from(certBase64, 'base64'));
-fs.writeFileSync(keyPath, Buffer.from(keyBase64, 'base64'));
-
-const CERT_PATH = certPath;
-const KEY_PATH = keyPath;
 
 try {
     fs.writeFileSync(certPath, Buffer.from(certBase64, 'base64'));
     fs.writeFileSync(keyPath, Buffer.from(keyBase64, 'base64'));
+    console.log("[DEBUG] Archivos escritos en:", { certPath, keyPath });
 } catch (error) {
-    throw new Error(`❌ Error al decodificar los certificados: ${error.message}`);
+    throw new Error(`❌ Error al crear archivos: ${error.message}`);
 }
 const generateLoginTicketRequestXML = (service) => {
     const uniqueId = Math.floor(Date.now() / 1000);
