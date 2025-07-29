@@ -14,9 +14,9 @@ server.use(morgan("dev"));
 server.use(cors({
     origin: [
         "https://test-tambo-sdf3.vercel.app",
-        "test-tambo.vercel.app",
         "http://localhost:3000", // Usen este puerto ee
         "http://localhost:5173",
+        "test-tambo.vercel.app",
     ],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
