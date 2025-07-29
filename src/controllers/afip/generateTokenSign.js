@@ -56,8 +56,8 @@ const generateTokenSign = async (service = "wsmtxca") => {
         const xml = generateLoginTicketRequestXML(service);
 
         // Leer certificados
-        const privateKeyPem = fs.readFileSync(KEY_PATH, "utf8");
-        const certificatePem = fs.readFileSync(CERT_PATH, "utf8");
+        const privateKeyPem = fs.readFileSync(certPath, "utf8");
+        const certificatePem = fs.readFileSync(keyPath, "utf8");
 
         // Crear PKCS#7 (CMS) firmado
         const p7 = forge.pkcs7.createSignedData();
