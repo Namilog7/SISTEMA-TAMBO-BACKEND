@@ -8,6 +8,12 @@ const { TokenSignAfip } = require("../../db");
 const CERT_PATH = path.resolve(process.env.AFIP_CERT_PATH);
 const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH); */7
 
+// Decodificar Base64 a archivos temporales (Render usa /tmp/)
+console.log("[DEBUG] Variables AFIP:", {
+    cert: !!process.env.AFIP_CERT_BASE64,
+    key: !!process.env.AFIP_KEY_BASE64
+});
+
 // Validar variables
 if (!process.env.AFIP_CERT_BASE64 || !process.env.AFIP_KEY_BASE64) {
     throw new Error("❌ Configura AFIP_CERT_BASE64 y AFIP_KEY_BASE64 en Render Secrets.");
@@ -50,8 +56,8 @@ const generateTokenSign = async (service = "wsmtxca") => {
         const xml = generateLoginTicketRequestXML(service);
 
         // Leer certificados
-        const privateKeyPem = fs.readFileSync(certPath, "utf8");
-        const certificatePem = fs.readFileSync(keyPath, "utf8");
+        const privateKeyPem = fs.readFileSync(keyPath, "utf8");
+        const certificatePem = fs.readFileSync(certPath, "utf8");
 
         // Crear PKCS#7 (CMS) firmado
         const p7 = forge.pkcs7.createSignedData();
