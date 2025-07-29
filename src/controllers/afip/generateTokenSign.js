@@ -8,20 +8,14 @@ const { TokenSignAfip } = require("../../db");
 const CERT_PATH = path.resolve(process.env.AFIP_CERT_PATH);
 const KEY_PATH = path.resolve(process.env.AFIP_KEY_PATH); */7
 
-// Decodificar Base64 a archivos temporales (Render usa /tmp/)
-console.log("[DEBUG] Variables AFIP:", {
-    cert: !!process.env.AFIP_CERT_BASE64,
-    key: !!process.env.AFIP_KEY_BASE64
-});
-
 // Validar variables
 if (!process.env.AFIP_CERT_BASE64 || !process.env.AFIP_KEY_BASE64) {
     throw new Error("❌ Configura AFIP_CERT_BASE64 y AFIP_KEY_BASE64 en Render Secrets.");
 }
 
 // Limpiar y decodificar Base64
-const certBase64 = process.env.AFIP_CERT_BASE64.replace(/\n/g, '');
-const keyBase64 = process.env.AFIP_KEY_BASE64.replace(/\n/g, '');
+const certBase64 = process.env.AFIP_CERT_BASE64
+const keyBase64 = process.env.AFIP_KEY_BASE64
 
 // Escribir archivos temporales
 const certPath = path.join('/tmp', 'certificado.crt');
