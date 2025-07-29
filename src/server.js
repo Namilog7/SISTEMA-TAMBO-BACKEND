@@ -17,6 +17,7 @@ server.use(cors({
         "http://localhost:3000", // Usen este puerto ee
         "http://localhost:5173",
         "https://test-tambo.vercel.app",
+        "https://sistema-tambo-dev1.vercel.app"
     ],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
