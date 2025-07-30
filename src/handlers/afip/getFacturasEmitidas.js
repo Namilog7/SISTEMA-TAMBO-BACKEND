@@ -13,7 +13,7 @@ const getFacturasEmitidas = async (req, res) => {
         };
 
         if (ultima_factura === 'true' && tipo) {
-            opciones.where = { tipoFactura: tipo };
+            opciones.where = { tipo: tipo };
             opciones.limit = 1; // Solo traer la más reciente
 
             const factura = await FacturaArca.findOne(opciones);
