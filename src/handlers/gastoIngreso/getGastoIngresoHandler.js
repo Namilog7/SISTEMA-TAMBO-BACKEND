@@ -1,14 +1,38 @@
-const { GastoIngreso } = require("../../db");
+const { GastoIngreso, MetodoGastoIngreso } = require("../../db");
 
 const getGastoIngresoHandler = async (req, res) => {
-    const { id } = req.query
+    const { id } = req.query;
     try {
-        const gastoIngreso = id ? await GastoIngreso.findByPk(id) : await GastoIngreso.findAll({})
-        res.json(gastoIngreso)
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: error.message })
-    }
-}
+        const options = {
+            include: {
+                model: MetodoGastoIngreso,
+                attributes: ['monto']
+            }
+        };
 
-module.exports = getGastoIngresoHandler
+        let result;
+        if (id) {
+            result = await GastoIngreso.findByPk(id, options);
+        } else {
+            result = await GastoIngreso.findAll(options);
+        }
+
+        const response = Array.isArray(result)
+            ? result.map(item => ({
+                ...item.toJSON(),
+                importe: item.MetodoGastoIngreso?.monto
+            }))
+            : {
+                ...result.toJSON(),
+                importe: result.MetodoGastoIngreso?.monto
+            };
+
+        res.json(response);
+
+    } catch (error) {
+        console.error("Error al obtener gastos/ingresos:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = getGastoIngresoHandler;
