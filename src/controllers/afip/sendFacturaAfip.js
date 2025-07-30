@@ -24,7 +24,7 @@ xmlns:ser="http://impl.service.wsmtxca.afip.gov.ar/service/">
 </soapenv:Envelope>`.trim();
 
     try {
-        const response = await axios.post("https://fwshomo.afip.gov.ar/wsmtxca/services/MTXCAService", xml, {
+        const response = await axios.post("https://serviciosjava.afip.gov.ar/wsmtxca/services/MTXCAService", xml, {
             headers: {
                 "Content-Type": "text/xml; charset=utf-8",
                 SOAPAction:
@@ -73,7 +73,7 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
     xmlns:wsa="http://www.w3.org/2005/08/addressing">
     <soapenv:Header>
         <wsa:Action>http://impl.service.wsmtxca.afip.gov.ar/service/MTXCAService/autorizarComprobanteRequest</wsa:Action>
-        <wsa:To>https://fwshomo.afip.gov.ar/wsmtxca/services/MTXCAService</wsa:To>
+        <wsa:To>https://serviciosjava.afip.gov.ar/wsmtxca/services/MTXCAService</wsa:To>
         <wsa:MessageID>urn:uuid:${Math.random().toString(36).substring(2, 15)}</wsa:MessageID>
         <wsa:ReplyTo>
             <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
@@ -102,22 +102,20 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                 <codigoMoneda>${datos.divisa}</codigoMoneda>
                 <cotizacionMoneda>${datos.cotizacion}</cotizacionMoneda>
                 <codigoConcepto>${datos.concepto}</codigoConcepto>
-                ${
-                    datos.concepto === "2" || datos.concepto === "3"
-                        ? `
+                ${datos.concepto === "2" || datos.concepto === "3"
+            ? `
                 <fechaServicioDesde>${datos.fechaServDesde}</fechaServicioDesde>
                 <fechaServicioHasta>${datos.fechaServHasta}</fechaServicioHasta>
                 <fechaVencimientoPago>${datos.fechaVencimientoPago}</fechaVencimientoPago>
                 `
-                        : ""
-                }
+            : ""
+        }
 
-                ${
-                    tributos.length
-                        ? `
+                ${tributos.length
+            ? `
                 <arrayOtrosTributos>
                     ${tributos.map(
-                        (t) => `
+                (t) => `
                     <otroTributo>
                         <codigo>${t.codigo}</codigo>
                         <descripcion>${t.descripcion}</descripcion>
@@ -125,16 +123,16 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                         <importe>${t.importe}</importe>
                     </otroTributo>
                     `
-                    )}
+            )}
                 </arrayOtrosTributos>
                 `
-                        : ""
-                }
+            : ""
+        }
                 <arrayItems>
                   ${items
-                      .filter((item) => item.descripcion)
-                      .map(
-                          (item) => `
+            .filter((item) => item.descripcion)
+            .map(
+                (item) => `
                   <item>
                     <unidadesMtx>${item.unidad || 1}</unidadesMtx>
                     <codigoMtx>0000000000000</codigoMtx>
@@ -147,28 +145,27 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                     <importeItem>${item.importeTotal}</importeItem>
                   </item>
                   `
-                      )
-                      .join("")}
+            )
+            .join("")}
                   </arrayItems>
     
-                  ${
-                      alicuotas.length
-                          ? `
+                  ${alicuotas.length
+            ? `
                         <arraySubtotalesIVA>
                         ${alicuotas
-                            .map(
-                                (al) => `
+                .map(
+                    (al) => `
                                 <subtotalIVA>
                                 <codigo>${al.id}</codigo>
                                 <importe>${al.importe}</importe>
                                 </subtotalIVA>
                                 `
-                            )
-                            .join("")}
+                )
+                .join("")}
                                 </arraySubtotalesIVA>
                            `
-                          : ""
-                  }
+            : ""
+        }
 
     
                 
@@ -178,7 +175,7 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
 </soapenv:Envelope>
     `.trim();
 
-    const response = await axios.post("https://fwshomo.afip.gov.ar/wsmtxca/services/MTXCAService", soapXML, {
+    const response = await axios.post("https://serviciosjava.afip.gov.ar/wsmtxca/services/MTXCAService", soapXML, {
         headers: {
             "Content-Type": "text/xml; charset=utf-8",
             SOAPAction: "autorizarComprobanteRequest",

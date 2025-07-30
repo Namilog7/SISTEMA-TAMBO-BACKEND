@@ -81,7 +81,7 @@ const generateTokenSign = async (service = "wsmtxca") => {
 
         // Enviar a AFIP
         const { data } = await axios.post(
-            "https://wsaahomo.afip.gov.ar/ws/services/LoginCms",
+            "https://wsaa.afip.gov.ar/ws/services/LoginCms",
             `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
         <soapenv:Header/>
         <soapenv:Body>
