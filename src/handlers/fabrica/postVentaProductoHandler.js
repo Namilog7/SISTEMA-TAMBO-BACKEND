@@ -1,4 +1,4 @@
-const { VentaProducto, conn } = require("../../db");
+const { VentaProducto, conn, Venta } = require("../../db");
 const crearBulkTablaIntermedia = require("../../helpers/crearBulkParaIntermedia");
 const actualizarStock = require("../../controllers/fabrica/actualizarStock");
 const postResumen = require("../../controllers/resumen/postResumen");
@@ -42,12 +42,14 @@ const postVentaProductoHandler = async (req, res) => {
         //! ACTUALIZA EL STOCK DE LOS PRODUCTOS
         await actualizarStock(arrayObjsVenta, transaction);
 
+        const numeroVenta = await Venta.count()
+
         if (!isConsumidorFinal) {
             await postResumen(
                 {
                     id_afectado: id_cliente,
                     fecha,
-                    detalle: `Venta ID: ${venta.id}`,
+                    detalle: `Venta ID: ${numeroVenta} | ${venta.detalle}`,
                     factura: datosFacturacion.numero,
                     model: "CLIENTE",
                     importe: monto,
