@@ -25,6 +25,11 @@ module.exports = (sequelize) => {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: 0
+        },
+        saldo: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+            defaultValue: 0
         }
     })
 };
