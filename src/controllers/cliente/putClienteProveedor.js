@@ -30,16 +30,18 @@ const putClienteProveedor = async ({ id, importe, model, operacion }, transactio
         throw new Error(`${model} no encontrado.`);
     }
 
-    const nuevoSaldo = operacion === "+"
-        ? registro.saldo + importe
-        : registro.saldo - importe;
-
-    await entidad.update({ saldo: nuevoSaldo }, { where: { id }, transaction });
+    const saldoAnterior = registro.saldo;
 
     await ResumenCuenta.update(
-        { saldo: nuevoSaldo },
+        { saldo: saldoAnterior },
         { where: resumenWhere, transaction }
     );
+
+    const nuevoSaldo = operacion === "+"
+        ? saldoAnterior + importe
+        : saldoAnterior - importe;
+
+    await entidad.update({ saldo: nuevoSaldo }, { where: { id }, transaction });
 };
 
 module.exports = putClienteProveedor;
