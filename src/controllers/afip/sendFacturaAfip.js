@@ -3,6 +3,9 @@ const { parseStringPromise, parseString } = require("xml2js");
 const getValidCredentialsAfip = require("./getValidCredentialsAfip");
 require("dotenv").config();
 
+const cuit = process.env.CUIT;
+const punto_venta = process.env.PUNTO_VENTA;
+
 const getUltimoComprobanteWSMTXCA = async ({ token, sign, tipoComprobante }) => {
     const xml = `
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -13,11 +16,11 @@ xmlns:ser="http://impl.service.wsmtxca.afip.gov.ar/service/">
   <authRequest>
     <token>${token}</token>
     <sign>${sign}</sign>
-    <cuitRepresentada>20410340837</cuitRepresentada>
+    <cuitRepresentada>${cuit}</cuitRepresentada>
   </authRequest>
   <consultaUltimoComprobanteAutorizadoRequest>
     <codigoTipoComprobante>${tipoComprobante}</codigoTipoComprobante>
-    <numeroPuntoVenta>1</numeroPuntoVenta>
+    <numeroPuntoVenta>${punto_venta}</numeroPuntoVenta>
   </consultaUltimoComprobanteAutorizadoRequest>
 </ser:consultarUltimoComprobanteAutorizadoRequest>
 </soapenv:Body>
