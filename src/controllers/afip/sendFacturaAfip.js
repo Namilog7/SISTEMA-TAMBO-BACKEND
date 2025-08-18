@@ -64,9 +64,6 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
     const { token, sign } = await getValidCredentialsAfip("wsmtxca");
     const ultimo = await getUltimoComprobanteWSMTXCA({ token, sign, tipoComprobante: datos.tipoComprobante });
     const nuevoNumero = ultimo + 1;
-    const CUIT = 20410340837;
-    const PUNTO_VENTA = 1;
-
     console.log(datos);
 
     const soapXML = `
@@ -87,11 +84,11 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
         <authRequest>
                 <token>${token}</token>
                 <sign>${sign}</sign>
-                <cuitRepresentada>${CUIT}</cuitRepresentada>
+                <cuitRepresentada>${cuit}</cuitRepresentada>
               </authRequest>
               <comprobanteCAERequest>
                 <codigoTipoComprobante>${datos.tipoComprobante}</codigoTipoComprobante>
-                <numeroPuntoVenta>${PUNTO_VENTA}</numeroPuntoVenta>
+                <numeroPuntoVenta>${punto_venta}</numeroPuntoVenta>
                 <numeroComprobante>${nuevoNumero}</numeroComprobante>
                 <fechaEmision>${datos.fecha}</fechaEmision>
                 <codigoTipoDocumento>${datos.tipoDocumento}</codigoTipoDocumento>
