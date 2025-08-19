@@ -75,6 +75,8 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
     console.log("Ultimo compobante y nuevo numero:", ultimo, nuevoNumero);
 
     // console.log(datos);
+=======
+    console.log(datos);
 
     const soapXML = `
 <soapenv:Envelope 
@@ -112,22 +114,20 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                 <codigoMoneda>${datos.divisa}</codigoMoneda>
                 <cotizacionMoneda>${datos.cotizacion}</cotizacionMoneda>
                 <codigoConcepto>${datos.concepto}</codigoConcepto>
-                ${
-                    datos.concepto === "2" || datos.concepto === "3"
-                        ? `
+                ${datos.concepto === "2" || datos.concepto === "3"
+            ? `
                 <fechaServicioDesde>${datos.fechaServDesde}</fechaServicioDesde>
                 <fechaServicioHasta>${datos.fechaServHasta}</fechaServicioHasta>
                 <fechaVencimientoPago>${datos.fechaVencimientoPago}</fechaVencimientoPago>
                 `
-                        : ""
-                }
+            : ""
+        }
 
-                ${
-                    tributos.length
-                        ? `
+                ${tributos.length
+            ? `
                 <arrayOtrosTributos>
                     ${tributos.map(
-                        (t) => `
+                (t) => `
                     <otroTributo>
                         <codigo>${t.codigo}</codigo>
                         <descripcion>${t.descripcion}</descripcion>
@@ -135,16 +135,16 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                         <importe>${t.importe}</importe>
                     </otroTributo>
                     `
-                    )}
+            )}
                 </arrayOtrosTributos>
                 `
-                        : ""
-                }
+            : ""
+        }
                 <arrayItems>
                   ${items
-                      .filter((item) => item.descripcion)
-                      .map(
-                          (item) => `
+            .filter((item) => item.descripcion)
+            .map(
+                (item) => `
                   <item>
                     <unidadesMtx>${item.unidad || 1}</unidadesMtx>
                     <codigoMtx>0000000000000</codigoMtx>
@@ -157,28 +157,27 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
                     <importeItem>${item.importeTotal}</importeItem>
                   </item>
                   `
-                      )
-                      .join("")}
+            )
+            .join("")}
                   </arrayItems>
     
-                  ${
-                      alicuotas.length
-                          ? `
+                  ${alicuotas.length
+            ? `
                         <arraySubtotalesIVA>
                         ${alicuotas
-                            .map(
-                                (al) => `
+                .map(
+                    (al) => `
                                 <subtotalIVA>
                                 <codigo>${al.id}</codigo>
                                 <importe>${al.importe}</importe>
                                 </subtotalIVA>
                                 `
-                            )
-                            .join("")}
+                )
+                .join("")}
                                 </arraySubtotalesIVA>
                            `
-                          : ""
-                  }
+            : ""
+        }
 
     
                 
