@@ -37,6 +37,8 @@ xmlns:ser="http://impl.service.wsmtxca.afip.gov.ar/service/">
 
         const parsed = await parseStringPromise(response.data, { explicitArray: false });
 
+        console.log("Respuesta de obtener ultimo compobante:", JSON.stringify(parsed, null, 2));
+
         // Manejo de errores SOAP
         if (parsed["soapenv:Envelope"]?.["soapenv:Body"]?.["soapenv:Fault"]) {
             const fault = parsed["soapenv:Envelope"]["soapenv:Body"]["soapenv:Fault"];
@@ -61,9 +63,19 @@ xmlns:ser="http://impl.service.wsmtxca.afip.gov.ar/service/">
 };
 
 const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
+    console.log("Verificamos cuit y punto de venta:", cuit, punto_venta);
+
     const { token, sign } = await getValidCredentialsAfip("wsmtxca");
+    console.log("Verificamos token y firma:");
+    console.log(token);
+    console.log(sign);
+
     const ultimo = await getUltimoComprobanteWSMTXCA({ token, sign, tipoComprobante: datos.tipoComprobante });
     const nuevoNumero = ultimo + 1;
+    console.log("Ultimo compobante y nuevo numero:", ultimo, nuevoNumero);
+
+    // console.log(datos);
+=======
     console.log(datos);
 
     const soapXML = `
@@ -219,12 +231,12 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
         fechaVencimientoCAE,
         numeroComprobante,
         respuestaCompleta: autorizacionResponse,
-        punto_venta: PUNTO_VENTA,
+        punto_venta: punto_venta,
         json_data: {
             ver: 1,
             fecha_emision: datos.fecha,
-            cuit: CUIT,
-            punto_venta: PUNTO_VENTA,
+            cuit: cuit,
+            punto_venta: punto_venta,
             tipo_comprobante: datos.tipoComprobante,
             numeroComprobante: numeroComprobante,
             importe_total: datos.importeTotal,
