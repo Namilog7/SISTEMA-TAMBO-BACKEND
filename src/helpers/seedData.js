@@ -15,6 +15,14 @@ const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
+const { USER_TAMBO, USER_FABRICA, USER_ADMIN } = process.env
+if (!USER_ADMIN || !USER_FABRICA || !USER_TAMBO) {
+    throw new Error("Algun usuario no se cargo correctamente")
+}
+const user_admin = USER_ADMIN;
+const user_tambo = USER_TAMBO;
+const user_fabrica = USER_FABRICA;
+
 const seedData = async () => {
     try {
 
@@ -157,14 +165,25 @@ const seedData = async () => {
 
         for (const userData of users) {
             const existingUser = await User.findOne({ where: { email: userData.email } });
+
             if (!existingUser) {
-                const hashedPassword = await bcrypt.hash("admin123", 10);
+                let hashedPassword;
+
+                if (userData.email.includes("tambo")) {
+                    hashedPassword = await bcrypt.hash(user_tambo, 10);
+                } else if (userData.email.includes("fabrica")) {
+                    hashedPassword = await bcrypt.hash(user_fabrica, 10);
+                } else {
+                    hashedPassword = await bcrypt.hash(user_admin, 10);
+                }
+
                 await User.create({
                     id: uuidv4(),
                     email: userData.email,
                     password: hashedPassword,
                     role: userData.role,
                 });
+
                 console.log(`Usuario ${userData.email} creado con éxito.`);
             }
         }
