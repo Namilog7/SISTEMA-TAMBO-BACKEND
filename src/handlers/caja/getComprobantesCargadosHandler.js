@@ -41,7 +41,6 @@ const getComprobantesCargadosHandler = async (req, res) => {
                 {
                     model: ComprobanteInsumo,
                     as: "comprobanteInsumos",
-                    include: [{ model: Insumo }],
                 },
             ],
         });

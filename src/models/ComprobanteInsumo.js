@@ -7,6 +7,10 @@ module.exports = (sequelize) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
         },
+        descripcion: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         producto_servicio: {
             type: DataTypes.ENUM("PRODUCTO", "INSUMO"),
             allowNull: false,
