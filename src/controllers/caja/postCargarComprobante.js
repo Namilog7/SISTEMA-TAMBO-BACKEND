@@ -51,7 +51,7 @@ const postCargarComprobante = async (
         console.log(comprobante.id)
         await ComprobanteInsumo.create(
             {
-                descripcion,
+                descripcion: item.descripcion,
                 producto_servicio,
                 id_comprobante: comprobante.id,
                 cantidad: item.cantidad,
