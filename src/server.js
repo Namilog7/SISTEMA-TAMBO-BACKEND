@@ -13,11 +13,9 @@ server.use(express.urlencoded({ limit: "10mb", extended: true }));
 server.use(morgan("dev"));
 server.use(cors({
     origin: [
-        "https://test-tambo-sdf3.vercel.app",
+        "https://damya-sg.onrender.com",
         "http://localhost:3000", // Usen este puerto ee
-        "http://localhost:5173",
-        "https://test-tambo.vercel.app",
-        "https://sistema-tambo-dev1.vercel.app"
+        "http://localhost:5173"
     ],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],

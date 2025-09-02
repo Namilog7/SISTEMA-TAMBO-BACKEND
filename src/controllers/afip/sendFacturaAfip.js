@@ -75,7 +75,6 @@ const sendFacturaAfip = async ({ datos, alicuotas, items, tributos }) => {
     console.log("Ultimo compobante y nuevo numero:", ultimo, nuevoNumero);
 
     // console.log(datos);
-=======
     console.log(datos);
 
     const soapXML = `
