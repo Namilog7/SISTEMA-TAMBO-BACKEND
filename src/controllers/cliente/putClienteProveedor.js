@@ -43,8 +43,8 @@ const putClienteProveedor = async ({ id, importe, model, operacion, detalle }, t
         {
             ...resumenWhere,
             detalle: detalle,
-            debe: operacion === "-" ? importe : 0,
-            haber: operacion === "+" ? importe : 0,
+            debe: operacion === "+" ? importe : 0,
+            haber: operacion === "-" ? importe : 0,
             saldo: nuevoSaldo,
             fecha: new Date(),
         },
