@@ -37,7 +37,10 @@ const putClienteProveedor = async ({ id, importe, model, operacion, detalle }, t
     if (!registro) throw new Error(`${model} no encontrado.`);
 
     const saldoAnterior = registro.saldo;
-    const nuevoSaldo = operacion === "+" ? saldoAnterior + importe : saldoAnterior - importe;
+    const nuevoSaldo =
+        operacion === "+"
+            ? parseFloat(saldoAnterior) + parseFloat(importe)
+            : parseFloat(saldoAnterior) - parseFloat(importe);
 
     await ResumenCuenta.create(
         {
