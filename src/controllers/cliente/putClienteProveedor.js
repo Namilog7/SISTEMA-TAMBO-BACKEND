@@ -1,47 +1,57 @@
-const { Cliente, Proveedor, Empleado, TamboProveedor, ResumenCuenta } = require("../../db");
-
 const putClienteProveedor = async ({ id, importe, model, operacion }, transaction) => {
     if (!["+", "-"].includes(operacion)) {
         throw new Error("Operación no válida. Usa '+' o '-'.");
     }
 
-    let entidad;
-    let resumenWhere = {};
-
-    if (model === "CLIENTE") {
-        entidad = Cliente;
-        resumenWhere = { id_cliente: id };
-    } else if (model === "PROVEEDOR") {
-        entidad = Proveedor;
-        resumenWhere = { id_proveedor: id };
-    } else if (model === "TAMBO_PROVEEDOR") {
-        entidad = TamboProveedor;
-        resumenWhere = { id_tambo_proveedor: id };
-    } else if (model === "EMPLEADO") {
-        entidad = Empleado;
-        resumenWhere = { id_empleado: id };
-    } else {
-        throw new Error("Modelo no válido. Usa 'CLIENTE', 'EMPLEADO', 'TAMBO_PROVEEDOR' o 'PROVEEDOR'.");
+    if (importe <= 0) {
+        throw new Error("El importe debe ser mayor a 0.");
     }
 
-    const registro = await entidad.findOne({ where: { id }, transaction });
+    let entidad, resumenWhere;
 
-    if (!registro) {
-        throw new Error(`${model} no encontrado.`);
+    switch (model) {
+        case "CLIENTE":
+            entidad = Cliente;
+            resumenWhere = { id_cliente: id };
+            break;
+        case "PROVEEDOR":
+            entidad = Proveedor;
+            resumenWhere = { id_proveedor: id };
+            break;
+        case "TAMBO_PROVEEDOR":
+            entidad = TamboProveedor;
+            resumenWhere = { id_tambo_proveedor: id };
+            break;
+        case "EMPLEADO":
+            entidad = Empleado;
+            resumenWhere = { id_empleado: id };
+            break;
+        default:
+            throw new Error("Modelo no válido.");
     }
+
+    const registro = await entidad.findOne({ where: { id }, transaction, lock: true });
+
+    if (!registro) throw new Error(`${model} no encontrado.`);
 
     const saldoAnterior = registro.saldo;
-
-    await ResumenCuenta.update(
-        { saldo: saldoAnterior },
-        { where: resumenWhere, transaction }
-    );
-
     const nuevoSaldo = operacion === "+"
         ? saldoAnterior + importe
         : saldoAnterior - importe;
 
-    await entidad.update({ saldo: nuevoSaldo }, { where: { id }, transaction });
-};
+    await ResumenCuenta.create(
+        {
+            ...resumenWhere,
+            debe: operacion === "-" ? importe : 0,
+            haber: operacion === "+" ? importe : 0,
+            saldo: nuevoSaldo,
+            fecha: new Date()
+        },
+        { transaction }
+    );
 
-module.exports = putClienteProveedor;
+    await entidad.update(
+        { saldo: nuevoSaldo },
+        { where: { id }, transaction }
+    );
+};
