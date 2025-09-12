@@ -1,3 +1,5 @@
+const { Cliente, Proveedor, Empleado, TamboProveedor, ResumenCuenta } = require("../../db");
+
 const putClienteProveedor = async ({ id, importe, model, operacion }, transaction) => {
     if (!["+", "-"].includes(operacion)) {
         throw new Error("Operación no válida. Usa '+' o '-'.");
