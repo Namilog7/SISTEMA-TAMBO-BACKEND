@@ -1,6 +1,6 @@
 const { Cliente, Proveedor, Empleado, TamboProveedor, ResumenCuenta } = require("../../db");
 
-const putClienteProveedor = async ({ id, importe, model, operacion }, transaction) => {
+const putClienteProveedor = async ({ id, importe, model, operacion, detalle }, transaction) => {
     if (!["+", "-"].includes(operacion)) {
         throw new Error("Operación no válida. Usa '+' o '-'.");
     }
@@ -42,6 +42,7 @@ const putClienteProveedor = async ({ id, importe, model, operacion }, transactio
     await ResumenCuenta.create(
         {
             ...resumenWhere,
+            detalle: detalle,
             debe: operacion === "-" ? importe : 0,
             haber: operacion === "+" ? importe : 0,
             saldo: nuevoSaldo,

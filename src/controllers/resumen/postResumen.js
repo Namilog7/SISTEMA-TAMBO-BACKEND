@@ -7,21 +7,20 @@ const postResumen = async ({ id_afectado, nota_tipo, fecha, detalle, pago, factu
     let id = id_afectado;
 
     if (nota_tipo === "CREDITO" || pago) {
-        resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
-        resumen.haber += Number(importe);
-        operacion = "-";
-        await putClienteProveedor({ id, importe, model, operacion }, transaction);
+        // resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
+        // resumen.haber += Number(importe);
+        // operacion = "-";
+        await putClienteProveedor({ id, importe, model, operacion, detalle }, transaction);
+    } else if (nota_tipo === "DEBITO" || factura) {
+        // resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
+        // resumen.debe += Number(importe);
+        // operacion = "+";
+        await putClienteProveedor({ id, importe, model, operacion, detalle }, transaction);
+    } else {
+        throw new Error("Algo fallo en postResumen");
     }
 
-    else if (nota_tipo === "DEBITO" || factura) {
-        resumen = await createResumen({ model, id_afectado, nota_tipo, fecha, detalle }, transaction);
-        resumen.debe += Number(importe);
-        operacion = "+";
-        await putClienteProveedor({ id, importe, model, operacion }, transaction);
-    }
-    else { throw new Error("Algo fallo en postResumen") }
-
-    await resumen.save({ transaction });
+    // await resumen.save({ transaction });
 };
 
 module.exports = postResumen;
